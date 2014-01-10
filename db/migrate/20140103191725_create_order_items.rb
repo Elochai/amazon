@@ -5,6 +5,8 @@ class CreateOrderItems < ActiveRecord::Migration
       t.integer :quantity, default: 1
       t.integer :book_id
       t.integer :order_id
+      t.index :book_id
+      t.index :order_id
 
       t.timestamps
     end

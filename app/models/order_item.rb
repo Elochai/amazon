@@ -11,11 +11,12 @@ class OrderItem < ActiveRecord::Base
   belongs_to :order
 
   validates_with CheckInStock
+  validates :price, :quantity, presence: true
 
   before_save :total_price
 
   def total_price
-    self.price = self.book.price * self.quantity
+    self.price = (self.book.price * self.quantity).to_f
   end
 
 end

@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :category do
-    title ""
-    books 1
+    title "Fantasy"
+    number_of_books 1
   end
 end

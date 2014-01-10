@@ -1,9 +1,11 @@
 class Order < ActiveRecord::Base
   belongs_to :customer
-  belongs_to :address
+  belongs_to :ship_address, class_name: 'Address'
+  belongs_to :bill_address, class_name: 'Address'
   has_many :order_items, dependent: :destroy
 
-  validates :state, format: { with: /\Ain progress\z|\Acompleted\z|\Ashipped\z/ }
+  validates :state, format: { with: /\Ain progress\z|\Acompleted\z|\Ashipped\z/ }, presence: true
+  validates :total_price, presence: true
 
   after_find :total_price
   after_create :set_initial_state

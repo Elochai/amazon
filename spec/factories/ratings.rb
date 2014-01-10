@@ -2,7 +2,9 @@
 
 FactoryGirl.define do
   factory :rating do
-    rating ""
-    text "MyText"
+    rating 10
+    text Faker::Lorem.sentence
+    customer nil
+    book nil
   end
 end

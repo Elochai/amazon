@@ -5,6 +5,8 @@ class CreateRatings < ActiveRecord::Migration
       t.text :text
       t.integer :customer_id
       t.integer :book_id
+      t.index :customer_id
+      t.index :book_id
 
       t.timestamps
     end

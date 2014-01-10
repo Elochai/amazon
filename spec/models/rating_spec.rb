@@ -1,5 +1,13 @@
 require 'spec_helper'
 
 describe Rating do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:rating) { FactoryGirl.create(:rating) }
+
+  context "associations" do
+    it { expect(rating).to belong_to(:customer) }
+    it { expect(rating).to belong_to(:book) }
+  end
+  context "validations" do
+    it { expect(rating).to ensure_inclusion_of(:rating).in_range(1..10) }
+  end
 end
