@@ -13,9 +13,9 @@ class OrderItem < ActiveRecord::Base
   validates_with CheckInStock
   validates :price, :quantity, presence: true
 
-  before_save :count_total_price
+  before_save :count_total_price!
 
-  def count_total_price
+  def count_total_price!
     self.price = self.book.price * self.quantity
   end
 

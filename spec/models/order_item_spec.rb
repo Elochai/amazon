@@ -18,9 +18,9 @@ describe OrderItem do
       expect { failed_order_item.save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
-  context ".count_total_price" do
+  context ".count_total_price!" do
     it "called before save" do
-      expect(order_item).to receive(:count_total_price)
+      expect(order_item).to receive(:count_total_price!)
       order_item.save
     end
     it "counts total price properly" do
