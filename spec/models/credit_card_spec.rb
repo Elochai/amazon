@@ -4,7 +4,7 @@ describe CreditCard do
   let(:credit_card) { FactoryGirl.create(:credit_card) }
 
   context "associations" do
-    it { expect(credit_card).to have_many(:orders).dependent(:destroy).with_foreign_key('') }
+    it { expect(credit_card).to have_many(:orders).dependent(:destroy) }
     it { expect(credit_card).to belong_to(:customer) }
   end
   context "validations" do

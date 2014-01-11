@@ -98,16 +98,18 @@ ActiveRecord::Schema.define(version: 20140103192037) do
 
   create_table "orders", force: true do |t|
     t.float    "total_price"
-    t.string   "state",           default: "in progress"
+    t.string   "state"
     t.date     "completed_at"
     t.integer  "bill_address_id"
     t.integer  "ship_address_id"
     t.integer  "customer_id"
+    t.integer  "credit_card_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "orders", ["bill_address_id"], name: "index_orders_on_bill_address_id"
+  add_index "orders", ["credit_card_id"], name: "index_orders_on_credit_card_id"
   add_index "orders", ["customer_id"], name: "index_orders_on_customer_id"
   add_index "orders", ["ship_address_id"], name: "index_orders_on_ship_address_id"
 

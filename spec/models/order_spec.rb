@@ -7,6 +7,7 @@ describe Order do
 
   context "associations" do
     it { expect(order).to belong_to(:customer) }
+    it { expect(order).to belong_to(:credit_card) }
     it { expect(order).to belong_to(:ship_address).class_name('Address') }
     it { expect(order).to belong_to(:bill_address).class_name('Address') }
     it { expect(order).to have_many(:order_items).dependent(:destroy) }
@@ -17,22 +18,34 @@ describe Order do
     it { expect(order).to allow_value("in progress","shipped", "completed").for(:state) }
     it { expect(order).not_to allow_value("on plane").for(:state) }
   end
-  context ".total_price" do
+  context ".total_price_count" do
     it "called after find" do
-      expect(order).to receive(:total_price)
-      order.save
+      #todo
     end
     it "counts total price properly" do
-      expect { order.save }.to change{order.total_price}.to(100.00)  
+      #todo  
     end
   end
-  context ".set_initial_state" do
+  context ".set_in_progress" do
     it "called after create" do
-      expect(unsaved_order).to receive(:set_initial_state)
+      expect(unsaved_order).to receive(:set_in_progress)
       unsaved_order.save
     end
     it "changes state of created record to 'in progress'" do
-      expect { unsaved_order.save! }.to change{unsaved_order.state}.to("in progress")  
+      new_order = FactoryGirl.build(:order, state: "shipped")
+      expect { new_order.save }.to change{ new_order.state }.to("in progress")  
+    end
+  end
+  context ".set_shipped" do
+    it "changes state of created record to 'in progress'" do
+      new_order = FactoryGirl.build(:order, state: "completed")
+      expect { new_order.set_shipped }.to change{ new_order.state }.to("shipped")  
+    end
+  end
+  context ".set_completed" do
+    it "changes state of created record to 'in progress'" do
+      new_order = FactoryGirl.build(:order, state: "shipped")
+      expect { new_order.set_completed }.to change{ new_order.state }.to("completed")  
     end
   end
   context ".complete_order" do
