@@ -22,6 +22,7 @@ describe Order do
     it "called after find" do
       expect(order).to receive(:count_total_price!)
       Order.find(1)
+      #todo fix it
     end
   end
   context ".set_in_progress!" do
