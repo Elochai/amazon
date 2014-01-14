@@ -12,21 +12,22 @@ class OrderItem < ActiveRecord::Base
   end
 
   def count_total_price
-    price = book.price * quantity
+    self.price = book.price * quantity
   end
 
   def decrease_in_stock!
-    book.in_stock -= quantity
+    self.book.in_stock -= quantity
     save!
   end
 
   def return_in_stock!
-    book.in_stock += quantity
+    self.book.in_stock += quantity
     save!
   end
 
-  private def if_in_stock
-    unless book.in_stock > quantity
+  private 
+  def if_in_stock
+    unless book.in_stock.to_i >= quantity.to_i
       errors.add(:book, 'not in stock!')
     end
   end

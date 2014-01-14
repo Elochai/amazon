@@ -5,7 +5,7 @@ FactoryGirl.define do
     title "Lord of the rings: Fellowship of the ring"
     description "Cool story, bro"
     price 50.00
-    in_stock 1
+    in_stock 4
     category nil
     author nil
   end

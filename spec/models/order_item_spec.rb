@@ -18,13 +18,19 @@ describe OrderItem do
       expect { failed_order_item.save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
-  context ".count_total_price!" do
+  context ".count_total_price" do
     it "called before save" do
       expect(order_item).to receive(:count_total_price)
       order_item.save
     end
     it "counts total price properly" do
-      expect { proper_order_item.save }.to change{ proper_order_item.price }.to(100.00)  #50 * 2
+      expect{ proper_order_item.count_total_price }.to change{ proper_order_item.price }.to(100.00)  #50 * 2
+    end
+  end
+  context ".total_price" do
+    it "counts total price properly" do
+      expect(proper_order_item).to receive(:total_price).and_return(100.00)
+      proper_order_item.total_price
     end
   end
 end
