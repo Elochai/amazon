@@ -20,7 +20,7 @@ describe OrderItem do
   end
   context ".count_total_price!" do
     it "called before save" do
-      expect(order_item).to receive(:count_total_price!)
+      expect(order_item).to receive(:count_total_price)
       order_item.save
     end
     it "counts total price properly" do

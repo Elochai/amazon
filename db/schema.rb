@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20140103192037) do
   add_index "order_items", ["order_id"], name: "index_order_items_on_order_id"
 
   create_table "orders", force: true do |t|
-    t.float    "total_price"
+    t.float    "price"
     t.string   "state"
     t.date     "completed_at"
     t.integer  "bill_address_id"

@@ -1,22 +1,34 @@
-class CheckInStock < ActiveModel::Validator
-  def validate(record)
-    unless record.book.in_stock > 0
-      record.errors[:in_stock] << "no book in stock"
-    end
-  end
-end
-
 class OrderItem < ActiveRecord::Base
   belongs_to :book
   belongs_to :order
 
-  validates_with CheckInStock
+  validate :if_in_stock
   validates :price, :quantity, presence: true
 
-  before_save :count_total_price!
+  before_save :count_total_price
 
-  def count_total_price!
-    self.price = self.book.price * self.quantity
+  def total_price
+    book.price * quantity
+  end
+
+  def count_total_price
+    price = book.price * quantity
+  end
+
+  def decrease_in_stock!
+    book.in_stock -= quantity
+    save!
+  end
+
+  def return_in_stock!
+    book.in_stock += quantity
+    save!
+  end
+
+  private def if_in_stock
+    unless book.in_stock > quantity
+      errors.add(:book, 'not in stock!')
+    end
   end
 
 end
