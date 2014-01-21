@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Order do
   let(:unsaved_order) { FactoryGirl.build(:order) } 
-  let(:order) { FactoryGirl.create(:order, id: 1) } 
+  let(:order) { FactoryGirl.create(:order) } 
   let(:order_with_items) { FactoryGirl.create :order_with_items }
 
   context "associations" do
@@ -27,17 +27,13 @@ describe Order do
     end
   end
   context ".in_progress!" do
-    it "called before create" do
-      expect(unsaved_order).to receive(:in_progress!)
-      unsaved_order.save
-    end
-    it "changes state of created record to 'in progress'" do
+    it "changes state of created record to 'in_progress'" do
       new_order = FactoryGirl.build(:order, state: "shipped")
-      expect { new_order.save }.to change{ new_order.state }.to("in progress")  
+      expect { new_order.in_progress! }.to change{ new_order.state }.to("in_progress")  
     end
   end
   context ".shipped!" do
-    it "changes state of created record to 'in progress'" do
+    it "changes state of created record to 'shipped'" do
       new_order = FactoryGirl.build(:order, state: "completed")
       expect { new_order.shipped! }.to change{ new_order.state }.to("shipped")  
     end

@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :order do
-    total_price 20.00
-    state "in progress"
+    price 20.00
+    state "in_progress"
     completed_at nil
     association :bill_address, factory: :address 
     association :ship_address, factory: :address 

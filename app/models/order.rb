@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   validates :state, inclusion: { in: %w(in_progress shipped completed) }, presence: true
   validates :price, presence: true
 
-  before_save :count_total_price, :refresh_on_save, :in_progress!
+  before_save :count_total_price, :refresh_on_save
   before_destroy :refresh_on_destroy
 
   def total_price
@@ -16,7 +16,7 @@ class Order < ActiveRecord::Base
   end
 
   def count_total_price
-    price = order_items.sum("price")
+    self.price = order_items.sum("price")
   end
 
   def refresh_on_save
@@ -32,18 +32,18 @@ class Order < ActiveRecord::Base
   end
 
   def complete!
-    completed_at = Date.today
-    state = "completed"
+    self.completed_at = Date.today
+    self.state = "completed"
     save!
   end
 
   def in_progress!
-    state = "in_progress"
+    self.state = "in_progress"
     save!
   end
 
   def shipped!
-    state = "shipped"
+    self.state = "shipped"
     save!
   end
 end
