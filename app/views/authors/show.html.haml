@@ -1,0 +1,13 @@
+.container
+  %center 
+    %h2== "#{@author.full_name}" author info: 
+    %h4
+      %br
+      = @author.photo
+      %br== Full name of author: <strong>#{@author.full_name}</strong>
+      %br== Biography: <strong>#{@author.biography}</strong>
+    %center
+      %br
+      - if customer_signed_in? && current_customer.admin == true
+        =link_to 'Edit author info', edit_author_path, class: 'btn btn-primary'
+        =link_to 'Delete author', author_path, method: :delete, class: 'btn btn-danger'

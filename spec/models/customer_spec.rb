@@ -13,8 +13,6 @@ describe Customer do
     it { expect(customer).not_to allow_value("example.com").for(:email) }
     it { expect(customer).to validate_uniqueness_of(:email) }
     it { expect(customer).to validate_presence_of(:password) }
-    it { expect(customer).to validate_presence_of(:firstname) }
-    it { expect(customer).to validate_presence_of(:lastname) }
   end
 end
 

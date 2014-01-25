@@ -1,0 +1,14 @@
+.container
+  %center 
+    %h2 Authors of books:
+  %table.table.table-hover
+    %thead
+      %tr
+        %th.text-center Author name
+      %tbody
+        - @authors.each do |author|
+          %tr
+            %td.text-center= link_to "#{author.full_name}", author_path(author), method: :get
+  %center
+    - if customer_signed_in? && current_customer.admin == true
+      =link_to 'Add author', new_author_path, class: 'btn btn-primary'

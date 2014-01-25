@@ -1,0 +1,5 @@
+%h2== Editing "#{@category.title}" category info
+  = form_for @category do |cat|
+    = cat.text_field :title, placeholder:"Type category title here.."
+    %br
+    = cat.submit

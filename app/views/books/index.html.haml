@@ -1,0 +1,22 @@
+.container
+  %center 
+    %h2 Our books:
+  %table.table.table-hover
+    %thead
+      %tr
+        %th Title
+        %th Author
+        %th Category
+        %th Price
+        %th In stock
+      %tbody
+        - @books.each do |book|
+          %tr
+            %td= link_to "#{book.title}", book_path(book), method: :get
+            %td= book.author
+            %td= book.category
+            %td= number_to_currency(book.price)
+            %td= book.in_stock
+  %center
+    - if customer_signed_in? && current_customer.admin == true
+      =link_to 'Add book', new_book_path, class: 'btn btn-primary'

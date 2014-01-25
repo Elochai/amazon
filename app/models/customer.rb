@@ -8,5 +8,4 @@ class Customer < ActiveRecord::Base
   
   validates :email, format: { with: /\A.+@.+\z/ }, uniqueness: true, presence: true
   validates :password, presence: true
-  validates :firstname, :lastname, presence: true
 end

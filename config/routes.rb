@@ -1,6 +1,9 @@
 Amazon::Application.routes.draw do
   devise_for :customers
-  root :to => "book#index"
+  resources :books
+  resources :authors
+  resources :categories
+  root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

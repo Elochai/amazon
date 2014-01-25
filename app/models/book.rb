@@ -11,4 +11,12 @@ class Book < ActiveRecord::Base
     self.in_stock += 1
     save!
   end
+
+  def author
+    Author.find(self.author_id).firstname.to_s + " " + Author.find(self.author_id).lastname.to_s
+  end
+
+  def category
+    Category.find(self.category_id).title
+  end
 end

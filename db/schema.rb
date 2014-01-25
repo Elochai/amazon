@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140121135326) do
+ActiveRecord::Schema.define(version: 20140124155306) do
 
   create_table "addresses", force: true do |t|
     t.string   "address"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140121135326) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "admin"
   end
 
   add_index "customers", ["email"], name: "index_customers_on_email", unique: true

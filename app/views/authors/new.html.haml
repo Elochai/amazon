@@ -1,0 +1,9 @@
+.container
+  %center 
+    %h2 Add new author:
+    = form_for @author do |author|
+      %br= author.text_field :firstname, placeholder:"Type author first name here.."
+      %br= author.text_field :lastname, placeholder:"Type author last name here.."
+      %br= author.text_area :biography , size: "24x6"
+      %br= author.file_field :photo
+      = author.submit

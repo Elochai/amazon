@@ -1,0 +1,15 @@
+.container
+  %center 
+    %h2== "#{@book.title}" info: 
+    %h4
+      %br
+      == Full title: <strong>#{@book.title}</strong>
+      %br== Author of this book: <strong>#{@book.author}</strong>
+      == Genre: <strong>#{@book.category}</strong>
+      %br== We can sell it for: <strong>#{number_to_currency(@book.price)}</strong>
+      == We have <strong>#{@book.in_stock}</strong> exemplars of this book in stock
+    %center
+      %br
+      - if customer_signed_in? && current_customer.admin == true
+        =link_to 'Edit book info', edit_book_path, class: 'btn btn-primary'
+        =link_to 'Delete book', book_path, method: :delete, class: 'btn btn-danger'
