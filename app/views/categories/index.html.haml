@@ -1,16 +1,16 @@
 .container
   %center 
     %h2 Categories of books:
-  %table.table.table-hover
-    %thead
-      %tr
-        %th Category name
-        %th Number of books
-      %tbody
-        - @categories.each do |cat|
-          %tr
-            %td= link_to "#{cat.title}", category_path(cat), method: :get
-            %td= cat.number_of_books
+    %table.table.table-hover.table-little
+      %thead
+        %tr.success
+          %th.text-center Category name
+          %th.text-center Number of books
+        %tbody
+          - @categories.each do |cat|
+            %tr.text-center
+              %td= link_to "#{cat.title}", category_path(cat), method: :get
+              %td= cat.number_of_books
   %center
-    - if customer_signed_in? && current_customer.admin == true
+    - if customer_signed_in? && current_customer.admin 
       =link_to 'Add category', new_category_path, class: 'btn btn-primary'

@@ -13,7 +13,7 @@ class Book < ActiveRecord::Base
   end
 
   def author
-    Author.find(self.author_id).firstname.to_s + " " + Author.find(self.author_id).lastname.to_s
+    Author.find(self.author_id).full_name
   end
 
   def category

@@ -5,9 +5,15 @@
       %br
       = @author.photo
       %br== Full name of author: <strong>#{@author.full_name}</strong>
-      %br== Biography: <strong>#{@author.biography}</strong>
+      == Biography: <strong>#{@author.biography}</strong>
+      %br
+      %br
+      == We have <strong>#{@author.number_of_books}</strong> books of this author, they are below:
+      - @author.books.each do |book|
+        %br
+        = link_to "#{book.title}", book_path(book), method: :get
     %center
       %br
-      - if customer_signed_in? && current_customer.admin == true
+      - if customer_signed_in? && current_customer.admin 
         =link_to 'Edit author info', edit_author_path, class: 'btn btn-primary'
         =link_to 'Delete author', author_path, method: :delete, class: 'btn btn-danger'
