@@ -4,33 +4,33 @@ class Order < ActiveRecord::Base
   belongs_to :ship_address, class_name: 'Address'
   belongs_to :bill_address, class_name: 'Address'
   has_many :order_items, dependent: :destroy
+  accept_nested_attributes_for :credit_card, allow_destroy: true
+  accept_nested_attributes_for :ship_address, allow_destroy: true
+  accept_nested_attributes_for :bill_address, allow_destroy: true
 
-  validates :state, inclusion: { in: %w(inactive in_progress shipped completed) }
+  validates :state, inclusion: { in: %w(in_progress shipped completed) }
 
-  before_save :refresh_on_save
-  before_destroy :refresh_on_destroy
+  #after_save :decrease_in_stock!
+  #before_destroy :return_in_stock!
 
   def price
-    order_items.map {|item| item.price}.sum
+    order_items.map {|item| item.price}.sum.to_f
   end
 
-  def refresh_on_save
-    unless state = 'inactive'
-      order_items.each do |item|
-        item.decrease_in_stock!
-      end
-    end
-  end
-
-  def refresh_on_destroy
+  def decrease_in_stock!
     order_items.each do |item|
-      item.return_in_stock!
+      book = Book.find(item.book_id)
+      book.in_stock -= item.quantity
+      book.save!
     end
   end
 
-  def inactive!
-    self.state = "inactive"
-    save!
+  def return_in_stock!
+    order_items.each do |item|
+      book = Book.find(item.book_id)
+      book.in_stock += item.quantity
+      book.save!
+    end
   end
 
   def complete!

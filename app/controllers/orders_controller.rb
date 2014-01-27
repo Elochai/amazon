@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
  
   # GET /orders/new
   def new
-    @order = Order.new
+    @order = current_customer.orders.new
   end
  
   # GET /orders/1/edit
@@ -24,14 +24,17 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = current_customer.orders.create(state: 'inactive')
+    @order = current_customer.orders.new(price: current_customer.order_price, state: "in_progress")
 
     respond_to do |format|
-      if @order.save
+      if @order.save!
+        current_customer.order_items.where(order_id: nil).update_all(order_id: @order.id)
+        @order = Order.find(@order.id)
+        @order.decrease_in_stock!
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else
-        format.html { redirect_to :root }
+        format.html { redirect_to :root, notice: 'An error has occured while creating your order.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -54,6 +57,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
+    @order.return_in_stock!
     @order.destroy
     respond_to do |format|
       format.html { redirect_to orders_url }

@@ -13,7 +13,7 @@
             %tr.text-center
               %td= link_to "#{order.updated_at}", order_path(order), method: :get
               %td.small= number_to_currency(order.price)
-              %td.small= order.state
+              %td.small= order.state.humanize
               %td= order.completed_at
   %center
     =link_to 'New order', orders_path, method: :post, class: 'btn btn-primary'

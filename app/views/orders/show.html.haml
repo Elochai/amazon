@@ -10,17 +10,16 @@
           %th.text-center Category
           %th.text-center Quantity
           %th.text-center Price
-          %th.text-center Manage
         %tbody
           -  @order.order_items.each do |oi|
             %tr.text-center
               %td= oi.book.title
               %td= oi.book.author
               %td= oi.book.category
-              %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
+              %td= oi.quantity
               %td= number_to_currency(oi.price)
-              %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from order"
     %center
       %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
       %br
+      -if customer_signed_in? && current_customer.admin
         =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger'

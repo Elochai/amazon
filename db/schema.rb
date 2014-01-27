@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140124155306) do
+ActiveRecord::Schema.define(version: 20140127101518) do
 
   create_table "addresses", force: true do |t|
     t.string   "address"
@@ -98,14 +98,16 @@ ActiveRecord::Schema.define(version: 20140124155306) do
 
   create_table "order_items", force: true do |t|
     t.float    "price"
-    t.integer  "quantity",   default: 1
+    t.integer  "quantity",    default: 1
     t.integer  "book_id"
     t.integer  "order_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
 
   add_index "order_items", ["book_id"], name: "index_order_items_on_book_id"
+  add_index "order_items", ["customer_id"], name: "index_order_items_on_customer_id"
   add_index "order_items", ["order_id"], name: "index_order_items_on_order_id"
 
   create_table "orders", force: true do |t|

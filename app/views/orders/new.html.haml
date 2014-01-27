@@ -1,11 +1,26 @@
 .container
   %center 
-    %h2 Add new book:
-    = form_for @book do |book|
-      = book.text_field :title, placeholder:"Type book title here.."
-      = book.number_field :price , options = {min: 0.01, step: 0.01}
-      = book.number_field :in_stock, options = {min: 0, step: 1}
-      = book.select(:author_id, options_from_collection_for_select(Author.all, :id, :full_name))
-      = book.select(:category_id, options_from_collection_for_select(Category.all, :id, :title))
+    %h2== New order: 
+    %br
+    %table.table.table-hover.table-small
+      %thead
+        %tr.success
+          %th.text-center Book title
+          %th.text-center Author
+          %th.text-center Category
+          %th.text-center Quantity
+          %th.text-center Price
+          %th.text-center Manage
+        %tbody
+          -  current_customer.order_items.where(order_id: nil).each do |oi|
+            %tr.text-center
+              %td= oi.book.title
+              %td= oi.book.author
+              %td= oi.book.category
+              %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
+              %td= number_to_currency(oi.price)
+              %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from order"
+    %center
+      %h2== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span>
       %br
-      = book.submit
+        = link_to "Buy!", orders_path, method: :post, class:"btn btn-success btn-lg"

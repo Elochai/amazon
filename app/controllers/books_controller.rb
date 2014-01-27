@@ -79,9 +79,8 @@ class BooksController < ApplicationController
 
   def add_to_order
     @book = Book.find(params[:id])
-    @order = Order.last
-    @order.order_items.create(book_id: @book.id, quantity: 1)
-    redirect_to order_path(@order)
+    current_customer.order_items.create(book_id: @book.id, quantity: 1)
+    redirect_to new_order_path
   end
  
   private
