@@ -24,14 +24,14 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
- 
+    @order = current_customer.orders.create(state: 'inactive')
+
     respond_to do |format|
       if @order.save
-        format.html { redirect_to @order, notice: 'order was successfully created.' }
+        format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else
-        format.html { render action: 'new' }
+        format.html { redirect_to :root }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -42,7 +42,7 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'order was successfully updated.' }
+        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

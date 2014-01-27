@@ -1,15 +1,26 @@
 .container
   %center 
-    %h2== "#{@book.title}" info: 
-    %h4
-      %br
-      == Full title: <strong>#{@book.title}</strong>
-      %br== Author of this book: <strong>#{@book.author}</strong>
-      == Genre: <strong>#{@book.category}</strong>
-      %br== We can sell it for: <strong>#{number_to_currency(@book.price)}</strong>
-      == We have <strong>#{@book.in_stock}</strong> exemplars of this book in stock
+    %h2== Order from "#{@order.updated_at}": 
+    %br
+    %table.table.table-hover.table-small
+      %thead
+        %tr.success
+          %th.text-center Book title
+          %th.text-center Author
+          %th.text-center Category
+          %th.text-center Quantity
+          %th.text-center Price
+          %th.text-center Manage
+        %tbody
+          -  @order.order_items.each do |oi|
+            %tr.text-center
+              %td= oi.book.title
+              %td= oi.book.author
+              %td= oi.book.category
+              %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
+              %td= number_to_currency(oi.price)
+              %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from order"
     %center
+      %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
       %br
-      - if customer_signed_in? && current_customer.admin 
-        =link_to 'Edit book info', edit_book_path, class: 'btn btn-primary'
-        =link_to 'Delete book', book_path, method: :delete, class: 'btn btn-danger'
+        =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger'

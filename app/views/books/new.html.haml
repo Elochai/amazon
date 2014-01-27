@@ -2,10 +2,13 @@
   %center 
     %h2 Add new book:
     = form_for @book do |book|
-      = book.text_field :title, placeholder:"Type book title here.."
-      = book.number_field :price , options = {min: 0.01, step: 0.01}
-      = book.number_field :in_stock, options = {min: 0, step: 1}
-      = book.select(:author_id, options_from_collection_for_select(Author.all, :id, :full_name))
-      = book.select(:category_id, options_from_collection_for_select(Category.all, :id, :title))
+      %br== Book title: #{book.text_field :title, placeholder:"Type book title here.."}
+      %br== Price: #{book.number_field :price, options = {min: 0.01, step: 0.01}}
+      %br== Number in stock: #{book.number_field :in_stock, options = {min: 0, step: 1}}
+      %br== Author: #{book.select(:author_id, options_from_collection_for_select(Author.all, :id, :full_name))}
+      %br== Category: #{book.select(:category_id, options_from_collection_for_select(Category.all, :id, :title))}
+      %br Book description:
+      = book.text_area :description, size: "24x6", placeholder:"Type book discription here.."
+      %br
       %br
       = book.submit

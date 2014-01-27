@@ -5,23 +5,20 @@ class Order < ActiveRecord::Base
   belongs_to :bill_address, class_name: 'Address'
   has_many :order_items, dependent: :destroy
 
-  validates :state, inclusion: { in: %w(in_progress shipped completed) }, presence: true
-  validates :price, presence: true
+  validates :state, inclusion: { in: %w(inactive in_progress shipped completed) }
 
-  before_save :count_total_price, :refresh_on_save
+  before_save :refresh_on_save
   before_destroy :refresh_on_destroy
 
-  def total_price
-    order_items.sum("price")
-  end
-
-  def count_total_price
-    self.price = order_items.sum("price")
+  def price
+    order_items.map {|item| item.price}.sum
   end
 
   def refresh_on_save
-    order_items.each do |item|
-      item.decrease_in_stock!
+    unless state = 'inactive'
+      order_items.each do |item|
+        item.decrease_in_stock!
+      end
     end
   end
 
@@ -29,6 +26,11 @@ class Order < ActiveRecord::Base
     order_items.each do |item|
       item.return_in_stock!
     end
+  end
+
+  def inactive!
+    self.state = "inactive"
+    save!
   end
 
   def complete!

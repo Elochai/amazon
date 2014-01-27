@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_in_stock]
+  before_filter :authenticate_customer!, only: [:add_to_order]
  
   # GET /books
   # GET /books.json
@@ -49,7 +50,7 @@ class BooksController < ApplicationController
     if current_customer.admin
       respond_to do |format|
         if @book.update(book_params)
-          format.html { redirect_to @book, notice: 'Bbook was successfully updated.' }
+          format.html { redirect_to @book, notice: 'Book was successfully updated.' }
           format.json { head :no_content }
         else
           format.html { render action: 'edit' }
@@ -69,6 +70,18 @@ class BooksController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  def add_in_stock
+    @book.add_in_stock!
+    redirect_to :back
+  end
+
+  def add_to_order
+    @book = Book.find(params[:id])
+    @order = Order.last
+    @order.order_items.create(book_id: @book.id, quantity: 1)
+    redirect_to order_path(@order)
   end
  
   private

@@ -1,11 +1,7 @@
 .container
   %center 
     %h2 Add new book:
-    = form_for @book do |book|
-      = book.text_field :title, placeholder:"Type book title here.."
-      = book.number_field :price , options = {min: 0.01, step: 0.01}
-      = book.number_field :in_stock, options = {min: 0, step: 1}
-      = book.select(:author_id, options_from_collection_for_select(Author.all, :id, :full_name))
-      = book.select(:category_id, options_from_collection_for_select(Category.all, :id, :title))
+    = form_for @order_item do |oi|
+      = oi.number_field :quantity, options = {min: 1, step: 1}
       %br
-      = book.submit
+      = oi.submit

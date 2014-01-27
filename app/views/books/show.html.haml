@@ -6,10 +6,17 @@
       == Full title: <strong>#{@book.title}</strong>
       %br== Author of this book: <strong>#{@book.author}</strong>
       == Genre: <strong>#{@book.category}</strong>
+      %br== Description: <strong>#{@book.description}</strong>
       %br== We can sell it for: <strong>#{number_to_currency(@book.price)}</strong>
       == We have <strong>#{@book.in_stock}</strong> exemplars of this book in stock
     %center
       %br
+      - if @book.in_stock > 0 && customer_signed_in?
+        = link_to "Add to order", add_to_order_book_path, method: :post, class:"btn btn-success"
+      - else
+        %strong Sorry, we dont have this book right now
+      %hr
       - if customer_signed_in? && current_customer.admin 
-        =link_to 'Edit book info', edit_book_path, class: 'btn btn-primary'
-        =link_to 'Delete book', book_path, method: :delete, class: 'btn btn-danger'
+        =link_to 'Add in stock', add_in_stock_book_path, method: :post, class: 'btn btn-primary'
+        =link_to 'Edit book info', edit_book_path, class: 'btn btn-warning'
+        =link_to 'Delete book', book_path, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}

@@ -5,14 +5,8 @@ class OrderItem < ActiveRecord::Base
   validate :if_in_stock
   validates :price, :quantity, presence: true
 
-  before_save :count_total_price
-
-  def total_price
+  def price
     book.price * quantity
-  end
-
-  def count_total_price
-    self.price = book.price * quantity
   end
 
   def decrease_in_stock!
@@ -22,6 +16,16 @@ class OrderItem < ActiveRecord::Base
 
   def return_in_stock!
     self.book.in_stock += quantity
+    save!
+  end
+
+  def increase_quantity!
+    self.quantity += 1
+    save!
+  end
+
+  def decrease_quantity!
+    self.quantity -= 1
     save!
   end
 

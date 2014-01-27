@@ -4,19 +4,16 @@
     %table.table.table-hover.table-small
       %thead
         %tr.success
-          %th.text-center Title
-          %th.text-center Author
-          %th.text-center Category
+          %th.text-center Date of update
           %th.text-center Price
-          %th.text-center In stock
+          %th.text-center State
+          %th.text-center Completion date
         %tbody
-          - @books.each do |book|
+          - @orders.each do |order, index|
             %tr.text-center
-              %td= link_to "#{book.title}", book_path(book), method: :get
-              %td= book.author
-              %td.small= book.category
-              %td.little= number_to_currency(book.price)
-              %td.little= book.in_stock
+              %td= link_to "#{order.updated_at}", order_path(order), method: :get
+              %td.small= number_to_currency(order.price)
+              %td.small= order.state
+              %td= order.completed_at
   %center
-    - if customer_signed_in? && current_customer.admin
-      =link_to 'Add book', new_book_path, class: 'btn btn-primary'
+    =link_to 'New order', orders_path, method: :post, class: 'btn btn-primary'
