@@ -1,17 +1,14 @@
 class Order < ActiveRecord::Base
   belongs_to :customer
-  belongs_to :credit_card
-  belongs_to :ship_address, class_name: 'Address'
-  belongs_to :bill_address, class_name: 'Address'
+  has_one :credit_card
+  has_one :bill_address, class_name: 'BillAddress' 
+  has_one :ship_address, class_name: 'ShipAddress' 
   has_many :order_items, dependent: :destroy
-  accept_nested_attributes_for :credit_card, allow_destroy: true
-  accept_nested_attributes_for :ship_address, allow_destroy: true
-  accept_nested_attributes_for :bill_address, allow_destroy: true
+  accepts_nested_attributes_for :credit_card, :allow_destroy => true#, :reject_if => proc {|attrs| attrs.all {|k,v| v.blank?}}
+  accepts_nested_attributes_for :bill_address, :allow_destroy => true
+  accepts_nested_attributes_for :ship_address, :allow_destroy => true
 
   validates :state, inclusion: { in: %w(in_progress shipped completed) }
-
-  #after_save :decrease_in_stock!
-  #before_destroy :return_in_stock!
 
   def price
     order_items.map {|item| item.price}.sum.to_f

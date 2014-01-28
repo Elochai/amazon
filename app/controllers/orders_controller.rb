@@ -15,6 +15,9 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = current_customer.orders.new
+    @order.build_credit_card
+    @order.build_bill_address
+    @order.build_ship_address
   end
  
   # GET /orders/1/edit
@@ -24,8 +27,7 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = current_customer.orders.new(price: current_customer.order_price, state: "in_progress")
-
+    @order = current_customer.orders.new(order_params)
     respond_to do |format|
       if @order.save!
         current_customer.order_items.where(order_id: nil).update_all(order_id: @order.id)
@@ -73,7 +75,7 @@ class OrdersController < ApplicationController
  
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:price, :state, :completed_at, :bill_address_id, :ship_address_id, :customer_id, :credit_card_id)
+      params.require(:order).permit(:state, :price, credit_card_attributes: [:id, :number, :cvv, :firstname, :lastname, :expiration_month, :expiration_year])
     end
 end
 

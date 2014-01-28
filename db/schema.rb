@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140127101518) do
+ActiveRecord::Schema.define(version: 20140128094211) do
 
   create_table "addresses", force: true do |t|
     t.string   "address"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20140127101518) do
     t.integer  "country_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
+    t.integer  "order_id"
   end
 
   add_index "addresses", ["country_id"], name: "index_addresses_on_country_id"
@@ -71,6 +73,7 @@ ActiveRecord::Schema.define(version: 20140127101518) do
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "order_id"
   end
 
   add_index "credit_cards", ["customer_id"], name: "index_credit_cards_on_customer_id"
@@ -114,18 +117,12 @@ ActiveRecord::Schema.define(version: 20140127101518) do
     t.float    "price"
     t.string   "state"
     t.date     "completed_at"
-    t.integer  "bill_address_id"
-    t.integer  "ship_address_id"
     t.integer  "customer_id"
-    t.integer  "credit_card_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "orders", ["bill_address_id"], name: "index_orders_on_bill_address_id"
-  add_index "orders", ["credit_card_id"], name: "index_orders_on_credit_card_id"
   add_index "orders", ["customer_id"], name: "index_orders_on_customer_id"
-  add_index "orders", ["ship_address_id"], name: "index_orders_on_ship_address_id"
 
   create_table "ratings", force: true do |t|
     t.integer  "rating"

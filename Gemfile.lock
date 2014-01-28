@@ -42,6 +42,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
+    country_select (1.2.0)
     database_cleaner (1.2.0)
     devise (3.2.2)
       bcrypt-ruby (~> 3.0)
@@ -156,6 +157,7 @@ PLATFORMS
 DEPENDENCIES
   capybara
   coffee-rails (~> 4.0.0)
+  country_select
   database_cleaner
   devise
   factory_girl_rails

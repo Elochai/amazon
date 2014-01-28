@@ -29,6 +29,7 @@
   %center
   - if customer_signed_in?
     = current_customer.orders.all
+    = CreditCard.all
     %br= current_customer.order_items.all
     - if customer_signed_in? && current_customer.admin
       = link_to 'Add book', new_book_path, class: 'btn btn-primary'
