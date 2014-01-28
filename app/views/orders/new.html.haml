@@ -24,10 +24,9 @@
       %h2== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span>
       %br
       = form_for @order do |order|
-        = order.text_field :state
-        = order.number_field :price
         %h2 Please provide us with next infomation: 
-        %h4 Credit card info: 
+        %h3 
+          %span.label.label-warning Credit card info: 
         %table.table.table-hover.table-small
           %thead
             %tr.success
@@ -41,12 +40,13 @@
               %tr.text-center
                 = order.fields_for :credit_card do |cc|
                   %td= cc.text_field :number
-                  %td= cc.text_field :cvv, size: 4
+                  %td= cc.number_field :cvv, step: 1, style:"width:70px"
                   %td= cc.text_field :firstname, size: 8
                   %td= cc.text_field :lastname, size: 8
-                  %td= cc.number_field :expiration_month, in: 1..12, size: 3, type: :integer
-                  %td= cc.number_field :expiration_year, min: Time.now.year, size: 4, type: :integer
-        %h4 Bill address info: 
+                  %td= cc.number_field :expiration_month, in: 1..12, size: 4
+                  %td= cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30
+        %h3 
+          %span.label.label-warning Bill address info: 
         %table.table.table-hover.table-small
           %thead
             %tr.success
@@ -59,11 +59,12 @@
               %tr.text-center
                 = order.fields_for :bill_address do |ba|
                   %td= ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name)
-                  %td= ba.text_field :city, size: 10
+                  %td= ba.text_field :city, size: 15
                   %td= ba.text_area :address
-                  %td= ba.text_field :zipcode, size: 5
+                  %td= ba.number_field :zipcode, style:"width:80px"
                   %td= ba.telephone_field :phone
-        %h4 Ship address info: 
+        %h3 
+          %span.label.label-warning Ship address info: 
         %table.table.table-hover.table-small
           %thead
             %tr.success
@@ -76,8 +77,8 @@
               %tr.text-center
                 = order.fields_for :ship_address do |sa|
                   %td= sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name)
-                  %td= sa.text_field :city, size: 10
+                  %td= sa.text_field :city, size: 15
                   %td= sa.text_area :address
-                  %td= sa.text_field :zipcode, size: 5
+                  %td= sa.number_field :zipcode, style:"width:80px"
                   %td= sa.telephone_field :phone
-        = order.submit
+        = order.submit "Buy!", class: "btn btn-lg btn-success"

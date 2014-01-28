@@ -3,8 +3,8 @@
     %h2 Add new book:
     = form_for @book do |book|
       %br== Book title: #{book.text_field :title, placeholder:"Type book title here.."}
-      %br== Price: #{book.number_field :price, options = {min: 0.01, step: 0.01}}
-      %br== Number in stock: #{book.number_field :in_stock, options = {min: 0, step: 1}}
+      %br== Price: #{book.number_field :price, min: 0.01, step: 0.01, style:"width:50px", value: 0.01}
+      %br== Number in stock: #{book.number_field :in_stock, min: 0, step: 1, style:"width:50px"}
       %br== Author: #{book.select(:author_id, options_from_collection_for_select(Author.all, :id, :full_name))}
       %br== Category: #{book.select(:category_id, options_from_collection_for_select(Category.all, :id, :title))}
       %br Book description:
