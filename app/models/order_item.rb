@@ -17,12 +17,12 @@ class OrderItem < ActiveRecord::Base
 
   def increase_quantity!
     self.quantity += 1
-    save!
+    save
   end
 
   def decrease_quantity!
     self.quantity -= 1
-    save!
+    save
   end
 
   private 

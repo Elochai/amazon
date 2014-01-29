@@ -1,7 +1,7 @@
 .container
   %center 
+    == #{link_to "Clear shopping cart", clear_cart_path, data: {confirm: "Are you sure?"}, class:'btn btn-warning', title:"Clear shopping cart"}
     %h2 New order: 
-    %br
     %table.table.table-hover.table-small
       %thead
         %tr.success

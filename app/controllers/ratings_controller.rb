@@ -1,4 +1,4 @@
-class RatingController < ApplicationController
+class RatingsController < ApplicationController
   before_action :set_rating, only: [:show, :edit, :update, :destroy]
  
   # GET /ratings
@@ -14,7 +14,8 @@ class RatingController < ApplicationController
  
   # GET /ratings/new
   def new
-    @rating = Rating.new
+    @book = Book.find(@book.id)
+    @rating = @book.ratings.new
   end
  
   # GET /ratings/1/edit
@@ -24,11 +25,11 @@ class RatingController < ApplicationController
   # POST /ratings
   # POST /ratings.json
   def create
-    @rating = Rating.new(rating_params)
- 
+    @rating = @book.ratings.new(rating_params)
+    @rating.customer_id = current_customer.id
     respond_to do |format|
       if @rating.save
-        format.html { redirect_to @rating, notice: 'rating was successfully created.' }
+        format.html { redirect_to @rating, notice: 'Review was successfully created.' }
         format.json { render action: 'show', status: :created, location: @rating }
       else
         format.html { render action: 'new' }
@@ -42,7 +43,7 @@ class RatingController < ApplicationController
   def update
     respond_to do |format|
       if @rating.update(rating_params)
-        format.html { redirect_to @rating, notice: 'rating was successfully updated.' }
+        format.html { redirect_to @rating, notice: 'Review was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

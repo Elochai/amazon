@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_customer!
  
   # GET /orders
   # GET /orders.json
@@ -31,14 +32,19 @@ class OrdersController < ApplicationController
     @order.state = 'in_progress'
     @order.price = current_customer.order_price
     respond_to do |format|
-      if @order.save
-        current_customer.order_items.where(order_id: nil).update_all(order_id: @order.id)
-        @order = Order.find(@order.id)
-        @order.decrease_in_stock!
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @order }
+      if !current_customer.order_items.empty?
+        if @order.save
+          current_customer.order_items.where(order_id: nil).update_all(order_id: @order.id)
+          @order = Order.find(@order.id)
+          @order.decrease_in_stock!
+          format.html { redirect_to @order, notice: 'Order was successfully created.' }
+          format.json { render action: 'show', status: :created, location: @order }
+        else
+          format.html { render action: 'new'}
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render action: 'new'}
+        format.html { redirect_to books_path, alert: 'Please, select some book(s) to buy first'}
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end

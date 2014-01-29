@@ -70,6 +70,11 @@ class OrderItemsController < ApplicationController
     @order_item.decrease_quantity!
     redirect_to :back
   end
+
+  def clear_cart
+    current_customer.order_items.destroy_all
+    redirect_to :back
+  end
  
   private
     # Use callbacks to share common setup or constraints between actions.

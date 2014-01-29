@@ -5,7 +5,9 @@ Amazon::Application.routes.draw do
       post 'add_in_stock'
       post 'add_to_order'
     end
+    resources :ratings
   end
+  
   resources :authors
   resources :categories
   resources :order_items do
@@ -15,6 +17,7 @@ Amazon::Application.routes.draw do
     end
   end
   resources :orders
+  get 'clear_cart', to: 'order_items#clear_cart'
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
