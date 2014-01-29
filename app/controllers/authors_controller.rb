@@ -36,7 +36,7 @@ class AuthorsController < ApplicationController
           format.html { redirect_to @author, notice: 'Author was successfully created.' }
           format.json { render action: 'show', status: :created, location: @author }
         else
-          format.html { render action: 'new' }
+          format.html { render action: 'new'}
           format.json { render json: @author.errors, status: :unprocessable_entity }
         end
       end

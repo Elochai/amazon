@@ -1,5 +1,6 @@
 %h2== Editing "#{@author.full_name}" author info
 = form_for @author do |author|
+  = render partial: "errors/errors", locals: {object: author.object}
     %br= author.text_field :firstname, placeholder:"Type author first name here.."
     %br= author.text_field :lastname, placeholder:"Type author last name here.."
     %br= author.text_area :biography , size: "24x6"

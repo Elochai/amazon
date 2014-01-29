@@ -5111,6 +5111,10 @@ a.thumbnail.active {
   border-radius: 4px;
 }
 
+.alert-errors {
+  width: 400px;
+}
+
 .alert h4 {
   margin-top: 0;
   color: inherit;
@@ -5407,6 +5411,18 @@ a.list-group-item.active:focus .list-group-item-text {
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.panel-small {
+  width:750px;
+}
+
+.panel-little {
+  width:300px;
+}
+
+.panel-errors {
+  width:450px;
 }
 
 .panel-body {

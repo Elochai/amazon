@@ -1,5 +1,6 @@
 %h2== Editing "#{@book.title}" book info
 = form_for @book do |book|
+  = render partial: "errors/errors", locals: {object: book.object}
   = book.text_field :title, placeholder:"Type book title here.."
   = book.number_field :price , options = {min: 0.01, step: 0.01}
   = book.number_field :in_stock, options = {min: 0, step: 1}

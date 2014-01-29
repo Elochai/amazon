@@ -2,6 +2,7 @@
   %center 
     %h2 Add new category:
     = form_for @category do |cat|
-      = cat.text_field :title, placeholder:"Type category title here.."
+      = render partial: "errors/errors", locals: {object: cat.object}
+      %br= cat.text_field :title, placeholder:"Type category title here.."
       %br
       = cat.submit

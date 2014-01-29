@@ -1,7 +1,0 @@
-.container
-  %center 
-    %h2 Add new book:
-    = form_for @order_item do |oi|
-      = oi.number_field :quantity, options = {min: 1, step: 1}
-      %br
-      = oi.submit

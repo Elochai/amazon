@@ -31,14 +31,14 @@ class OrdersController < ApplicationController
     @order.state = 'in_progress'
     @order.price = current_customer.order_price
     respond_to do |format|
-      if @order.save!
+      if @order.save
         current_customer.order_items.where(order_id: nil).update_all(order_id: @order.id)
         @order = Order.find(@order.id)
         @order.decrease_in_stock!
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else
-        format.html { redirect_to :root, notice: 'An error has occured while creating your order.' }
+        format.html { render action: 'new'}
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
