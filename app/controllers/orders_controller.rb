@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_customer!
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :shipped, :complete]
+  before_filter :authenticate_customer!, only: [:index, :show, :new, :update]
  
   # GET /orders
   # GET /orders.json
@@ -23,6 +23,8 @@ class OrdersController < ApplicationController
  
   # GET /orders/1/edit
   def edit
+    if current_customer.admin
+    end
   end
  
   # POST /orders
@@ -53,13 +55,15 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    respond_to do |format|
-      if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
+    if current_customer.admin
+      respond_to do |format|
+        if @order.update(order_params)
+          format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -67,11 +71,27 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
-    @order.return_in_stock!
-    @order.destroy
-    respond_to do |format|
-      format.html { redirect_to orders_url }
-      format.json { head :no_content }
+    if current_customer.admin
+      @order.return_in_stock!
+      @order.destroy
+      respond_to do |format|
+        format.html { redirect_to orders_url }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def shipped
+    if current_customer.admin
+      @order.shipped!
+      redirect_to :back
+    end
+  end
+
+  def complete
+    if current_customer.admin
+      @order.complete!
+      redirect_to :back
     end
   end
  

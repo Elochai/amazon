@@ -14,8 +14,8 @@
           -  @order.order_items.each do |oi|
             %tr.text-center
               %td= oi.book.title
-              %td= oi.book.author
-              %td= oi.book.category
+              %td= oi.book.author.full_name
+              %td= oi.book.category.title
               %td= oi.quantity
               %td= number_to_currency(oi.price)
     %h3 Bill address:         
@@ -23,6 +23,9 @@
     %h3 Ship address:         
     %h4== #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}<br>Phone: #{@order.ship_address.phone}        
     %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
+    %h2== Order status: <label class="label label-info">#{@order.state.humanize}</label>
     %br
     -if customer_signed_in? && current_customer.admin
+      =link_to 'Set shipped', shipped_order_path, method: :post, class: 'btn btn-warning'
+      =link_to 'Set complete', complete_order_path, method: :post, class: 'btn btn-warning'
       =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger'

@@ -16,7 +16,12 @@ Amazon::Application.routes.draw do
         post 'decrease'
     end
   end
-  resources :orders
+  resources :orders do
+    member do 
+      post 'shipped'
+      post 'complete'
+    end
+  end
   get 'clear_cart', to: 'order_items#clear_cart'
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
