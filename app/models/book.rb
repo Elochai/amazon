@@ -7,7 +7,7 @@ class Book < ActiveRecord::Base
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
   validates :in_stock, numericality: { greater_than_or_equal_to: 0 }, presence: true
 
-  default_scope order('avg_rating DESC')
+  default_scope {order('avg_rating DESC')}
   
   def add_in_stock!
     self.in_stock += 1

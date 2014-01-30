@@ -6,7 +6,7 @@ FactoryGirl.define do
     description "Cool story, bro"
     price 50.00
     in_stock 4
-    category nil
-    author nil
+    category_id nil
+    author_id nil
   end
 end
