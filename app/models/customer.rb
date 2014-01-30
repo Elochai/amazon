@@ -6,6 +6,7 @@ class Customer < ActiveRecord::Base
   has_many :orders, dependent: :destroy
   has_many :credit_cards, dependent: :destroy
   has_many :order_items, dependent: :destroy
+  has_many :ratings, dependent: :destroy
   
   validates :email, format: { with: /\A.+@.+\z/ }, uniqueness: true, presence: true
   validates :password, presence: true

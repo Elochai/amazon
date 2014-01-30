@@ -1,7 +1,0 @@
-.container
-  %center 
-    %h2 Please, rate this book and leave your review:
-    = form_for @rating do |rating|
-      = rating.text_area :text, placeholder:"Type review here...", class: 'form-control'
-      = rating.number_field :rating, in: 1..10, step: 1, size: 4, class: 'form-control'
-      %br= rating.submit "Rate and review", class:"btn btn-info"

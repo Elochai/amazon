@@ -4,6 +4,7 @@
     %table.table.table-hover.table-small
       %thead
         %tr.success
+          %th.text-center Rating
           %th.text-center Title
           %th.text-center Author
           %th.text-center Category
@@ -15,9 +16,11 @@
         %tbody
           - @books.each do |book|
             %tr.text-center
+              %td
+                %label.label.label-success= book.avg_rating
               %td= link_to "#{book.title}", book_path(book), method: :get
-              %td= book.author
-              %td= book.category
+              %td= book.author.full_name
+              %td= book.category.title
               %td= number_to_currency(book.price)
               %td= book.in_stock
               - if book.in_stock > 0
@@ -27,10 +30,5 @@
               - if customer_signed_in? && current_customer.admin
                 %td== #{link_to '', add_in_stock_book_path(book), method: :post, class: "icon-plus-sign", title:"Add 1 to stock"} | #{link_to '', edit_book_path(book), class: 'icon-pencil', title:"Edit this book"} | #{link_to '', book_path(book), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this book"}
   %center
-  - if customer_signed_in?
-    %br= current_customer.orders.all
-    %br= CreditCard.all.inspect
-    %br= Address.all.inspect
-    %br= current_customer.order_items.all
     - if customer_signed_in? && current_customer.admin
-      = link_to 'Add book', new_book_path, class: 'btn btn-primary'
+      = link_to 'New book', new_book_path, class: 'btn btn-primary'

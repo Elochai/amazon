@@ -45,5 +45,9 @@ class Order < ActiveRecord::Base
     self.state = "shipped"
     save!
   end
+
+  def buyer
+    Customer.find(self.customer_id).email
+  end
 end
 

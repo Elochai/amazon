@@ -1,10 +1,10 @@
 class RatingsController < ApplicationController
   before_action :set_rating, only: [:show, :edit, :update, :destroy]
- 
+  before_action :authenticate_customer!
   # GET /ratings
   # GET /ratings.json
   def index
-    @ratings = Rating.all
+    @ratings = current_customer.ratings
   end
  
   # GET /ratings/1
@@ -20,19 +20,29 @@ class RatingsController < ApplicationController
  
   # GET /ratings/1/edit
   def edit
+    if current_customer.admin
+    end
   end
  
   # POST /ratings
   # POST /ratings.json
   def create
+    @book = Book.find(params[:book_id])
     @rating = @book.ratings.new(rating_params)
     @rating.customer_id = current_customer.id
     respond_to do |format|
-      if @rating.save
-        format.html { redirect_to @rating, notice: 'Review was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @rating }
+      if Rating.where(customer_id: current_customer.id, book_id: @book.id).empty?
+        if @rating.save
+          format.html { redirect_to :back, notice: 'Successfully added.' }
+          format.json { render action: 'show', status: :created, location: @rating }
+        else
+          format.html { redirect_to :back, alert: 'An error has occured while adding your rating' }
+          format.json { render json: @rating.errors, status: :unprocessable_entity }
+        end
+        format.html { redirect_to :back, alert: 'You have already rated added your review for this book!' }
+        format.json { render json: @rating.errors, status: :unprocessable_entity }
       else
-        format.html { render action: 'new' }
+        format.html { redirect_to :back, alert: 'You have already rated added your review for this book!' }
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       end
     end
@@ -41,13 +51,15 @@ class RatingsController < ApplicationController
   # PATCH/PUT /ratings/1
   # PATCH/PUT /ratings/1.json
   def update
-    respond_to do |format|
-      if @rating.update(rating_params)
-        format.html { redirect_to @rating, notice: 'Review was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @rating.errors, status: :unprocessable_entity }
+    if current_customer.admin
+      respond_to do |format|
+        if @rating.update(rating_params)
+          format.html { redirect_to @rating, notice: 'Review was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: @rating.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -55,10 +67,12 @@ class RatingsController < ApplicationController
   # DELETE /ratings/1
   # DELETE /ratings/1.json
   def destroy
-    @rating.destroy
-    respond_to do |format|
-      format.html { redirect_to ratings_url }
-      format.json { head :no_content }
+    if current_customer.admin
+      @rating.destroy
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.json { head :no_content }
+      end
     end
   end
  
@@ -70,7 +84,7 @@ class RatingsController < ApplicationController
  
     # Never trust parameters from the scary internet, only allow the white list through.
     def rating_params
-      params.require(:rating).permit(:rating, :text, :customer_id, :book_id)
+      params.require(:rating).permit(:rating, :text)
     end
 end
 

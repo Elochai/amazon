@@ -15,7 +15,9 @@
         <li><%= link_to "Books", books_path %></li>
         <li><%= link_to "Categories", categories_path %></li>
         <li><%= link_to "Authors", authors_path %></li>
-        <li><%= link_to "My orders", orders_path %></li>
+        <% if customer_signed_in? %>
+          <li><%= link_to "Orders", orders_path %></li>
+        <% end %>
     </ul>
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
@@ -34,8 +36,6 @@
 <% if flash[:alert] %>
   <div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><center><%= alert %></center></div>
 <% end %>
-
 <%= yield %>
-
 </body>
 </html>
