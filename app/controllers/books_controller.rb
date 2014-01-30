@@ -75,8 +75,10 @@ class BooksController < ApplicationController
   end
 
   def add_in_stock
-    @book.add_in_stock!
-    redirect_to :back
+    if current_customer.admin
+      @book.add_in_stock!
+      redirect_to :back
+    end 
   end
 
   def add_to_order
