@@ -15,8 +15,8 @@
           -  current_customer.order_items.where(order_id: nil).each do |oi|
             %tr.text-center
               %td= oi.book.title
-              %td= oi.book.author
-              %td= oi.book.category
+              %td= oi.book.author.full_name
+              %td= oi.book.category.title
               %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
               %td= number_to_currency(oi.price)
               %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from order"
