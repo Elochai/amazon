@@ -14,21 +14,21 @@ class CategoriesController < ApplicationController
  
   # GET /categories/new
   def new
-    if current_customer.admin
+    if current_customer.admin == true
       @category = Category.new
     end
   end
  
   # GET /categories/1/edit
   def edit
-    if current_customer.admin
+    if current_customer.admin == true
     end
   end
  
   # POST /categories
   # POST /categories.json
   def create
-    if current_customer.admin
+    if current_customer.admin == true
       @category = Category.new(category_params)
    
       respond_to do |format|
@@ -46,7 +46,7 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1
   # PATCH/PUT /categories/1.json
   def update
-    if current_customer.admin
+    if current_customer.admin == true
       respond_to do |format|
         if @category.update(category_params)
           format.html { redirect_to @category, notice: 'Category was successfully updated.' }
@@ -62,7 +62,7 @@ class CategoriesController < ApplicationController
   # DELETE /categories/1
   # DELETE /categories/1.json
   def destroy
-    if current_customer.admin
+    if current_customer.admin == true
       @category.destroy
       respond_to do |format|
         format.html { redirect_to categories_url }

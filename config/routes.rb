@@ -5,7 +5,11 @@ Amazon::Application.routes.draw do
       post 'add_in_stock'
       post 'add_to_order'
     end
-    resources :ratings
+    resources :ratings do
+      member do
+        post 'approve_review'
+      end
+    end
   end
   
   resources :authors

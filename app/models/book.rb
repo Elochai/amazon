@@ -16,13 +16,13 @@ class Book < ActiveRecord::Base
 
   def avg_rating
     sum = 0
-    ratings.each do |item|
+    ratings.where(approved: true).each do |item|
       unless item.rating.nil?
         sum += item.rating
       end
     end
-    if ratings.count > 0
-      sum/ratings.count
+    if ratings.where(approved: true).count > 0
+      sum/ratings.where(approved: true).count
     else
       0
     end

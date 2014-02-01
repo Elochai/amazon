@@ -17,21 +17,21 @@ class BooksController < ApplicationController
  
   # GET /books/new
   def new
-    if current_customer.admin
+    if current_customer.admin == true
       @book = Book.new
     end
   end
  
   # GET /books/1/edit
   def edit
-    if current_customer.admin
+    if current_customer.admin == true
     end
   end
  
   # POST /books
   # POST /books.json
   def create
-    if current_customer.admin
+    if current_customer.admin == true
       @book = Book.new(book_params)
    
       respond_to do |format|
@@ -49,7 +49,7 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/1
   # PATCH/PUT /books/1.json
   def update
-    if current_customer.admin
+    if current_customer.admin == true
       respond_to do |format|
         if @book.update(book_params)
           format.html { redirect_to @book, notice: 'Book was successfully updated.' }
@@ -65,7 +65,7 @@ class BooksController < ApplicationController
   # DELETE /books/1
   # DELETE /books/1.json
   def destroy
-    if current_customer.admin
+    if current_customer.admin == true
       @book.destroy
       respond_to do |format|
         format.html { redirect_to books_url }
@@ -75,7 +75,7 @@ class BooksController < ApplicationController
   end
 
   def add_in_stock
-    if current_customer.admin
+    if current_customer.admin == true
       @book.add_in_stock!
       redirect_to :back
     end 

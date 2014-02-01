@@ -23,7 +23,7 @@ class OrdersController < ApplicationController
  
   # GET /orders/1/edit
   def edit
-    if current_customer.admin
+    if current_customer.admin == true
     end
   end
  
@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    if current_customer.admin
+    if current_customer.admin == true
       respond_to do |format|
         if @order.update(order_params)
           format.html { redirect_to @order, notice: 'Order was successfully updated.' }
@@ -71,7 +71,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
-    if current_customer.admin
+    if current_customer.admin == true
       @order.return_in_stock!
       @order.destroy
       respond_to do |format|
@@ -82,16 +82,20 @@ class OrdersController < ApplicationController
   end
 
   def shipped
-    if current_customer.admin
-      @order.shipped!
-      redirect_to :back
+    if current_customer.admin == true
+      if @order.state == "in_progress"
+        @order.shipped!
+        redirect_to :back
+      end
     end
   end
 
   def complete
-    if current_customer.admin
-      @order.complete!
-      redirect_to :back
+    if current_customer.admin == true
+      if @order.state == "shipped"
+        @order.complete!
+        redirect_to :back
+      end
     end
   end
  
