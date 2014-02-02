@@ -18,7 +18,8 @@
             %tr.text-center
               %td
                 %label.label.label-success= book.avg_rating
-              %td= link_to "#{book.title}", book_path(book), method: :get
+              %td
+                %strong= link_to "#{book.title}", book_path(book), method: :get
               %td= book.author.full_name
               %td= book.category.title
               %td= number_to_currency(book.price)

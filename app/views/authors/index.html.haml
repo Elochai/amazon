@@ -9,7 +9,8 @@
         %tbody
           - @authors.each do |author|
             %tr.text-center
-              %td= link_to "#{author.full_name}", author_path(author), method: :get
+              %td
+                %strong= link_to "#{author.full_name}", author_path(author), method: :get
               %td= author.number_of_books
   %center
     - if customer_signed_in? && current_customer.admin
