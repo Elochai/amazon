@@ -4,7 +4,5 @@ FactoryGirl.define do
   factory :order_item do
     price 10.00
     quantity 1
-    book nil
-    order nil
   end
 end
