@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Customer do
   let(:customer) { FactoryGirl.create(:customer) }
-  let(:order_item) { FactoryGirl.create(:order_item, customer_id: customer.id, quantity: 1, book_id: book.id, order_id: nil) }
-  let(:order_item_2) { FactoryGirl.create(:order_item, customer_id: customer.id, quantity: 2, book_id: book_2.id, order_id: nil) }
-  let(:book) { FactoryGirl.create(:book, price: 10.00, in_stock: 1) }
-  let(:book_2) { FactoryGirl.create(:book, price: 20.00, in_stock: 2) }
 
   context "associations" do
     it { expect(customer).to have_many(:orders).dependent(:destroy) }
@@ -22,7 +18,11 @@ describe Customer do
   end
   context ".order_price" do
     it "shows total price of all customer books in the cart" do
-      expect(customer.order_price). to eq(50.00)
+      book = FactoryGirl.create(:book, price: 10.00, in_stock: 1) 
+      book_2 = FactoryGirl.create(:book, price: 20.00, in_stock: 2) 
+      order_item = OrderItem.create(customer_id: customer.id, quantity: 1, price: 10.00, book_id: book.id, order_id: nil) 
+      order_item_2 = OrderItem.create(customer_id: customer.id, quantity: 2, price: 20.00, book_id: book_2.id, order_id: nil) 
+      expect(customer.order_price).to eq(50.00)
     end
   end
 end

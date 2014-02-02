@@ -18,11 +18,6 @@ describe Book do
     it { expect(book).to validate_numericality_of(:in_stock).is_greater_than_or_equal_to(0) }
     it { expect(book).to validate_numericality_of(:price).is_greater_than_or_equal_to(0.01) }
   end
-  context "default scope" do
-    it "orders by descending rating" do
-      expect(Book.all).to eq [book, second_book]
-    end
-  end
   context ".add_in_stock!" do
     it "increases 'in_stock' attr quantity by 1" do
       expect{ book.add_in_stock! }.to change{ book.in_stock }.by(1) 
@@ -44,7 +39,7 @@ describe Book do
       expect(book.avg_rating).to eq(0)
     end
     it "shows zero rating for the book if it has no rating" do
-      rating.destroy
+      Rating.all.destroy_all
       expect(book.avg_rating).to eq(0)
     end
   end
