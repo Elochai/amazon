@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :book do
     title "Lord of the rings: Fellowship of the ring"
-    description "Cool story, bro"
+    description "Nice book"
     price 50.00
     in_stock 4
     category_id nil

@@ -4,12 +4,8 @@ class OrderItem < ActiveRecord::Base
   belongs_to :customer
 
   validate :if_in_stock
-  validates :price, :quantity, presence: true
+  validates :quantity, presence: true
   before_save :count_price!
-
-  def price
-    (book.price * quantity).to_f
-  end
 
   def count_price!
     self.price = (book.price * quantity).to_f

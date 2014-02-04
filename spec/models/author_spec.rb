@@ -10,7 +10,6 @@ describe Author do
     it { expect(author).to validate_presence_of(:firstname) }
     it { expect(author).to validate_presence_of(:lastname) }
   end
-  #fix below
   context ".full_name" do
     it "shows firstname and lastname of the author properly" do
       expect(author.full_name).to eq("John Tolkien")

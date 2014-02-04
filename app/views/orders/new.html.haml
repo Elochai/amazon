@@ -19,7 +19,7 @@
               %td= oi.book.category.title
               %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
               %td= number_to_currency(oi.price)
-              %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from order"
+              %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from cart"
     %center
       %h3== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span>
       %br
@@ -39,44 +39,47 @@
                   %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
                   %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
                   %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
-        %h4
-          = order.fields_for :bill_address do |ba|
-            .panel.panel-info.panel-little
-              .panel-heading
-                Bill address info:
-              .panel-body
-                %h5
-                  %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-                  %br
-                  %br
-                  %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
-                  %br
-                  %br
-                  %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
-                  %br
-                  %br
-                  %label.control-label== Zip code: #{ba.number_field :zipcode, style:"width:80px", class: 'form-control'}
-                  %br
-                  %br
-                  %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
-        %h4 
-          = order.fields_for :ship_address do |sa|
-            .panel.panel-info.panel-little
-              .panel-heading
-                Ship address info:
-              .panel-body
-                %h5
-                  %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-                  %br
-                  %br
-                  %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
-                  %br
-                  %br
-                  %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
-                  %br
-                  %br
-                  %label.control-label== Zip code: #{sa.number_field :zipcode, style:"width:80px", class: 'form-control'}
-                  %br
-                  %br
-                  %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
-        = order.submit "Let me buy already!", class: "btn btn-lg btn-success"
+        .inline
+          %h4
+            = order.fields_for :bill_address do |ba|
+              .panel.panel-info.panel-little
+                .panel-heading
+                  Bill address info:
+                .panel-body
+                  %h5
+                    %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+                    %br
+                    %br
+                    %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
+                    %br
+                    %br
+                    %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
+                    %br
+                    %br
+                    %label.control-label== Zip code: #{ba.number_field :zipcode, style:"width:80px", class: 'form-control'}
+                    %br
+                    %br
+                    %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
+        .inline
+          %h4 
+            = order.fields_for :ship_address do |sa|
+              .panel.panel-info.panel-little
+                .panel-heading
+                  Ship address info:
+                .panel-body
+                  %h5
+                    %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+                    %br
+                    %br
+                    %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
+                    %br
+                    %br
+                    %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
+                    %br
+                    %br
+                    %label.control-label== Zip code: #{sa.number_field :zipcode, style:"width:80px", class: 'form-control'}
+                    %br
+                    %br
+                    %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
+        .outline
+          = order.submit "Let me buy already!", class: "btn btn-lg btn-success"

@@ -5,8 +5,7 @@ FactoryGirl.define do
     price 20.00
     state "in_progress"
     completed_at nil
-    association :bill_address, factory: :address 
-    association :ship_address, factory: :address 
+
 
     factory :order_with_items do
       ignore { order_items_count 2 }

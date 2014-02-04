@@ -83,19 +83,15 @@ class OrdersController < ApplicationController
 
   def shipped
     if current_customer.admin == true
-      if @order.state == "in_progress"
-        @order.shipped!
-        redirect_to :back
-      end
+      @order.shipped!
+      redirect_to :back
     end
   end
 
   def complete
     if current_customer.admin == true
-      if @order.state == "shipped"
-        @order.complete!
-        redirect_to :back
-      end
+      @order.complete!
+      redirect_to :back
     end
   end
  

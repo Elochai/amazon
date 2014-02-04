@@ -78,7 +78,7 @@ class RatingsController < ApplicationController
 
   def approve_review
     if current_customer.admin == true
-      @rating.approve
+      @rating.approve!
       redirect_to :back
     end
   end

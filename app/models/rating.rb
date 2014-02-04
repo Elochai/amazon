@@ -3,7 +3,7 @@ class Rating < ActiveRecord::Base
   belongs_to :book
   validates :rating, inclusion: { in: 1..10 }, presence: true
 
-  def approve
+  def approve!
     self.approved = true
     save!
   end

@@ -9,7 +9,7 @@
           %th.text-center State
           %th.text-center Date of complete
           - if current_customer.admin
-            %th.text-center Cutomer
+            %th.text-center Customer
             %th.text-center Manage
         %tbody
           - if current_customer.admin
@@ -20,7 +20,7 @@
                 %td= number_to_currency(order.price)
                 %td= order.state.humanize
                 %td= order.completed_at
-                %td= order.buyer
+                %td= order.customer.email
                 %td= link_to '', order_path(order), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this order"
           - else
             - @orders.each do |order|

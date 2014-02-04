@@ -5416,12 +5416,20 @@ a.list-group-item.active:focus .list-group-item-text {
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
+.inline {
+  display:inline-block;
+}
+
+.outline {
+  display:block;
+}
+
 .panel-small {
   width:750px;
 }
 
 .panel-little {
-  width:300px;
+  width:375px;
 }
 
 .panel-errors {

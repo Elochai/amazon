@@ -9,10 +9,7 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :ship_address, :allow_destroy => true
 
   validates :state, inclusion: { in: %w(in_progress shipped completed) }
-
-  def price
-    order_items.map {|item| item.price}.sum.to_f
-  end
+  validates :state, :price, presence: true
 
   def decrease_in_stock!
     order_items.each do |item|
@@ -31,23 +28,18 @@ class Order < ActiveRecord::Base
   end
 
   def complete!
-    self.completed_at = Date.today
-    self.state = "completed"
-    save!
-  end
-
-  def in_progress!
-    self.state = "in_progress"
-    save!
+    if self.state == "shipped"
+      self.completed_at = Date.today
+      self.state = "completed"
+      save!
+    end
   end
 
   def shipped!
-    self.state = "shipped"
-    save!
-  end
-
-  def buyer
-    Customer.find(self.customer_id).email
+    if self.state == "in_progress"
+      self.state = "shipped"
+      save!
+    end
   end
 end
 

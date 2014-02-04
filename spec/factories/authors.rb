@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :author do
     firstname "John"
     lastname "Tolkien"
-    biography Faker::Lorem.sentence
+    biography {Faker::Lorem.sentence}
     photo nil
   end
 end

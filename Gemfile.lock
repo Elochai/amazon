@@ -166,7 +166,7 @@ DEPENDENCIES
   database_cleaner
   devise
   factory_girl_rails
-  faker
+  faker (~> 1.2.0)
   haml
   jbuilder (~> 1.2)
   jquery-rails
