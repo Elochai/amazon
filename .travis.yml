@@ -8,3 +8,6 @@ rvm:
   - rbx-18mode
 # uncomment this line if your project needs to run something other than `rake`:
 script: bundle exec rspec spec
+branches: 
+  only: 
+    - categories_navigation

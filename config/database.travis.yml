@@ -1,8 +1,0 @@
-test:
-    adapter: postgresql
-    encoding: unicode
-    database: amazon_test
-    pool: 5
-    username: pg_admin
-    password: pg_admin
-    host: localhost
