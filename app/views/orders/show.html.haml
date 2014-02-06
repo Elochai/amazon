@@ -18,15 +18,29 @@
               %td= oi.book.category.title
               %td= oi.quantity
               %td= number_to_currency(oi.price)
-    %h3 Bill address:         
-    %h4== #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}<br>Phone: #{@order.bill_address.phone}    
-    %h3 Ship address:         
-    %h4== #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}<br>Phone: #{@order.ship_address.phone}    
-    %hr    
-    %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
-    %h2== Order status: <label class="label label-info">#{@order.state.humanize}</label>
-    %br
-    -if customer_signed_in? && current_customer.admin
-      =link_to 'Set shipped', shipped_order_path, method: :post, class: 'btn btn-warning'
-      =link_to 'Set completed', complete_order_path, method: :post, class: 'btn btn-warning'
-      =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger'
+    %h5
+      .inline
+        .panel.panel-info.panel-little
+          .panel-heading
+            %h4 Bill address:  
+          .panel-body
+            == #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}
+          .panel-footer
+            == Phone: #{@order.bill_address.phone}
+      .inline
+        .panel.panel-info.panel-little
+          .panel-heading
+            %h4 Ship address:  
+          .panel-body
+            == #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}
+          .panel-footer
+            == Phone: #{@order.ship_address.phone} 
+    .outline           
+      %hr    
+      %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
+      %h2== Order status: <label class="label label-info">#{@order.state.humanize}</label>
+      %br
+      -if customer_signed_in? && current_customer.admin
+        =link_to 'Set shipped', shipped_order_path, method: :post, class: 'btn btn-warning'
+        =link_to 'Set completed', complete_order_path, method: :post, class: 'btn btn-warning'
+        =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger'
