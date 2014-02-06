@@ -1,0 +1,5 @@
+test:
+    adapter: postgresql
+    encoding: unicode
+    database: amazon_test
+    username: postgres
