@@ -1,8 +1,13 @@
 .container
   %center 
-    %h2 Add new category:
     = form_for @category do |cat|
       = render partial: "errors/errors", locals: {object: cat.object}
-      %br= cat.text_field :title, placeholder:"Type category title here.."
-      %br
-      = cat.submit
+      .panel.panel-info.panel-little#cc
+        .panel-heading
+          %h4 New category:
+        .panel-body
+          %h5
+            %label.control-label== Category title: #{cat.text_field :title, class: 'form-control'}
+            %br
+            %br
+            = cat.submit 'Create category', class: 'btn btn-success'

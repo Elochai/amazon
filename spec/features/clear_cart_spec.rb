@@ -7,7 +7,7 @@ feature "Clear cart" do
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author, category: category)}
   given!(:book2) {FactoryGirl.create(:book, title: "LOTR II", price: 20.00, in_stock: 1, author: author, category: category)}
 
-  scenario "Deletes all book from cart successfully by pressing 'Clear shopping cart' button" do
+  scenario "A customer deletes all book from cart successfully by pressing 'Clear shopping cart' button" do
     visit new_customer_session_path
     fill_in 'Email', with: 'user@gmail.com'
     fill_in 'Password', with: '12345678'
@@ -20,5 +20,6 @@ feature "Clear cart" do
     expect(page).to_not have_content book.title
     expect(page).to_not have_content book2.title
     expect(customer.order_items.load.count).to eq(0) 
+    expect(page).to have_content 'Your cart is epmty.'
   end
 end

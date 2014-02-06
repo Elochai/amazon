@@ -8,22 +8,22 @@ feature "Show all books" do
   before(:each) do
     visit '/books'
   end
-  scenario "Shows all book titles in index view" do
+  scenario "A customer can see all book titles in index view" do
     expect(page).to have_content book.title
     expect(page).to have_content book2.title
   end
-  scenario "Shows all book prices in index view" do
+  scenario "A customer can see all book prices in index view" do
     expect(page).to have_content book.price
     expect(page).to have_content book2.price
   end
-  scenario "Shows all book in_stock values in index view" do
+  scenario "A customer can see all book in_stock values in index view" do
     expect(page).to have_content book.in_stock
     expect(page).to have_content book2.in_stock
   end
-  scenario "Shows all book authors full names in index view" do
+  scenario "A customer can see all book authors full names in index view" do
     expect(page).to have_content book.author.full_name
   end
-  scenario "Shows all book categories in index view" do
+  scenario "A customer can see all book categories in index view" do
     expect(page).to have_content book.category.title
   end
 end

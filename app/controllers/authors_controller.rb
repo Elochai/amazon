@@ -65,7 +65,7 @@ class AuthorsController < ApplicationController
     if current_customer.admin == true
       @author.destroy
       respond_to do |format|
-        format.html { redirect_to authors_url }
+        format.html { redirect_to authors_url, notice: 'Author was successfully deleted.' }
         format.json { head :no_content }
       end
     end

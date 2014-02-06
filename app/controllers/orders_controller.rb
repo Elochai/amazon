@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = current_customer.orders.all
+    @orders = current_customer.orders.load
   end
  
   # GET /orders/1
@@ -75,7 +75,7 @@ class OrdersController < ApplicationController
       @order.return_in_stock!
       @order.destroy
       respond_to do |format|
-        format.html { redirect_to orders_url }
+        format.html { redirect_to orders_url, notice: 'Order was successfully deleted.' }
         format.json { head :no_content }
       end
     end

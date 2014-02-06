@@ -49,6 +49,8 @@
       - if customer_signed_in?
         %h3 Please, rate this book and leave your review:
         = form_for [@book, @rating] do |rating|
-          %h4== Your rating: #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control', style:'width:60px'}
-          = rating.text_area :text, placeholder:"Type review here...", class: 'form-control', style:'width:400px'
-          %br= rating.submit "Rate and review", class:"btn btn-info"
+          %h5
+            %label.control-label== Your rating: #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control', style:'width:60px'}
+            %br
+            %label.control-label== Your review: #{rating.text_area :text, placeholder:"Type review here...", class: 'form-control', style:'width:400px'}
+            %br= rating.submit "Rate and review", class:"btn btn-info"

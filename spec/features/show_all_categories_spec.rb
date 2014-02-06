@@ -8,11 +8,11 @@ feature "Show all categories" do
   before(:each) do
     visit '/categories'
   end
-  scenario "Shows all category names in index view" do
+  scenario "A customer can see all category names in index view" do
     expect(page).to have_content category.title
     expect(page).to have_content category2.title
   end
-  scenario "Shows number of books in each category in index view" do
+  scenario "A customer can see number of books in each category in index view" do
     expect(page).to have_content category.number_of_books
     expect(page).to have_content category2.number_of_books
   end

@@ -8,13 +8,13 @@ feature "Show category info" do
     visit category_path(category)
   end
 
-  scenario "Shows category title in show view" do
+  scenario "A customer can see category title in show view" do
     expect(page).to have_content category.title
   end
-  scenario "Shows category number of books in show view" do
+  scenario "A customer can see category number of books in show view" do
     expect(page).to have_content category.number_of_books
   end
-  scenario "Shows category books in show view" do
+  scenario "A customer can see category books in show view" do
     expect(page).to have_content book.title
     expect(page).to have_content book2.title
   end

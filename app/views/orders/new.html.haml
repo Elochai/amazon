@@ -1,85 +1,89 @@
 .container
   %center 
-    == #{link_to "Clear shopping cart", clear_cart_path, data: {confirm: "Are you sure?"}, class:'btn btn-warning', title:"Clear shopping cart"}
-    %h2 New order: 
-    %table.table.table-hover.table-small
-      %thead
-        %tr.success
-          %th.text-center Book title
-          %th.text-center Author
-          %th.text-center Category
-          %th.text-center Quantity
-          %th.text-center Price
-          %th.text-center Manage
-        %tbody
-          -  current_customer.order_items.where(order_id: nil).each do |oi|
-            %tr.text-center
-              %td= oi.book.title
-              %td= oi.book.author.full_name
-              %td= oi.book.category.title
-              %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
-              %td= number_to_currency(oi.price)
-              %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from cart"
-    %center
-      %h3== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span>
-      %br
-      = form_for @order do |order|
-        = render partial: "errors/errors", locals: {object: order.object}
-        %h3 Please provide us with next infomation: 
-        %h4
-          = order.fields_for :credit_card do |cc|
-            .panel.panel-info.panel-small
-              .panel-heading
-                Credit card info:
-              .panel-body
-                %h5
-                  %label.control-label== Card number: #{cc.text_field :number, class: 'form-control'}
-                  %label.control-label== CVV: #{cc.number_field :cvv, step: 1, style:"width:70px", class: 'form-control'}
-                  %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control'}
-                  %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
-                  %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
-                  %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
-        .inline
+    - if customer_signed_in? && current_customer.order_items.where(order_id: nil).load.empty?
+      %h2
+        %small Your cart is epmty.
+    - else 
+      == #{link_to "Clear shopping cart", clear_cart_path, data: {confirm: "Are you sure?"}, class:'btn btn-warning', title:"Clear shopping cart"}
+      %h2 New order: 
+      %table.table.table-hover.table-small
+        %thead
+          %tr.success
+            %th.text-center Book title
+            %th.text-center Author
+            %th.text-center Category
+            %th.text-center Quantity
+            %th.text-center Price
+            %th.text-center Manage
+          %tbody
+            -  current_customer.order_items.where(order_id: nil).each do |oi|
+              %tr.text-center
+                %td= oi.book.title
+                %td= oi.book.author.full_name
+                %td= oi.book.category.title
+                %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
+                %td= number_to_currency(oi.price)
+                %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from cart"
+      %center
+        %h3== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span>
+        %br
+        = form_for @order do |order|
+          = render partial: "errors/errors", locals: {object: order.object}
+          %h3 Please provide us with next infomation: 
           %h4
-            = order.fields_for :bill_address do |ba|
-              .panel.panel-info.panel-little
+            = order.fields_for :credit_card do |cc|
+              .panel.panel-info.panel-small#cc
                 .panel-heading
-                  Bill address info:
+                  Credit card info:
                 .panel-body
                   %h5
-                    %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-                    %br
-                    %br
-                    %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
-                    %br
-                    %br
-                    %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
-                    %br
-                    %br
-                    %label.control-label== Zip code: #{ba.number_field :zipcode, style:"width:80px", class: 'form-control'}
-                    %br
-                    %br
-                    %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
-        .inline
-          %h4 
-            = order.fields_for :ship_address do |sa|
-              .panel.panel-info.panel-little
-                .panel-heading
-                  Ship address info:
-                .panel-body
-                  %h5
-                    %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-                    %br
-                    %br
-                    %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
-                    %br
-                    %br
-                    %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
-                    %br
-                    %br
-                    %label.control-label== Zip code: #{sa.number_field :zipcode, style:"width:80px", class: 'form-control'}
-                    %br
-                    %br
-                    %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
-        .outline
-          = order.submit "Let me buy already!", class: "btn btn-lg btn-success"
+                    %label.control-label== Card number: #{cc.text_field :number, class: 'form-control'}
+                    %label.control-label== CVV: #{cc.number_field :cvv, step: 1, style:"width:70px", class: 'form-control'}
+                    %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control'}
+                    %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
+                    %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
+                    %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
+          .inline
+            %h4
+              = order.fields_for :bill_address do |ba|
+                .panel.panel-info.panel-little#ba
+                  .panel-heading
+                    Bill address info:
+                  .panel-body
+                    %h5
+                      %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+                      %br
+                      %br
+                      %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
+                      %br
+                      %br
+                      %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
+                      %br
+                      %br
+                      %label.control-label== Zip code: #{ba.number_field :zipcode, style:"width:80px", class: 'form-control'}
+                      %br
+                      %br
+                      %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
+          .inline
+            %h4 
+              = order.fields_for :ship_address do |sa|
+                .panel.panel-info.panel-little#sa
+                  .panel-heading
+                    Ship address info:
+                  .panel-body
+                    %h5
+                      %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+                      %br
+                      %br
+                      %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
+                      %br
+                      %br
+                      %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
+                      %br
+                      %br
+                      %label.control-label== Zip code: #{sa.number_field :zipcode, style:"width:80px", class: 'form-control'}
+                      %br
+                      %br
+                      %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
+          .outline
+            = order.submit "Let me buy already!", class: "btn btn-lg btn-success"

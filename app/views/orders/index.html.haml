@@ -1,33 +1,37 @@
 .container
   %center 
     %h2 Your orders:
-    %table.table.table-hover.table-small
-      %thead
-        %tr.success
-          %th.text-center Date of update
-          %th.text-center Price
-          %th.text-center State
-          %th.text-center Date of complete
-          - if current_customer.admin
-            %th.text-center Customer
-            %th.text-center Manage
-        %tbody
-          - if current_customer.admin
-            - Order.all.each do |order|
-              %tr.text-center
-                %td
-                  %strong= link_to "#{order.updated_at}", order_path(order), method: :get
-                %td= number_to_currency(order.price)
-                %td= order.state.humanize
-                %td= order.completed_at
-                %td= order.customer.email
-                %td= link_to '', order_path(order), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this order"
-          - else
-            - @orders.each do |order|
-              %tr.text-center
-                %td= link_to "#{order.updated_at}", order_path(order), method: :get
-                %td= number_to_currency(order.price)
-                %td= order.state.humanize
-                %td= order.completed_at
-  %center
-    =link_to 'New order', new_order_path, class: 'btn btn-primary'
+    - if customer_signed_in? && current_customer.orders.load.empty?
+      %h2
+        %small You do not have any orders.
+    - else    
+      %table.table.table-hover.table-small
+        %thead
+          %tr.success
+            %th.text-center Date of update
+            %th.text-center Price
+            %th.text-center State
+            %th.text-center Date of complete
+            - if current_customer.admin
+              %th.text-center Customer
+              %th.text-center Manage
+          %tbody
+            - if current_customer.admin
+              - Order.all.each do |order|
+                %tr.text-center
+                  %td
+                    %strong= link_to "#{order.updated_at}", order_path(order), method: :get, title: 'Show order info'
+                  %td= number_to_currency(order.price)
+                  %td= order.state.humanize
+                  %td= order.completed_at
+                  %td= order.customer.email
+                  %td= link_to '', order_path(order), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this order"
+            - else
+              - @orders.each do |order|
+                %tr.text-center
+                  %td= link_to "#{order.updated_at}", order_path(order), method: :get
+                  %td= number_to_currency(order.price)
+                  %td= order.state.humanize
+                  %td= order.completed_at
+    %center
+      =link_to 'New order', new_order_path, class: 'btn btn-primary'

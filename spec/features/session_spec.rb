@@ -4,7 +4,7 @@ feature "Session" do
   before(:each) do
     customer = FactoryGirl.create(:customer)
   end
-  scenario 'New session creates if customer successfully signs in' do
+  scenario 'A customer creates new session successfully with valid data' do
     visit new_customer_session_path
     fill_in 'Email', with: 'user@gmail.com'
     fill_in 'Password', with: '12345678'
@@ -16,7 +16,7 @@ feature "Session" do
     expect(page).to have_content "Signed in as user@gmail.com"
   end
 
-  scenario "New session won't create if customer fills incorrect password" do
+  scenario "A customer can not create new session if he enter incorrect password" do
     visit new_customer_session_path
     fill_in 'Email', with: 'user@gmail.com'
     fill_in 'Password', with: '11111111'
@@ -27,7 +27,7 @@ feature "Session" do
     expect(page).to have_content 'Invalid email or password'
   end
 
-  scenario "New session wont't create if customer fills incorrect email" do
+  scenario "A customer can not create new session if he enter incorrect email" do
     visit new_customer_session_path
     fill_in 'Email', with: 'not_user@gmail.com'
     fill_in 'Password', with: '12345678'
@@ -38,7 +38,7 @@ feature "Session" do
     expect(page).to have_content 'Invalid email or password'
   end
 
-  scenario "New session will be destroyed if customer click 'Sign out' button" do
+  scenario "A customer destroyes session successfully if he click 'Sign out' button" do
     visit new_customer_session_path
     fill_in 'Email', with: 'user@gmail.com'
     fill_in 'Password', with: '12345678'

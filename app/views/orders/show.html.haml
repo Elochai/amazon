@@ -28,5 +28,5 @@
     %br
     -if customer_signed_in? && current_customer.admin
       =link_to 'Set shipped', shipped_order_path, method: :post, class: 'btn btn-warning'
-      =link_to 'Set complete', complete_order_path, method: :post, class: 'btn btn-warning'
+      =link_to 'Set completed', complete_order_path, method: :post, class: 'btn btn-warning'
       =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger'

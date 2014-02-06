@@ -8,11 +8,11 @@ feature "Show all authors" do
   before(:each) do
     visit '/authors'
   end
-  scenario "Shows all author full names in index view" do
+  scenario "A customer can see all author full names in index view" do
     expect(page).to have_content author.full_name
     expect(page).to have_content author2.full_name
   end
-  scenario "Shows number of books for each author in index view" do
+  scenario "A customer can see number of books for each author in index view" do
     expect(page).to have_content author.number_of_books
     expect(page).to have_content author2.number_of_books
   end

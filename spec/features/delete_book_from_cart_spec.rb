@@ -6,7 +6,7 @@ feature "Delete book from cart" do
   given!(:customer) {FactoryGirl.create(:customer)}
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author, category: category)}
 
-  scenario "Deletes successfully by pressing 'Delete from cart' button" do
+  scenario "A customer deletes successfully by pressing 'Delete from cart' button" do
     visit new_customer_session_path
     fill_in 'Email', with: 'user@gmail.com'
     fill_in 'Password', with: '12345678'
@@ -16,5 +16,6 @@ feature "Delete book from cart" do
     click_on 'Delete from cart'
     expect(page).to_not have_content book.title
     expect(customer.order_items.load.count).to eq(0) 
+    expect(page).to have_content 'Your cart is epmty.'
   end
 end

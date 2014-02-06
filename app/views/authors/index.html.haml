@@ -6,12 +6,16 @@
         %tr.success
           %th.text-center Author name
           %th.text-center Number of books
+          - if customer_signed_in? && current_customer.admin
+            %th.text-center Manage
         %tbody
           - @authors.each do |author|
             %tr.text-center
               %td
                 %strong= link_to "#{author.full_name}", author_path(author), method: :get
               %td= author.number_of_books
+              - if customer_signed_in? && current_customer.admin
+                %td== #{link_to '', edit_author_path(author), class: 'icon-pencil', title:"Edit this author"} | #{link_to '', author_path(author), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this author"}
   %center
     - if customer_signed_in? && current_customer.admin
-      =link_to 'Add author', new_author_path, class: 'btn btn-primary'
+      =link_to 'New author', new_author_path, class: 'btn btn-primary'

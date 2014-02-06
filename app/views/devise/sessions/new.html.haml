@@ -1,0 +1,21 @@
+%center
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    = devise_error_messages! 
+    .panel.panel-info.panel-little#cc
+      .panel-heading
+        %h4 Sign in:
+      .panel-body
+        %h5
+          %label.control-label== Email: #{f.email_field :email, :autofocus => true, class: 'form-control'}
+          %br
+          %br
+          %label.control-label== Password: #{f.password_field :password, class: 'form-control'}
+          %br
+          %br
+          - if devise_mapping.rememberable?
+            %label.control-label== Remember me: #{f.check_box :remember_me}
+          %br
+          %br
+          = f.submit 'Sign in', class:'btn btn-success'
+          %hr
+          = render "devise/shared/links" 
