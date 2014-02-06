@@ -1,5 +1,5 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: [:show, :edit, :update, :destroy, :filter]
+  before_action :set_author, only: [:show, :edit, :update, :destroy]
  
   # GET /authors
   # GET /authors.json
@@ -71,10 +71,6 @@ class AuthorsController < ApplicationController
     end
   end
 
-  def filter
-    @books = Book.where(author_id: @author.id).all
-  end
- 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_author

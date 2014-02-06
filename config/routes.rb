@@ -4,6 +4,8 @@ Amazon::Application.routes.draw do
     member do
       post 'add_in_stock'
       post 'add_to_order'
+      get 'author_filter'
+      get 'category_filter'
     end
     resources :ratings do
       member do
@@ -12,16 +14,9 @@ Amazon::Application.routes.draw do
     end
   end
   
-  resources :authors do
-    member do
-      get 'filter'
-    end
-  end
-  resources :categories do
-    member do
-      get 'filter'
-    end
-  end
+  resources :authors 
+  resources :categories 
+  
   resources :order_items do
     member do
         post 'increase'

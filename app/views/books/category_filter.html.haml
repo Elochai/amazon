@@ -10,7 +10,7 @@
         %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
           - Category.all.each do |cat|
             %li{'role' => 'presentation'}
-              = link_to "#{cat.title}", filter_category_path(cat), 'role' => 'menuitem', 'tabindex' => '-1'
+              = link_to "#{cat.title}", category_filter_book_path(cat), 'role' => 'menuitem', 'tabindex' => '-1'
       .btn-group 
         %button.btn.btn-info.dropdown-toggle#dropdownMenu1{'type' => 'button', 'data-toggle' => 'dropdown'}
           Filter by author
@@ -18,7 +18,7 @@
         %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
           - Author.all.each do |author|
             %li{'role' => 'presentation'}
-              = link_to "#{author.full_name}", filter_author_path(author), 'role' => 'menuitem', 'tabindex' => '-1'
+              = link_to "#{author.full_name}", author_filter_book_path(author), 'role' => 'menuitem', 'tabindex' => '-1'
     %br
     - if @books.empty?
       %h3 
