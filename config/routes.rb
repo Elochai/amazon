@@ -4,8 +4,10 @@ Amazon::Application.routes.draw do
     member do
       post 'add_in_stock'
       post 'add_to_order'
-      get 'author_filter'
-      get 'category_filter'
+    end
+    collection do
+      get 'author_filter/:author_id', to: 'books#author_filter', as: 'author_filter'
+      get 'category_filter/:category_id', to: 'books#category_filter', as: 'category_filter'
     end
     resources :ratings do
       member do
