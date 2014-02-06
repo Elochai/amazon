@@ -1,5 +1,5 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: [:show, :edit, :update, :destroy]
+  before_action :set_author, only: [:show, :edit, :update, :destroy, :filter]
  
   # GET /authors
   # GET /authors.json
@@ -69,6 +69,10 @@ class AuthorsController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  def filter
+    @books = Book.where(author_id: @author.id).all
   end
  
   private

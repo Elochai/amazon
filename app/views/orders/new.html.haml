@@ -2,7 +2,7 @@
   %center 
     - if customer_signed_in? && current_customer.order_items.where(order_id: nil).load.empty?
       %h2
-        %small Your cart is epmty.
+        %strong.label.label-warning Your cart is empty...
     - else 
       == #{link_to "Clear shopping cart", clear_cart_path, data: {confirm: "Are you sure?"}, class:'btn btn-warning', title:"Clear shopping cart"}
       %h2 New order: 

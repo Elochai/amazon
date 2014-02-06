@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_category, only: [:show, :edit, :update, :destroy, :filter]
  
   # GET /categories
   # GET /categories.json
@@ -69,6 +69,10 @@ class CategoriesController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  def filter
+    @books = Book.where(category_id: @category.id).all
   end
  
   private

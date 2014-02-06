@@ -12,8 +12,16 @@ Amazon::Application.routes.draw do
     end
   end
   
-  resources :authors
-  resources :categories
+  resources :authors do
+    member do
+      get 'filter'
+    end
+  end
+  resources :categories do
+    member do
+      get 'filter'
+    end
+  end
   resources :order_items do
     member do
         post 'increase'

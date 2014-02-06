@@ -3339,7 +3339,7 @@ input[type="button"].btn-block {
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  text-align:center;
   z-index: 1000;
   display: none;
   float: left;
@@ -3355,6 +3355,10 @@ input[type="button"].btn-block {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
+}
+
+.dropdown-menu.pull-center {
+  right:43%;
 }
 
 .dropdown-menu.pull-right {

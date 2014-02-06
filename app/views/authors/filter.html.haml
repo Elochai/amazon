@@ -1,7 +1,7 @@
 .container
   %center 
     %h1 Welcome to Amazon!
-    %h2 Our books:
+    %h2 #{@author.full_name}'s books:
     .row
       .btn-group
         %button.btn.btn-info.dropdown-toggle#dropdownMenu1{'type' => 'button', 'data-toggle' => 'dropdown'}
@@ -22,7 +22,7 @@
     %br
     - if @books.empty?
       %h3 
-        %strong.label.label-warning Sorry, no books right now...
+        %strong.label.label-warning No books of this author right now...
     - else
       %table.table.table-hover.table-small
         %thead
@@ -53,6 +53,6 @@
                   %td
                 - if customer_signed_in? && current_customer.admin
                   %td== #{link_to '', add_in_stock_book_path(book), method: :post, class: "icon-plus-sign", title:"Add 1 to stock"} | #{link_to '', edit_book_path(book), class: 'icon-pencil', title:"Edit this book"} | #{link_to '', book_path(book), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this book"}
-  %center
+    %center
     - if customer_signed_in? && current_customer.admin
       = link_to 'New book', new_book_path, class: 'btn btn-primary'
