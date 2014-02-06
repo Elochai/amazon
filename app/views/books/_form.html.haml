@@ -8,10 +8,10 @@
         %label.control-label== Book title: #{book.text_field :title, placeholder:"Type book title here..", class: 'form-control'}
         %br
         %br
-        %label.control-label== Price: #{book.number_field :price, min: 0.01, step: 0.01, style:"width:50px", value: 0.01, class: 'form-control'}
+        %label.control-label== Price: #{book.number_field :price, min: 0.01, step: 0.01, value: 0.01, class: 'form-control s'}
         %br
         %br
-        %label.control-label== Number in stock: #{book.number_field :in_stock, min: 0, step: 1, style:"width:50px", class: 'form-control'}
+        %label.control-label== Number in stock: #{book.number_field :in_stock, min: 0, step: 1, class: 'form-control xs'}
         %br
         %br
         %label.control-label== Author: #{book.select :author_id, options_from_collection_for_select(Author.all, :id, :full_name), {}, {:class => 'form-control'}}
