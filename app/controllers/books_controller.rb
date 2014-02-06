@@ -89,12 +89,12 @@ class BooksController < ApplicationController
 
   def author_filter
     @author = Author.find(params[:author_id])
-    @books = Book.where(author_id: @author)
+    @books = Book.by_author(@author)
   end
  
   def category_filter
     @category = Category.find(params[:category_id])
-    @books = Book.where(category_id: @category)
+    @books = Book.by_category(@category)
   end
  
   private
