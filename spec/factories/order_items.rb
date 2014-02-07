@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :order_item do
     quantity 1
-    book FactoryGirl.create(:book)
+    book nil
   end
 end
