@@ -8,8 +8,8 @@ development:
     encoding: unicode
     database: amazon_development
     pool: 5
-    username: admin
-    password: admin
+    username: postgres
+    password: postgres
     host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -20,8 +20,8 @@ test:
     encoding: unicode
     database: amazon_test
     pool: 5
-    username: admin
-    password: admin
+    username: postgres
+    password: postgres
     host: localhost
 
 production:
@@ -29,6 +29,6 @@ production:
     encoding: unicode
     database: amazon_production
     pool: 5
-    username: admin
-    password: admin 
+    username: postgres
+    password: postgres 
     host: localhost
