@@ -5,6 +5,7 @@ gem 'rails', '4.0.2'
 
 # Use sqlite3 as the database for Active Record
 gem 'pg'
+gem 'sqlite3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
@@ -27,9 +28,14 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'haml'
+<<<<<<< HEAD
 gem 'country_select'
 gem 'travis-lint'
 gem 'rails-i18n'
+=======
+gem 'rails-i18n'
+gem 'travis-lint'
+>>>>>>> categories_navigation
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

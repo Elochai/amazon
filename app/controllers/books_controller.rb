@@ -86,6 +86,16 @@ class BooksController < ApplicationController
     current_customer.order_items.create(book_id: @book.id, quantity: 1)
     redirect_to new_order_path
   end
+
+  def author_filter
+    @author = Author.find(params[:author_id])
+    @books = Book.by_author(@author)
+  end
+ 
+  def category_filter
+    @category = Category.find(params[:category_id])
+    @books = Book.by_category(@category)
+  end
  
   private
     # Use callbacks to share common setup or constraints between actions.

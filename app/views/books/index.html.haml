@@ -2,35 +2,4 @@
   %center 
     %h1 Welcome to Amazon!
     %h2 Our books:
-    %table.table.table-hover.table-small
-      %thead
-        %tr.success
-          %th.text-center Rating
-          %th.text-center Title
-          %th.text-center Author
-          %th.text-center Category
-          %th.text-center Price
-          %th.text-center In stock
-          %th.text-center Buy
-          - if customer_signed_in? && current_customer.admin
-            %th.text-center Manage
-        %tbody
-          - @books.each do |book|
-            %tr.text-center
-              %td
-                %label.label.label-success= book.avg_rating
-              %td
-                %strong= link_to "#{book.title}", book_path(book), method: :get
-              %td= book.author.full_name
-              %td= book.category.title
-              %td= number_to_currency(book.price)
-              %td= book.in_stock
-              - if book.in_stock > 0
-                %td== #{link_to "", add_to_order_book_path(book), method: :post, class:"icon-shopping-cart", title:"Add to cart"}
-              - else
-                %td
-              - if customer_signed_in? && current_customer.admin
-                %td== #{link_to '', add_in_stock_book_path(book), method: :post, class: "icon-plus-sign", title:"Add 1 to stock"} | #{link_to '', edit_book_path(book), class: 'icon-pencil', title:"Edit this book"} | #{link_to '', book_path(book), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this book"}
-  %center
-    - if customer_signed_in? && current_customer.admin
-      = link_to 'New book', new_book_path, class: 'btn btn-primary'
+    = render partial: 'books'

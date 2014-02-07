@@ -14,3 +14,7 @@
 /log/*.log
 /tmp
 
+<<<<<<< HEAD
+=======
+#/config/database.yml
+>>>>>>> categories_navigation

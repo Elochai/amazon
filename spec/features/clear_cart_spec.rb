@@ -20,6 +20,6 @@ feature "Clear cart" do
     expect(page).to_not have_content book.title
     expect(page).to_not have_content book2.title
     expect(customer.order_items.load.count).to eq(0) 
-    expect(page).to have_content 'Your cart is epmty.'
+    expect(page).to have_content 'Your cart is empty...'
   end
 end

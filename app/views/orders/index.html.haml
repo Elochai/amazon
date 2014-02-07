@@ -3,7 +3,7 @@
     %h2 Your orders:
     - if customer_signed_in? && current_customer.orders.load.empty?
       %h2
-        %small You do not have any orders.
+        %strong.label.label-warning You do not have any orders.
     - else    
       %table.table.table-hover.table-small
         %thead
