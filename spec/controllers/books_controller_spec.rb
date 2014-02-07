@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe BookController do
+describe BooksController do
 
 end

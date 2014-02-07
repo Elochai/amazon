@@ -28,6 +28,8 @@ gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'haml'
 gem 'country_select'
+gem 'travis-lint'
+gem 'rails-i18n'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
