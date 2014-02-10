@@ -28,14 +28,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'devise'
 gem 'haml'
-<<<<<<< HEAD
 gem 'country_select'
 gem 'travis-lint'
 gem 'rails-i18n'
-=======
-gem 'rails-i18n'
-gem 'travis-lint'
->>>>>>> categories_navigation
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

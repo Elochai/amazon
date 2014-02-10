@@ -9,4 +9,5 @@ script:
   - bundle exec rake db:test:prepare
   - bundle exec rspec spec/
 before_script:
+  - cp config/database.yml.ci config/database.yml
   - psql -c 'create database amazon_test' -U postgres

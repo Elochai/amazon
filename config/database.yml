@@ -30,9 +30,5 @@ production:
     database: amazon_production
     pool: 5
     username: postgres
-<<<<<<< HEAD
     password: postgres
-=======
-    password: postgres 
->>>>>>> categories_navigation
     host: localhost
