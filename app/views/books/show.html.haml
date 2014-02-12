@@ -32,8 +32,7 @@
               .panel-heading 
                 %h5== <strong>#{review.customer.email}</strong> wrote:
                 - if customer_signed_in? && current_customer.admin
-                  = link_to 'Approve review', approve_review_book_rating_path(@current_book, review), method: :post, class: 'btn btn-warning', data: {confirm: 'Are you sure?'}
-                  = link_to 'Delete review', book_rating_path(@current_book, review), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}
+                  == #{link_to '', approve_review_book_rating_path(@current_book, review), method: :post, class: 'icon-ok', title: 'Approve this review', data: {confirm: 'Are you sure?'}} | #{link_to '', book_rating_path(@current_book, review), method: :delete, class: 'icon-remove', title: 'Delete this review', data: {confirm: 'Are you sure?'}}
               .panel-body
                 %h5
                   %em== - "#{review.text}"
@@ -44,8 +43,13 @@
               .panel-heading 
                 %h5== Review by <strong>#{review.customer.email}</strong> should be approved first
                 - if customer_signed_in? && current_customer.admin
-                  = link_to 'Approve review', approve_review_book_rating_path(@current_book, review), method: :post, class: 'btn btn-warning', data: {confirm: 'Are you sure?'}
-                  = link_to 'Delete review', book_rating_path(@current_book, review), method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}    
+                  == #{link_to '', approve_review_book_rating_path(@current_book, review), method: :post, class: 'icon-ok', title: 'Approve this review', data: {confirm: 'Are you sure?'}} | #{link_to '', book_rating_path(@current_book, review), method: :delete, class: 'icon-remove', title: 'Delete this review', data: {confirm: 'Are you sure?'}} 
+              - if customer_signed_in? && current_customer.admin 
+                .panel-body
+                  %h5
+                    %em== - "#{review.text}"
+                .panel-footer
+                  %h5== Rated: <strong>#{review.rating}</strong> point(s)
       - if customer_signed_in?
         %h3 Please, rate this book and leave your review:
         = form_for [@book, @rating] do |rating|

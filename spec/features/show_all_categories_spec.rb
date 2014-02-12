@@ -6,7 +6,7 @@ feature "Show all categories" do
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, category: category)}
   given!(:book2) {FactoryGirl.create(:book, title: "LOTR II", price: 20.00, in_stock: 0, category: category)}
   before(:each) do
-    visit '/categories'
+    visit categories_path
   end
   scenario "A customer can see all category names in index view" do
     expect(page).to have_content category.title

@@ -4,7 +4,7 @@ class CreditCardsController < ApplicationController
   # GET /credit_cards
   # GET /credit_cards.json
   def index
-    @credit_cards = Credit_card.all
+    @credit_cards = CreditCard.all
   end
  
   # GET /credit_cards/1
@@ -14,7 +14,11 @@ class CreditCardsController < ApplicationController
  
   # GET /credit_cards/new
   def new
-    @credit_card = Credit_card.new
+    if current_customer.credit_card.nil?
+      @credit_card = current_customer.build_credit_card
+    else
+      redirect_to edit_customer_registration_path, alert: 'You already have credit card. Edit it if you want.'
+    end
   end
  
   # GET /credit_cards/1/edit
@@ -24,12 +28,12 @@ class CreditCardsController < ApplicationController
   # POST /credit_cards
   # POST /credit_cards.json
   def create
-    @credit_card = Credit_card.new(credit_card_params)
+    @credit_card = current_customer.build_credit_card(credit_card_params)
  
     respond_to do |format|
       if @credit_card.save
-        format.html { redirect_to @credit_card, notice: 'credit_card was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @credit_card }
+        format.html { redirect_to edit_customer_registration_path, notice: 'Credit card was successfully created.' }
+        format.json { redirect_to edit_customer_registration_path, status: :created }
       else
         format.html { render action: 'new' }
         format.json { render json: @credit_card.errors, status: :unprocessable_entity }
@@ -42,7 +46,7 @@ class CreditCardsController < ApplicationController
   def update
     respond_to do |format|
       if @credit_card.update(credit_card_params)
-        format.html { redirect_to @credit_card, notice: 'credit_card was successfully updated.' }
+        format.html { redirect_to edit_customer_registration_path, notice: 'Credit card was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -56,7 +60,7 @@ class CreditCardsController < ApplicationController
   def destroy
     @credit_card.destroy
     respond_to do |format|
-      format.html { redirect_to credit_cards_url }
+      format.html { redirect_to edit_customer_registration_path, notice: 'Credit card was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -64,7 +68,7 @@ class CreditCardsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_credit_card
-      @credit_card = Credit_card.find(params[:id])
+      @credit_card = CreditCard.find(params[:id])
     end
  
     # Never trust parameters from the scary internet, only allow the white list through.

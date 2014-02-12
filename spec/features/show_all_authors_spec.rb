@@ -6,7 +6,7 @@ feature "Show all authors" do
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author)}
   given!(:book2) {FactoryGirl.create(:book, title: "LOTR II", price: 20.00, in_stock: 0, author: author)}
   before(:each) do
-    visit '/authors'
+    visit authors_path
   end
   scenario "A customer can see all author full names in index view" do
     expect(page).to have_content author.full_name

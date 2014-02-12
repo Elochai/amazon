@@ -4,7 +4,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :customer
 
   validate :if_in_stock
-  validates :quantity, presence: true
+  validates :quantity, presence: true, numericality: { greater_than: 0 }
   before_save :count_price!
 
   def count_price!

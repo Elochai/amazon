@@ -3,7 +3,7 @@
     = devise_error_messages! 
     .panel.panel-info.panel-little#cc
       .panel-heading
-        %h4== Edit #{resource_name.to_s.humanize}:
+        %h4== Edit "#{current_customer.email}":
       .panel-body
         %h5
           %label.control-label== Firstname: #{f.text_field :firstname, class: 'form-control'}
@@ -30,4 +30,50 @@
           %hr
           = link_to "Delete my account", registration_path(resource_name), class:'btn btn-danger', :data => { :confirm => "Are you sure?" }, :method => :delete 
           %br
-          = link_to "Back", :back, class:'btn btn-default'
+          = link_to "Back", :back, class:'btn btn-default'   
+  - if current_customer.credit_card.nil?  
+    = link_to 'Add credit card', new_credit_card_path, class: 'btn btn-info'    
+  - else
+    .panel.panel-info.panel-little
+      .panel-heading
+        %h3 Your credit card: 
+        == #{link_to "", edit_credit_card_path(current_customer.credit_card), class:'icon-pencil', title: 'Edit credit card'} | #{link_to "", credit_card_path(current_customer.credit_card), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete credit card'}  
+      .panel-body
+        %strong Owner:
+        = current_customer.credit_card.firstname 
+        = current_customer.credit_card.lastname
+        %br
+        %strong Number:
+        = current_customer.credit_card.number
+        %br
+        %strong CVV:
+        = current_customer.credit_card.cvv
+        %br
+        %strong Expiration month:
+        = current_customer.credit_card.expiration_month
+        %strong , Expiration year:
+        = current_customer.credit_card.expiration_year
+  - if current_customer.bill_address.nil?   
+    = link_to 'Add bill address', new_bill_address_path, class: 'btn btn-info' 
+  - else   
+    .inline
+      .panel.panel-info.panel-little
+        .panel-heading
+          %h3 Your bill address:  
+          == #{link_to "", edit_bill_address_path(current_customer.bill_address), class:'icon-pencil', title: 'Edit bill address'} | #{link_to "", bill_address_path(current_customer.bill_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete bill address'}
+        .panel-body
+          == #{current_customer.bill_address.country.name}<br>#{current_customer.bill_address.zipcode}, #{current_customer.bill_address.city}<br>#{current_customer.bill_address.address}
+        .panel-footer
+          == Phone: #{current_customer.bill_address.phone}
+  - if current_customer.ship_address.nil?   
+    = link_to 'Add ship address', new_ship_address_path, class: 'btn btn-info' 
+  - else 
+    .inline
+      .panel.panel-info.panel-little
+        .panel-heading
+          %h3 Your ship address:  
+          == #{link_to "", edit_ship_address_path(current_customer.ship_address), class:'icon-pencil', title: 'Edit ship address'} | #{link_to "", ship_address_path(current_customer.ship_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete ship address'}
+        .panel-body
+          == #{current_customer.ship_address.country.name}<br>#{current_customer.ship_address.zipcode}, #{current_customer.ship_address.city}<br>#{current_customer.ship_address.address}
+        .panel-footer
+          == Phone: #{current_customer.ship_address.phone} 

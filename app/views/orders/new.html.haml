@@ -1,6 +1,6 @@
 .container
   %center 
-    - if customer_signed_in? && current_customer.order_items.where(order_id: nil).load.empty?
+    - if customer_signed_in? && current_customer.order_items.where(order_id: nil).empty?
       %h2
         %strong.label.label-warning Your cart is empty...
     - else 
@@ -21,69 +21,129 @@
                 %td= oi.book.title
                 %td= oi.book.author.full_name
                 %td= oi.book.category.title
-                %td== #{link_to "", decrease_order_item_path(oi), method: :post, class: 'icon-minus'} #{oi.quantity} #{link_to "", increase_order_item_path(oi), method: :post, class: 'icon-plus'}
+                %td= oi.quantity
                 %td= number_to_currency(oi.price)
-                %td= link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from cart"
+                %td== #{link_to '', edit_order_item_path(oi), class: 'icon-pencil', title:"Change quantity"} | #{link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from cart"}
       %center
-        %h3== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span>
-        %br
+        %h3== Total price: <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span> 
         = form_for @order do |order|
           = render partial: "errors/errors", locals: {object: order.object}
           %h3 Please provide us with next infomation: 
-          %h4
-            = order.fields_for :credit_card do |cc|
-              .panel.panel-info.panel-small#cc
-                .panel-heading
-                  Credit card info:
-                .panel-body
-                  %h5
-                    %label.control-label== Card number: #{cc.text_field :number, class: 'form-control'}
-                    %label.control-label== CVV: #{cc.number_field :cvv, step: 1, class: 'form-control s'}
-                    %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control'}
-                    %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
-                    %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
-                    %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
-          .inline
+          - if current_customer.credit_card.nil?
             %h4
-              = order.fields_for :bill_address do |ba|
-                .panel.panel-info.panel-little#ba
+              = order.fields_for :credit_card do |cc|
+                .panel.panel-info.panel-small#cc
                   .panel-heading
-                    Bill address info:
+                    Credit card info:
                   .panel-body
                     %h5
-                      %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-                      %br
-                      %br
-                      %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
-                      %br
-                      %br
-                      %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
-                      %br
-                      %br
-                      %label.control-label== Zip code: #{ba.number_field :zipcode, class: 'form-control s'}
-                      %br
-                      %br
-                      %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
-          .inline
-            %h4 
-              = order.fields_for :ship_address do |sa|
-                .panel.panel-info.panel-little#sa
+                      %label.control-label== Card number: #{cc.text_field :number, class: 'form-control'}
+                      %label.control-label== CVV: #{cc.number_field :cvv, step: 1, class: 'form-control s'}
+                      %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control'}
+                      %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
+                      %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
+                      %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
+          - else
+            %h4
+              = order.fields_for :credit_card do |cc|
+                .panel.panel-info.panel-small#cc
                   .panel-heading
-                    Ship address info:
+                    Credit card info:
                   .panel-body
                     %h5
-                      %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-                      %br
-                      %br
-                      %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
-                      %br
-                      %br
-                      %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
-                      %br
-                      %br
-                      %label.control-label== Zip code: #{sa.number_field :zipcode, class: 'form-control s'}
-                      %br
-                      %br
-                      %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
+                      %label.control-label== Card number: #{cc.text_field :number, class: 'form-control', value: "#{current_customer.credit_card.number}"}
+                      %label.control-label== CVV: #{cc.number_field :cvv, step: 1, class: 'form-control s', value: "#{current_customer.credit_card.cvv}"}
+                      %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control', value: "#{current_customer.credit_card.firstname}"}
+                      %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control', value: "#{current_customer.credit_card.lastname}"}
+                      %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control', value: "#{current_customer.credit_card.expiration_month}"}
+                      %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control', value: "#{current_customer.credit_card.expiration_year}"} 
+          - if current_customer.bill_address.nil?
+            .inline
+              %h4
+                = order.fields_for :bill_address do |ba|
+                  .panel.panel-info.panel-little#ba
+                    .panel-heading
+                      Bill address info:
+                    .panel-body
+                      %h5
+                        %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {:include_blank => 'Country'}, {:class => 'form-control'}}
+                        %br
+                        %br
+                        %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
+                        %br
+                        %br
+                        %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
+                        %br
+                        %br
+                        %label.control-label== Zip code: #{ba.number_field :zipcode, class: 'form-control s'}
+                        %br
+                        %br
+                        %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
+          - else
+            .inline
+              %h4
+                = order.fields_for :bill_address do |ba|
+                  .panel.panel-info.panel-little#ba
+                    .panel-heading
+                      Bill address info:
+                    .panel-body
+                      %h5
+                        %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name, "#{current_customer.bill_address.country_id}"), {:include_blank => 'Country'}, {:class => 'form-control'}}
+                        %br
+                        %br
+                        %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control', value: "#{current_customer.bill_address.city}"}
+                        %br
+                        %br
+                        %label.control-label== Address: #{ba.text_area :address, class: 'form-control', value: "#{current_customer.bill_address.address}"}
+                        %br
+                        %br
+                        %label.control-label== Zip code: #{ba.number_field :zipcode, class: 'form-control s', value: "#{current_customer.bill_address.zipcode}"}
+                        %br
+                        %br
+                        %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control', value: "#{current_customer.bill_address.phone}"}
+          - if current_customer.ship_address.nil?
+            .inline
+              %h4 
+                = order.fields_for :ship_address do |sa|
+                  .panel.panel-info.panel-little#sa
+                    .panel-heading
+                      Ship address info:
+                    .panel-body
+                      %h5
+                        %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {:include_blank => 'Country'}, {:class => 'form-control'}}
+                        %br
+                        %br
+                        %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
+                        %br
+                        %br
+                        %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
+                        %br
+                        %br
+                        %label.control-label== Zip code: #{sa.number_field :zipcode, class: 'form-control s'}
+                        %br
+                        %br
+                        %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
+          - else
+            .inline
+              %h4
+                = order.fields_for :ship_address do |sa|
+                  .panel.panel-info.panel-little#sa
+                    .panel-heading
+                      Ship address info:
+                    .panel-body
+                      %h5
+                        %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name, "#{current_customer.ship_address.country_id}"), {:include_blank => 'Country'}, {:class => 'form-control'}}
+                        %br
+                        %br
+                        %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control', value: "#{current_customer.ship_address.city}"}
+                        %br
+                        %br
+                        %label.control-label== Address: #{sa.text_area :address, class: 'form-control', value: "#{current_customer.ship_address.address}"}
+                        %br
+                        %br
+                        %label.control-label== Zip code: #{sa.number_field :zipcode, class: 'form-control s', value: "#{current_customer.ship_address.zipcode}"}
+                        %br
+                        %br
+                        %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control', value: "#{current_customer.ship_address.phone}"}
           .outline
             = order.submit "Let me buy already!", class: "btn btn-lg btn-success"

@@ -16,7 +16,7 @@ feature "Approve rating" do
   end
 
   scenario "An admin can approve ratings" do
-    click_on 'Approve review'
+    click_on 'Approve this review'
     expect(page).to have_content rating.text
     expect(page).to have_content rating.rating
     expect(page).to_not have_content 'Review by ' + customer.email.to_s + ' should be approved first'

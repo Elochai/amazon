@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_in_stock]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_in_stock, :add_to_order]
   before_filter :authenticate_customer!, only: [:add_to_order]
  
   # GET /books
@@ -82,9 +82,13 @@ class BooksController < ApplicationController
   end
 
   def add_to_order
-    @book = Book.find(params[:id])
-    current_customer.order_items.create(book_id: @book.id, quantity: 1)
-    redirect_to new_order_path
+    if current_customer.order_items.where(order_id: nil, book_id: @book.id).empty?
+      current_customer.order_items.create(book_id: @book.id, quantity: 1)
+      redirect_to new_order_path
+    else
+      current_customer.order_items.find_by(order_id: nil, book_id: @book.id).increase_quantity!
+      redirect_to new_order_path
+    end
   end
 
   def author_filter

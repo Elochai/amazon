@@ -39,10 +39,10 @@ class RatingsController < ApplicationController
           format.html { redirect_to :back, alert: 'An error has occured while adding your rating' }
           format.json { render json: @rating.errors, status: :unprocessable_entity }
         end
-        format.html { redirect_to :back, alert: 'You have already rated added your review for this book!' }
+        format.html { redirect_to :back, alert: 'You have already rated and add your review for this book!' }
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       else
-        format.html { redirect_to :back, alert: 'You have already rated added your review for this book!' }
+        format.html { redirect_to :back, alert: 'You have already rated and add your review for this book!' }
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       end
     end

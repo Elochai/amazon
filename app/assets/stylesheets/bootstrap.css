@@ -1690,7 +1690,7 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.428571429;
-  vertical-align: top;
+  vertical-align: center;
   border-top: 1px solid #dddddd;
 }
 
@@ -2117,6 +2117,14 @@ textarea.input-sm {
   font-size: 18px;
   line-height: 1.33;
   border-radius: 6px;
+}
+
+.input-sm {
+  margin-top: 0px;
+  padding: 2px 5px;
+  height: 24px;
+  line-height: 1.33;
+  font-size: 12px;
 }
 
 select.input-lg {
@@ -3352,9 +3360,9 @@ input[type="button"].btn-block {
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  text-align:center;
   z-index: 1000;
   display: none;
+  text-align: left;
   float: left;
   min-width: 160px;
   padding: 5px 0;
@@ -5439,6 +5447,11 @@ a.list-group-item.active:focus .list-group-item-text {
 
 .inline {
   display:inline-block;
+}
+
+.inline-table {
+  display:inline-table;
+  margin-top: 5px;
 }
 
 .outline {

@@ -6,7 +6,7 @@ feature "Show all books" do
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author, category: category)}
   given!(:book2) {FactoryGirl.create(:book, title: "LOTR II", price: 20.00, in_stock: 0, author: author, category: category)}
   before(:each) do
-    visit '/books'
+    visit books_path
   end
   scenario "A customer can see all book titles in index view" do
     expect(page).to have_content book.title

@@ -18,13 +18,11 @@ Amazon::Application.routes.draw do
   
   resources :authors 
   resources :categories 
+  resources :order_items 
+  resources :bill_addresses 
+  resources :ship_addresses 
+  resources :credit_cards
   
-  resources :order_items do
-    member do
-        post 'increase'
-        post 'decrease'
-    end
-  end
   resources :orders do
     member do 
       post 'shipped'

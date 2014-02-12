@@ -9,7 +9,7 @@
 <body>
 <nav class="navbar navbar-inverse" align="right">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="/books/">Amazon</a>
+		<a class="navbar-brand" href="/books/">AMAZON</a>
   </div>
     <ul class="nav navbar-nav navbar-left">
         <li><%= link_to "Books", books_path %></li>
@@ -21,13 +21,13 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
-        <li><%= link_to "My shopping cart", new_order_path %></li>
-  			<li><%= link_to "Signed in as #{current_customer.email}", edit_customer_registration_path %></li>
+        <li><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.where(order_id: nil).count}</span>"), new_order_path %></li>
+  			<li><%= link_to "Profile (#{current_customer.email})", edit_customer_registration_path %></li>
   			<li><%= link_to "Sign out", destroy_customer_session_path, :method => :delete %></li>
   		<% else %>
   			 <li><%= link_to "Sign up", new_customer_registration_path %></li>
          <li><%= link_to "Sign in", new_customer_session_path %></li>
-  		  <% end %>
+  		<% end %>
     </ul>
 </nav>
 <% if flash[:notice] %>

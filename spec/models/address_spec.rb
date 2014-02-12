@@ -5,6 +5,8 @@ describe Address do
 
   context "associations" do
     it { expect(address).to belong_to(:country) }
+    it { expect(address).to belong_to(:order) }
+    it { expect(address).to belong_to(:customer) }
   end
   context "validations" do
     it { expect(address).to validate_presence_of(:city) }

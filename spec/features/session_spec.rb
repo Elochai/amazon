@@ -13,7 +13,7 @@ feature "Session" do
     expect(page).to_not have_content 'Sign up'
     expect(page).to have_content 'Sign out'
     expect(page).to have_content 'Signed in successfully'
-    expect(page).to have_content "Signed in as user@gmail.com"
+    expect(page).to have_content "Profile (user@gmail.com)"
   end
 
   scenario "A customer can not create new session if he enter incorrect password" do
@@ -48,6 +48,6 @@ feature "Session" do
     expect(page).to have_content 'Sign up'
     expect(page).to_not have_content 'Sign out'
     expect(page).to have_content 'Signed out successfully'
-    expect(page).to_not have_content "Signed in as user@gmail.com"
+    expect(page).to_not have_content "Profile (user@gmail.com)"
   end
 end

@@ -5,16 +5,17 @@ describe Customer do
 
   context "associations" do
     it { expect(customer).to have_many(:orders).dependent(:destroy) }
-    it { expect(customer).to have_many(:credit_cards).dependent(:destroy) }
-     it { expect(customer).to have_many(:order_items).dependent(:destroy) }
-      it { expect(customer).to have_many(:ratings).dependent(:destroy) }
+    it { expect(customer).to have_one(:credit_card).dependent(:destroy) }
+    it { expect(customer).to have_many(:order_items).dependent(:destroy) }
+    it { expect(customer).to have_many(:ratings).dependent(:destroy) }
+    it { expect(customer).to have_one(:bill_address).class_name('BillAddress').dependent(:destroy) }
+    it { expect(customer).to have_one(:ship_address).class_name('ShipAddress').dependent(:destroy) }
   end
   context "validations" do
     it { expect(customer).to validate_presence_of(:email) }
     it { expect(customer).to allow_value("example@gmail.com").for(:email) }
     it { expect(customer).not_to allow_value("example.com").for(:email) }
     it { expect(customer).to validate_uniqueness_of(:email) }
-    it { expect(customer).to validate_presence_of(:password) }
   end
   context ".order_price" do
     it "shows total price of all customer books in the cart" do

@@ -7,7 +7,7 @@ feature "Author filter" do
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author, category: category)}
   given!(:book2) {FactoryGirl.create(:book, title: "War and Peace I", price: 20.00, in_stock: 0, author: author2, category: category)}
   before(:each) do
-    visit '/books'
+    visit books_path
   end
   scenario "A customer can navigate books by categories" do
     click_on 'Filter by author'

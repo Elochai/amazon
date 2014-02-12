@@ -1,10 +1,14 @@
 class OrderItemsController < ApplicationController
-  before_action :set_order_item, only: [:show, :edit, :update, :destroy, :increase, :decrease]
+  before_action :set_order_item, only: [:show, :edit, :update, :destroy, :increase, :decrease, :set_quantity]
   before_filter :authenticate_customer!
   # GET /order_items
   # GET /order_items.json
   def index
     @order_items = OrderItem.all
+  end
+
+  def cart_items
+    @order_items = OrderItem.where(order_id: nil)
   end
  
   # GET /order_items/1
@@ -28,7 +32,7 @@ class OrderItemsController < ApplicationController
  
     respond_to do |format|
       if @order_item.save
-        format.html { redirect_to @order_item, notice: 'Order_item was successfully created.' }
+        format.html { redirect_to @order_item, notice: 'Order item was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order_item }
       else
         format.html { render action: 'new' }
@@ -42,10 +46,10 @@ class OrderItemsController < ApplicationController
   def update
     respond_to do |format|
       if @order_item.update(order_item_params)
-        format.html { redirect_to @order_item, notice: 'Order_item was successfully updated.' }
+        format.html { redirect_to new_order_path, notice: 'Quantity was successfully changed.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { redirect_to :back, alert: "Sorry, we don't have so many in stock." }
         format.json { render json: @order_item.errors, status: :unprocessable_entity }
       end
     end
@@ -59,16 +63,6 @@ class OrderItemsController < ApplicationController
       format.html { redirect_to :back }
       format.json { head :no_content }
     end
-  end
-
-  def increase
-    @order_item.increase_quantity!
-    redirect_to :back
-  end
-
-  def decrease
-    @order_item.decrease_quantity!
-    redirect_to :back
   end
 
   def clear_cart

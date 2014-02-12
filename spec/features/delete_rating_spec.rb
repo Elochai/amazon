@@ -16,7 +16,7 @@ feature "Delete rating" do
   end
 
   scenario "An admin can delete ratings" do
-    click_on 'Delete review'
+    click_on 'Delete this review'
     expect(page).to_not have_content rating.text
     expect(page).to_not have_content rating.rating
     expect(page).to_not have_content 'Review by ' + customer.email.to_s + ' should be approved first'

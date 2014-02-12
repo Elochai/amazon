@@ -13,7 +13,7 @@ feature "Registration" do
     expect(page).to_not have_content 'Sign up'
     expect(page).to have_content 'Sign out'
     expect(page).to have_content 'Welcome! You have signed up successfully'
-    expect(page).to have_content "Signed in as user@gmail.com"
+    expect(page).to have_content "Profile (user@gmail.com)"
   end
 
   scenario 'Visitor cant register if password not confirmed' do

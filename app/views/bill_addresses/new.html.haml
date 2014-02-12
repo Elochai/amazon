@@ -1,0 +1,24 @@
+.container
+  %center 
+    = form_for @bill_address do |ba|
+      = render partial: "errors/errors", locals: {object: ba.object}
+      .panel.panel-info.panel-little#ba
+        .panel-heading
+          %h3 Create bill address:
+        .panel-body
+          %h5
+            %label.control-label== Country: <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+            %br
+            %br
+            %label.control-label== City: #{ba.text_field :city, size: 15, class: 'form-control'}
+            %br
+            %br
+            %label.control-label== Address: #{ba.text_area :address, class: 'form-control'}
+            %br
+            %br
+            %label.control-label== Zip code: #{ba.number_field :zipcode, class: 'form-control s'}
+            %br
+            %br
+            %label.control-label== Phone: #{ba.telephone_field :phone, class: 'form-control'}
+        .panel-footer
+          = ba.submit "Create bill address", class: 'btn btn-success'

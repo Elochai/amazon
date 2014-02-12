@@ -9,7 +9,6 @@ describe CreditCard do
   end
   context "validations" do
     it { expect(credit_card).to validate_presence_of(:number) }
-    it { expect(credit_card).to validate_uniqueness_of(:number) }
     it { expect(credit_card).to validate_presence_of(:cvv) }
     it { expect(credit_card).to validate_presence_of(:expiration_month) }
     it { expect(credit_card).to validate_presence_of(:expiration_year) }
