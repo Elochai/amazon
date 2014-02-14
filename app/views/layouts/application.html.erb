@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<nav class="navbar navbar-inverse" align="right">
+<nav class="navbar navbar-inverse navbar-static-top">
 	<div class="navbar-header">
 		<a class="navbar-brand" href="/books/">AMAZON</a>
   </div>
@@ -21,7 +21,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
-        <li><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.where(order_id: nil).count}</span>"), new_order_path %></li>
+        <li class='active'><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.where(order_id: nil).count}</span>"), new_order_path %></li>
   			<li><%= link_to "Profile (#{current_customer.email})", edit_customer_registration_path %></li>
   			<li><%= link_to "Sign out", destroy_customer_session_path, :method => :delete %></li>
   		<% else %>
