@@ -1,14 +1,11 @@
 class OrderItemsController < ApplicationController
   before_action :set_order_item, only: [:show, :edit, :update, :destroy, :increase, :decrease, :set_quantity]
   before_filter :authenticate_customer!
+  load_and_authorize_resource
   # GET /order_items
   # GET /order_items.json
   def index
     @order_items = OrderItem.all
-  end
-
-  def cart_items
-    @order_items = OrderItem.in_cart
   end
  
   # GET /order_items/1

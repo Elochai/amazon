@@ -1,6 +1,7 @@
 class RatingsController < ApplicationController
   before_action :set_rating, only: [:show, :edit, :update, :destroy, :approve_review]
   before_action :authenticate_customer!
+  authorize_resource
   # GET /ratings
   # GET /ratings.json
   def index
@@ -17,12 +18,7 @@ class RatingsController < ApplicationController
     @book = Book.find(@book.id)
     @rating = @book.ratings.new
   end
- 
-  # GET /ratings/1/edit
-  def edit
-    if current_customer.admin == true
-    end
-  end
+
  
   # POST /ratings
   # POST /ratings.json
@@ -46,39 +42,19 @@ class RatingsController < ApplicationController
     end
   end
  
-  # PATCH/PUT /ratings/1
-  # PATCH/PUT /ratings/1.json
-  def update
-    if current_customer.admin == true
-      respond_to do |format|
-        if @rating.update(rating_params)
-          format.html { redirect_to @rating, notice: 'Review was successfully updated.' }
-          format.json { head :no_content }
-        else
-          format.html { render action: 'edit' }
-          format.json { render json: @rating.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-  end
- 
   # DELETE /ratings/1
   # DELETE /ratings/1.json
   def destroy
-    if current_customer.admin == true
-      @rating.destroy
-      respond_to do |format|
-        format.html { redirect_to :back }
-        format.json { head :no_content }
-      end
+    @rating.destroy
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { head :no_content }
     end
   end
 
   def approve_review
-    if current_customer.admin == true
-      @rating.approve!
-      redirect_to :back
-    end
+    @rating.approve!
+    redirect_to :back
   end
  
   private

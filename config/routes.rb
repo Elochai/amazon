@@ -1,8 +1,8 @@
 Amazon::Application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
   devise_for :customers, :controllers => {:sessions => "sessions"}
   resources :books do
     member do
-      post 'add_in_stock'
       post 'add_to_order'
       post 'add_wish'
       post 'remove_wish'

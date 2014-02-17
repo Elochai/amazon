@@ -30,6 +30,8 @@ gem 'haml'
 gem 'country_select'
 gem 'travis-lint'
 gem 'rails-i18n'
+gem 'rails_admin'
+gem 'cancan'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

@@ -6,16 +6,9 @@
         %tr.success
           %th.text-center Category name
           %th.text-center Number of books
-          - if customer_signed_in? && current_customer.admin
-            %th.text-center Manage
         %tbody
           - @categories.each do |cat|
             %tr.text-center
               %td
                 %strong= link_to "#{cat.title}", category_path(cat), method: :get
               %td= cat.number_of_books
-              - if customer_signed_in? && current_customer.admin
-                %td== #{link_to '', edit_category_path(cat), class: 'icon-pencil', title:"Edit this category"} | #{link_to '', category_path(cat), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this category"}
-  %center
-    - if customer_signed_in? && current_customer.admin 
-      =link_to 'New category', new_category_path, class: 'btn btn-primary'

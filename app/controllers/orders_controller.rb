@@ -1,7 +1,7 @@
   class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :shipped, :complete]
+  before_action :set_order, only: [:show, :shipped, :complete]
   before_filter :authenticate_customer!, only: [:index, :show, :new, :update]
- 
+  authorize_resource
   # GET /orders
   # GET /orders.json
   def index
@@ -19,12 +19,6 @@
     @order.build_credit_card
     @order.build_bill_address
     @order.build_ship_address
-  end
- 
-  # GET /orders/1/edit
-  def edit
-    if current_customer.admin == true
-    end
   end
  
   # POST /orders
@@ -46,34 +40,6 @@
       else
         format.html { render action: 'new', alert: 'Please, select some book(s) to buy first'}
         format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
-    end
-  end
- 
-  # PATCH/PUT /orders/1
-  # PATCH/PUT /orders/1.json
-  def update
-    if current_customer.admin == true
-      respond_to do |format|
-        if @order.update(order_params)
-          format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-          format.json { head :no_content }
-        else
-          format.html { render action: 'edit' }
-          format.json { render json: @order.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-  end
- 
-  # DELETE /orders/1
-  # DELETE /orders/1.json
-  def destroy
-    if current_customer.admin == true
-      @order.destroy
-      respond_to do |format|
-        format.html { redirect_to orders_url, notice: 'Order was successfully deleted.' }
-        format.json { head :no_content }
       end
     end
   end
