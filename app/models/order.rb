@@ -11,12 +11,22 @@ class Order < ActiveRecord::Base
   validates :state, inclusion: { in: %w(in_progress shipped completed) }
   validates :state, :price, presence: true
 
+  def update_store!(customer)
+    customer.order_items.in_cart.each do |item|
+      item.order_id = self.id
+      item.save
+      book = Book.find(item.book_id)
+      book.in_stock -= item.quantity
+      book.save
+    end
+  end
+
   def decrease_in_stock!
     order_items.each do |item|
       book = Book.find(item.book_id)
       book.in_stock -= item.quantity
       book.save!
-    end
+      end
   end
 
   def return_in_stock!

@@ -18,6 +18,28 @@ describe OrderItem do
       expect { failed_order_item.save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+  context ".in_cart_with scope" do
+    it "selects recors with certain book_id and without order_id" do
+      expect(OrderItem.in_cart_with(book.id)).to include(order_item)
+    end
+    it "do not selects recors without certain book_id and with order_id" do
+      new_book = FactoryGirl.create(:book)
+      order = FactoryGirl.create(:order)
+      new_order_item = FactoryGirl.create(:order_item, order: order, book: new_book)
+      expect(OrderItem.in_cart_with(book.id)).to_not include(new_order_item)
+    end
+  end
+   context ".in_cart scope" do
+    it "selects recors without order_id" do
+      expect(OrderItem.in_cart).to include(order_item)
+    end
+    it "do not selects recors with order_id" do
+      new_book = FactoryGirl.create(:book)
+      order = FactoryGirl.create(:order)
+      new_order_item = FactoryGirl.create(:order_item, order: order, book: new_book)
+      expect(OrderItem.in_cart).to_not include(new_order_item)
+    end
+  end
   context ".count_price" do
     it "called before save" do
       expect(order_item_quantity_2).to receive(:count_price!)

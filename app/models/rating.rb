@@ -7,4 +7,8 @@ class Rating < ActiveRecord::Base
     self.approved = true
     save!
   end
+
+  def already_rated?
+    Rating.where(customer_id: customer.id, book_id: book.id).empty?
+  end
 end

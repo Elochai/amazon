@@ -31,7 +31,7 @@ class RatingsController < ApplicationController
     @rating = @book.ratings.new(rating_params)
     @rating.customer_id = current_customer.id
     respond_to do |format|
-      if Rating.where(customer_id: current_customer.id, book_id: @book.id).empty?
+      if current_customer.did_not_rate?(@book.id)
         if @rating.save
           format.html { redirect_to :back, notice: 'Successfully added.' }
           format.json { render action: 'show', status: :created, location: @rating }
@@ -39,10 +39,8 @@ class RatingsController < ApplicationController
           format.html { redirect_to :back, alert: 'An error has occured while adding your rating' }
           format.json { render json: @rating.errors, status: :unprocessable_entity }
         end
-        format.html { redirect_to :back, alert: 'You have already rated and add your review for this book!' }
-        format.json { render json: @rating.errors, status: :unprocessable_entity }
       else
-        format.html { redirect_to :back, alert: 'You have already rated and add your review for this book!' }
+        format.html { redirect_to :back, alert: 'You have already rated this book!' }
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       end
     end

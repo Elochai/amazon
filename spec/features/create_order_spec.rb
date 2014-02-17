@@ -42,46 +42,4 @@ feature "Create order" do
     click_on 'Let me buy already!'
     expect(page).to have_content 'Order was successfully created.'
   end
-  scenario "A customer can not create order if no book in the cart" do
-    customer.order_items.where(order_id: nil).destroy_all
-    click_on 'Let me buy already!'
-    expect(page).to have_content 'Please, select some book(s) to buy first'
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
-  scenario "A customer can not create order if credit card number is empty" do
-    fill_in 'Card number', with: ''
-    click_on 'Let me buy already!'
-    expect(page).to have_content "Credit card number can't be blank"
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
-  scenario "A customer can not create order if credit card CVV is empty" do
-    fill_in 'CVV', with: ''
-    click_on 'Let me buy already!'
-    expect(page).to have_content "Credit card cvv can't be blank"
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
-  scenario "A customer can not create order if credit card owner firstname is empty" do
-    fill_in 'Owner firstname', with: ''
-    click_on 'Let me buy already!'
-    expect(page).to have_content "Credit card firstname can't be blank"
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
-  scenario "A customer can not create order if credit card owner lastname is empty" do
-    fill_in 'Owner lastname', with: ''
-    click_on 'Let me buy already!'
-    expect(page).to have_content "Credit card lastname can't be blank"
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
-  scenario "A customer can not create order if credit card exp month is empty" do
-    fill_in 'Exp month', with: ''
-    click_on 'Let me buy already!'
-    expect(page).to have_content "Credit card expiration month can't be blank"
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
-  scenario "A customer can not create order if credit card exp year is empty" do
-    fill_in 'Exp year', with: ''
-    click_on 'Let me buy already!'
-    expect(page).to have_content "Credit card expiration year can't be blank"
-    expect(page).to_not have_content 'Order was successfully created.'
-  end
 end

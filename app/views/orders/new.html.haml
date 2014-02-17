@@ -1,6 +1,6 @@
 .container
   %center 
-    - if customer_signed_in? && current_customer.order_items.where(order_id: nil).empty?
+    - if customer_signed_in? && current_customer.order_items.in_cart.empty?
       %h2
         %strong.label.label-warning Your cart is empty...
     - else 
@@ -16,7 +16,7 @@
             %th.text-center Price
             %th.text-center Manage
           %tbody
-            -  current_customer.order_items.where(order_id: nil).each do |oi|
+            -  current_customer.order_items.in_cart.each do |oi|
               %tr.text-center
                 %td= oi.book.title
                 %td= oi.book.author.full_name

@@ -13,6 +13,14 @@ class Customer < ActiveRecord::Base
   validates :email, format: { with: /\A.+@.+\z/ }, uniqueness: true, presence: true
 
   def order_price
-    order_items.where(order_id: nil).map {|item| item.price}.sum.to_f
+    order_items.in_cart.map {|item| item.price}.sum.to_f
+  end
+
+  def has_anything_in_cart?
+    order_items.in_cart.any?
+  end
+
+  def did_not_rate?(book_id)
+    ratings.where(book_id: book_id).empty?
   end
 end

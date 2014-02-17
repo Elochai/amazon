@@ -26,5 +26,26 @@ describe Customer do
       expect(customer.order_price).to eq(50.00)
     end
   end
+  context ".has_anything_in_cart?" do
+    it "returns 'true' if customer has anything in his cart" do
+      book = FactoryGirl.create(:book, price: 10.00, in_stock: 1) 
+      order_item = OrderItem.create(customer_id: customer.id, quantity: 1, price: 10.00, book_id: book.id, order_id: nil)
+      expect(customer.has_anything_in_cart?).to eq(true)
+    end
+    it "returns 'false' if customer do not have anything in his cart" do
+      expect(customer.has_anything_in_cart?).to eq(false)
+    end
+  end
+  context ".did_not_rate?" do
+    it "returns 'true' if customer did not rated current book" do
+      book = FactoryGirl.create(:book)
+      expect(customer.did_not_rate?(book.id)).to eq(true)
+    end
+    it "returns 'false' if customer has already rated current book" do
+      book = FactoryGirl.create(:book)
+      rating = FactoryGirl.create(:rating, customer: customer, book: book)
+      expect(customer.did_not_rate?(book.id)).to eq(false)
+    end
+  end
 end
 

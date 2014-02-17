@@ -6,6 +6,8 @@ class OrderItem < ActiveRecord::Base
   validate :if_in_stock
   validates :quantity, presence: true, numericality: { greater_than: 0 }
   before_save :count_price!
+  scope :in_cart_with, ->(book) {where('order_id IS NULL AND book_id = ?', book)}
+  scope :in_cart, -> {where('order_id IS NULL')}
 
   def count_price!
     self.price = (book.price * quantity).to_f

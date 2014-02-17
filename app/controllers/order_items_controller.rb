@@ -8,7 +8,7 @@ class OrderItemsController < ApplicationController
   end
 
   def cart_items
-    @order_items = OrderItem.where(order_id: nil)
+    @order_items = OrderItem.in_cart
   end
  
   # GET /order_items/1

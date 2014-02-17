@@ -21,7 +21,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
-        <li class='active'><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.where(order_id: nil).count}</span>"), new_order_path %></li>
+        <li class='active'><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
   			<li><%= link_to "Profile (#{current_customer.email})", edit_customer_registration_path %></li>
   			<li><%= link_to "Sign out", destroy_customer_session_path, :method => :delete %></li>
   		<% else %>

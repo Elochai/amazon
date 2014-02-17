@@ -1,4 +1,4 @@
-class OrdersController < ApplicationController
+  class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy, :shipped, :complete]
   before_filter :authenticate_customer!, only: [:index, :show, :new, :update]
  
@@ -34,11 +34,9 @@ class OrdersController < ApplicationController
     @order.state = 'in_progress'
     @order.price = current_customer.order_price
     respond_to do |format|
-      if !current_customer.order_items.empty?
-        if @order.save
-          current_customer.order_items.where(order_id: nil).update_all(order_id: @order.id)
-          @order = Order.find(@order.id)
-          @order.decrease_in_stock!
+      if current_customer.has_anything_in_cart?
+        if @order.save!
+          @order.update_store!(current_customer)
           format.html { redirect_to @order, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
         else
@@ -46,7 +44,7 @@ class OrdersController < ApplicationController
           format.json { render json: @order.errors, status: :unprocessable_entity }
         end
       else
-        format.html { redirect_to books_path, alert: 'Please, select some book(s) to buy first'}
+        format.html { render action: 'new', alert: 'Please, select some book(s) to buy first'}
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -72,7 +70,6 @@ class OrdersController < ApplicationController
   # DELETE /orders/1.json
   def destroy
     if current_customer.admin == true
-      @order.return_in_stock!
       @order.destroy
       respond_to do |format|
         format.html { redirect_to orders_url, notice: 'Order was successfully deleted.' }
