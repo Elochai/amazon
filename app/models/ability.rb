@@ -48,6 +48,8 @@ class Ability
       end
     else
       can :read, Book
+      can :read, Category
+      can :read, Author
       can [:author_filter, :category_filter, :wishers,], Book
     end
   end
