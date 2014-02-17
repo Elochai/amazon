@@ -9,6 +9,7 @@ class Customer < ActiveRecord::Base
   has_one :ship_address, class_name: 'ShipAddress', dependent: :destroy
   has_many :order_items, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_and_belongs_to_many :wishes, class_name: 'Book'
   
   validates :email, format: { with: /\A.+@.+\z/ }, uniqueness: true, presence: true
 

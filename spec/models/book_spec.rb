@@ -10,10 +10,12 @@ describe Book do
   let(:book_with_author) { FactoryGirl.create(:book, author: author) }
   let(:book_with_category) { FactoryGirl.create(:book, category: category) }
   let(:rating_for_second_book) { FactoryGirl.create(:rating, rating: 6, book_id: second_book.id, approved: true) }
+  
   context "associations" do
     it { expect(book).to have_many(:ratings).dependent(:destroy) }
     it { expect(book).to belong_to(:author) }
     it { expect(book).to belong_to(:category) }
+    it { expect(book).to have_and_belong_to_many(:wishers).class_name("Customer") }
   end
   context "validations" do
     it { expect(book).to validate_presence_of(:title) }

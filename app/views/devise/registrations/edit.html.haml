@@ -36,7 +36,7 @@
   - else
     .panel.panel-info.panel-little
       .panel-heading
-        %h3 Your credit card: 
+        %h4 Your credit card: 
         == #{link_to "", edit_credit_card_path(current_customer.credit_card), class:'icon-pencil', title: 'Edit credit card'} | #{link_to "", credit_card_path(current_customer.credit_card), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete credit card'}  
       .panel-body
         %strong Owner:
@@ -59,7 +59,7 @@
     .inline
       .panel.panel-info.panel-little
         .panel-heading
-          %h3 Your bill address:  
+          %h4 Your bill address:  
           == #{link_to "", edit_bill_address_path(current_customer.bill_address), class:'icon-pencil', title: 'Edit bill address'} | #{link_to "", bill_address_path(current_customer.bill_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete bill address'}
         .panel-body
           == #{current_customer.bill_address.country.name}<br>#{current_customer.bill_address.zipcode}, #{current_customer.bill_address.city}<br>#{current_customer.bill_address.address}
@@ -71,9 +71,18 @@
     .inline
       .panel.panel-info.panel-little
         .panel-heading
-          %h3 Your ship address:  
+          %h4 Your ship address:  
           == #{link_to "", edit_ship_address_path(current_customer.ship_address), class:'icon-pencil', title: 'Edit ship address'} | #{link_to "", ship_address_path(current_customer.ship_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete ship address'}
         .panel-body
           == #{current_customer.ship_address.country.name}<br>#{current_customer.ship_address.zipcode}, #{current_customer.ship_address.city}<br>#{current_customer.ship_address.address}
         .panel-footer
           == Phone: #{current_customer.ship_address.phone} 
+    .outline
+      .panel.panel-info.panel-little
+        .panel-heading
+          %h4 Your wished books: 
+        .panel-body
+          - current_customer.wishes.each do |wish|
+            %strong= link_to "#{wish.title}", book_path(wish)
+            = link_to '', remove_wish_book_path(wish), method: :post, class:'icon-remove'
+            %br

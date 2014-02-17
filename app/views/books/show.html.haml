@@ -7,10 +7,19 @@
       == Author of this book: <strong>#{@book.author.full_name}</strong><br>
       == Category: <strong>#{@book.category.title}</strong><br>
       == Description: <strong>#{@book.description}</strong><br><br>
-      == Customers rating: <strong>#{@book.avg_rating}</strong><br><br>
+      == Customers rating: <strong>#{@book.avg_rating}</strong><br>
+      == Wished by 
+      = link_to "#{@book.wishers.count}", wishers_book_path(@book), title:"Show book wishers" 
+      == customer(s)
+      %br
+      %br
       == We can sell it for: <strong>#{number_to_currency(@book.price)}</strong><br>
       == We have <strong>#{@book.in_stock}</strong> exemplar(s) of this book in stock
     %center
+      - if customer_signed_in? && current_customer.wishes.include?(@book)
+        %br= link_to "Remove from wish list", remove_wish_book_path(@book), method: :post, class:"btn btn-warning"
+      - else
+        %br= link_to "Add to wish list", add_wish_book_path(@book), method: :post, class:"btn btn-info"
       - if @book.in_stock > 0
         %br= link_to "Add to cart", add_to_order_book_path, method: :post, class:"btn btn-success"
       - else

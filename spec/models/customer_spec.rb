@@ -10,6 +10,7 @@ describe Customer do
     it { expect(customer).to have_many(:ratings).dependent(:destroy) }
     it { expect(customer).to have_one(:bill_address).class_name('BillAddress').dependent(:destroy) }
     it { expect(customer).to have_one(:ship_address).class_name('ShipAddress').dependent(:destroy) }
+    it { expect(customer).to have_and_belong_to_many(:wishes).class_name("Book") }
   end
   context "validations" do
     it { expect(customer).to validate_presence_of(:email) }

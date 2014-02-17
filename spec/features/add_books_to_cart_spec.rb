@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature "Add book to cart" do
+feature "Add books to cart" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:category) {FactoryGirl.create(:category)}
   given!(:customer) {FactoryGirl.create(:customer)}

@@ -4,6 +4,9 @@ Amazon::Application.routes.draw do
     member do
       post 'add_in_stock'
       post 'add_to_order'
+      post 'add_wish'
+      post 'remove_wish'
+      get 'wishers'
     end
     collection do
       get 'author_filter/:author_id', to: 'books#author_filter', as: 'author_filter'

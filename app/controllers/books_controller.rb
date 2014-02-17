@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_in_stock, :add_to_order]
-  before_filter :authenticate_customer!, only: [:add_to_order]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_in_stock, :add_to_order, :add_wish, :remove_wish, :wishers]
+  before_filter :authenticate_customer!, only: [:add_to_order, :add_wish, :remove_wish]
  
   # GET /books
   # GET /books.json
@@ -98,6 +98,20 @@ class BooksController < ApplicationController
   def category_filter
     @category = Category.find(params[:category_id])
     @books = Book.by_category(@category)
+  end
+
+  def add_wish
+    @book.wishers << current_customer unless current_customer.wishes.include?(@book)
+    redirect_to :back, notice: "Book was successfully added to wish list."
+  end
+
+  def remove_wish
+    @book.wishers.delete(current_customer)
+    redirect_to :back, alert: "Book was successfully deleted from wish list."
+  end
+
+  def wishers
+    @wishers = @book.wishers
   end
  
   private
