@@ -37,6 +37,7 @@ class Ability
         can [:shipped, :complete], Order
         can [:approve_review], Rating
         can [:clear_cart], OrderItem
+        can :state, Order
       else
         can [:add_wish, :remove_wish, :author_filter, :category_filter, :wishers, :add_to_order], Book
         can [:create, :new,], Order
