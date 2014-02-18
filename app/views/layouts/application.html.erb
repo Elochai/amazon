@@ -21,7 +21,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
-        <% if current_customer.admin == true %>
+        <% if can? :manage, rails_admin %>
           <li class='active'><%= link_to "Admin panel", rails_admin_path %></li>
         <% end %>
         <li class='active'><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>

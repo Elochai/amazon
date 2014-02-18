@@ -32,6 +32,8 @@ gem 'travis-lint'
 gem 'rails-i18n'
 gem 'rails_admin'
 gem 'cancan'
+gem 'state_machine'
+gem 'rails_admin_state'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

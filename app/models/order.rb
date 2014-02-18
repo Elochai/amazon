@@ -11,6 +11,29 @@ class Order < ActiveRecord::Base
   validates :state, inclusion: { in: %w(in_progress shipped completed) }
   validates :state, :price, presence: true
 
+  state_machine :state, :initial => :in_progress do
+    after_transition :on => :complete_order, :do => :complete!
+
+    event :on_ship do
+      transition :in_progress => :shipped
+    end
+
+    event :complete_order do
+      transition :shipped => :completed
+    end
+  end
+
+  rails_admin do
+    list do
+      include_all_fields
+      field :state, :state 
+    end
+    edit do
+      include_all_fields
+      field :state, :state
+    end
+  end
+
   def update_store!(customer)
     customer.order_items.in_cart.each do |item|
       item.order_id = self.id
@@ -38,18 +61,8 @@ class Order < ActiveRecord::Base
   end
 
   def complete!
-    if self.state == "shipped"
-      self.completed_at = Date.today
-      self.state = "completed"
-      save!
-    end
-  end
-
-  def shipped!
-    if self.state == "in_progress"
-      self.state = "shipped"
-      save!
-    end
+    self.completed_at = Date.today
+    save!
   end
 end
 

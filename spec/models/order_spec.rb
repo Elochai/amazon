@@ -18,38 +18,9 @@ describe Order do
     it { expect(order).to validate_presence_of(:price) }
     it { expect(order).to ensure_inclusion_of(:state).in_array(%w(in_progress shipped completed))}
   end
-  context ".shipped!" do
-    it "changes state to 'shipped' if previous state was 'in_progress'" do
-      order.state = "in_progress"
-      order.save
-      expect { order.shipped! }.to change{ order.state }.to("shipped")  
-    end
-    it "don't changes state to 'shipped' if previous state was 'completed'" do
-      order.state = "completed"
-      order.save
-      expect { order.shipped! }.to_not change{ order.state }.to("shipped")  
-    end
-  end
   context ".complete!" do
-    it "set today's day into 'completed_at' param if previous state was 'shipped'" do
-      order.state = "shipped"
-      order.save
+    it "set today's day into 'completed_at' param " do
       expect { order.complete! }.to change{order.completed_at}.to(Date.today)  
-    end
-    it "set today's day into 'completed_at' param if previous state was 'in_progress'" do
-      order.state = "in_progress"
-      order.save
-      expect { order.complete! }.to_not change{order.completed_at}.to(Date.today)  
-    end
-    it "changes state to 'completed' if previous state was 'shipped'" do
-      order.state = "shipped"
-      order.save
-      expect { order.complete! }.to change{ order.state }.to("completed")  
-    end
-    it "don't changes state to 'completed' if previous state was 'in_progress'" do
-      order.state = "in_progress"
-      order.save
-      expect { order.complete! }.to_not change{ order.state }.to("completed")  
     end
   end
   context ".decrease_in_stock!" do
