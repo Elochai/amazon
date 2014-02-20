@@ -47,8 +47,6 @@
             .panel.panel-info.panel-small
               .panel-heading 
                 %h5== Review by <strong>#{review.customer.email}</strong> should be approved first
-                - if can? :manage, review
-                  == #{link_to '', approve_review_book_rating_path(@current_book, review), method: :post, class: 'icon-ok', title: 'Approve this review', data: {confirm: 'Are you sure?'}} | #{link_to '', book_rating_path(@current_book, review), method: :delete, class: 'icon-remove', title: 'Delete this review', data: {confirm: 'Are you sure?'}} 
               - if can? :manage, review
                 .panel-body
                   %h5

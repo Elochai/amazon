@@ -39,8 +39,3 @@
       %hr    
       %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
       %h2== Order status: <label class="label label-info">#{@order.state.humanize}</label>
-      %br
-      -if can? :manage, Order
-        =link_to 'Set shipped', shipped_order_path, method: :post, class: 'btn btn-warning'
-        =link_to 'Set completed', complete_order_path, method: :post, class: 'btn btn-warning'
-        =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}

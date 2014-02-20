@@ -16,9 +16,9 @@
   # GET /orders/new
   def new
     @order = current_customer.orders.new
-    @order.build_credit_card
-    @order.build_bill_address
-    @order.build_ship_address
+    @credit_card = @order.build_credit_card
+    @bill_address = @order.build_bill_address
+    @ship_address = @order.build_ship_address
   end
  
   # POST /orders
@@ -41,20 +41,6 @@
         format.html { render action: 'new', alert: 'Please, select some book(s) to buy first'}
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  def shipped
-    if current_customer.admin == true
-      @order.shipped!
-      redirect_to :back
-    end
-  end
-
-  def complete
-    if current_customer.admin == true
-      @order.complete!
-      redirect_to :back
     end
   end
 

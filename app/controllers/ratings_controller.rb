@@ -1,25 +1,7 @@
 class RatingsController < ApplicationController
-  before_action :set_rating, only: [:show, :edit, :update, :destroy, :approve_review]
   before_action :authenticate_customer!
   authorize_resource
-  # GET /ratings
-  # GET /ratings.json
-  def index
-    @ratings = current_customer.ratings
-  end
- 
-  # GET /ratings/1
-  # GET /ratings/1.json
-  def show
-  end
- 
-  # GET /ratings/new
-  def new
-    @book = Book.find(@book.id)
-    @rating = @book.ratings.new
-  end
 
- 
   # POST /ratings
   # POST /ratings.json
   def create
@@ -29,40 +11,20 @@ class RatingsController < ApplicationController
     respond_to do |format|
       if current_customer.did_not_rate?(@book.id)
         if @rating.save
-          format.html { redirect_to :back, notice: 'Successfully added.' }
-          format.json { render action: 'show', status: :created, location: @rating }
+          format.html { redirect_to @book, notice: 'Successfully added.' }
+          format.json { redirect_to @book, status: :created, location: @rating }
         else
-          format.html { redirect_to :back, alert: 'An error has occured while adding your rating' }
+          format.html { redirect_to @book, alert: 'An error has occured while adding your rating' }
           format.json { render json: @rating.errors, status: :unprocessable_entity }
         end
       else
-        format.html { redirect_to :back, alert: 'You have already rated this book!' }
+        format.html { redirect_to @book, alert: 'You have already rated this book!' }
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       end
     end
   end
  
-  # DELETE /ratings/1
-  # DELETE /ratings/1.json
-  def destroy
-    @rating.destroy
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.json { head :no_content }
-    end
-  end
-
-  def approve_review
-    @rating.approve!
-    redirect_to :back
-  end
- 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_rating
-      @rating = Rating.find(params[:id])
-    end
- 
+  private 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rating_params
       params.require(:rating).permit(:rating, :text)

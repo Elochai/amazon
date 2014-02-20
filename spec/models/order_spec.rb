@@ -32,15 +32,5 @@ describe Order do
       expect { order_with_items.decrease_in_stock! }.to change{ book.reload.in_stock }.to(2) 
     end
   end
-  context ".return_in_stock!" do
-    it "increases 'in_stock' attr by amount of purchased books" do
-      book = FactoryGirl.create(:book, title: "1", in_stock: 4, price: 10.00)
-      order_with_items = FactoryGirl.create(:order, state: 'in_progress', price: 20.00)
-      item1 = FactoryGirl.create(:order_item, book_id: book.id, quantity:1, order_id: order_with_items.id) 
-      item2 = FactoryGirl.create(:order_item, book_id: book.id, quantity:1, order_id: order_with_items.id)
-      order_with_items.decrease_in_stock! #in_stock now == 2 
-      expect { order_with_items.return_in_stock! }.to change{ book.reload.in_stock }.to(4) 
-    end
-  end
 end
 

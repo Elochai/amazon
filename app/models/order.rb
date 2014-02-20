@@ -52,14 +52,6 @@ class Order < ActiveRecord::Base
       end
   end
 
-  def return_in_stock!
-    order_items.each do |item|
-      book = Book.find(item.book_id)
-      book.in_stock += item.quantity
-      book.save!
-    end
-  end
-
   def complete!
     self.completed_at = Date.today
     save!

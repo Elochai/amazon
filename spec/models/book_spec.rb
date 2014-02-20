@@ -40,11 +40,6 @@ describe Book do
       expect(Book.by_category(category.id)).to_not include(book_with_author)
     end
   end
-  context ".add_in_stock!" do
-    it "increases 'in_stock' attr quantity by 1" do
-      expect{ book.add_in_stock! }.to change{ book.in_stock }.by(1) 
-    end
-  end
   context ".avg_rating" do
     it "shows avarage rating of the book if it has approved rating" do
       rating.approved = true

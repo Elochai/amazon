@@ -2,16 +2,6 @@ class BillAddressesController < ApplicationController
   before_action :set_address, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_customer!
   authorize_resource
-  # GET /addresses
-  # GET /addresses.json
-  def index
-    @addresses = BillAddress.all
-  end
- 
-  # GET /addresses/1
-  # GET /addresses/1.json
-  def show
-  end
  
   # GET /addresses/new
   def new

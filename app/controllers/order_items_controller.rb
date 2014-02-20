@@ -1,41 +1,10 @@
 class OrderItemsController < ApplicationController
   before_action :set_order_item, only: [:show, :edit, :update, :destroy, :increase, :decrease, :set_quantity]
   before_filter :authenticate_customer!
-  load_and_authorize_resource
-  # GET /order_items
-  # GET /order_items.json
-  def index
-    @order_items = OrderItem.all
-  end
- 
-  # GET /order_items/1
-  # GET /order_items/1.json
-  def show
-  end
- 
-  # GET /order_items/new
-  def new
-    @order_item = OrderItem.new
-  end
+  authorize_resource
  
   # GET /order_items/1/edit
   def edit
-  end
- 
-  # POST /order_items
-  # POST /order_items.json
-  def create
-    @order_item = OrderItem.new(order_item_params)
- 
-    respond_to do |format|
-      if @order_item.save
-        format.html { redirect_to @order_item, notice: 'Order item was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @order_item }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @order_item.errors, status: :unprocessable_entity }
-      end
-    end
   end
  
   # PATCH/PUT /order_items/1
@@ -46,7 +15,7 @@ class OrderItemsController < ApplicationController
         format.html { redirect_to new_order_path, notice: 'Quantity was successfully changed.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to :back, alert: "Sorry, we don't have so many in stock." }
+        format.html { render action: 'edit', alert: "Sorry, we don't have so many in stock." }
         format.json { render json: @order_item.errors, status: :unprocessable_entity }
       end
     end
@@ -57,14 +26,14 @@ class OrderItemsController < ApplicationController
   def destroy
     @order_item.destroy
     respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_to new_order_path }
       format.json { head :no_content }
     end
   end
 
   def clear_cart
     current_customer.order_items.destroy_all
-    redirect_to :back
+    redirect_to new_order_path
   end
  
   private

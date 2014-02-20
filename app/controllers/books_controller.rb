@@ -36,12 +36,12 @@ class BooksController < ApplicationController
 
   def add_wish
     @book.wishers << current_customer unless current_customer.wishes.include?(@book)
-    redirect_to :back, notice: "Book was successfully added to wish list."
+    redirect_to book_path(@book), notice: "Book was successfully added to wish list."
   end
 
   def remove_wish
     @book.wishers.delete(current_customer)
-    redirect_to :back, notice: "Book was successfully deleted from wish list."
+    redirect_to book_path(@book), notice: "Book was successfully deleted from wish list."
   end
 
   def wishers

@@ -12,11 +12,7 @@ Amazon::Application.routes.draw do
       get 'author_filter/:author_id', to: 'books#author_filter', as: 'author_filter'
       get 'category_filter/:category_id', to: 'books#category_filter', as: 'category_filter'
     end
-    resources :ratings do
-      member do
-        post 'approve_review'
-      end
-    end
+    resources :ratings
   end
   
   resources :authors 
@@ -24,14 +20,9 @@ Amazon::Application.routes.draw do
   resources :order_items 
   resources :bill_addresses 
   resources :ship_addresses 
-  resources :credit_cards
-  
-  resources :orders do
-    member do 
-      post 'shipped'
-      post 'complete'
-    end
-  end
+  resources :credit_cards 
+  resources :orders 
+
   get 'clear_cart', to: 'order_items#clear_cart'
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
