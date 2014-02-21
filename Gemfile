@@ -36,6 +36,8 @@ gem 'state_machine'
 gem 'rails_admin_state'
 gem 'carrierwave'
 gem "mini_magick"
+gem 'omniauth'
+gem 'omniauth-facebook'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

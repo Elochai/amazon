@@ -1,0 +1,2 @@
+module Customers::OmniauthCallbacksHelper
+end
