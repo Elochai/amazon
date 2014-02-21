@@ -1,4 +1,4 @@
-/*!
+s/*!
  * Bootstrap v3.0.3 (http://getbootstrap.com)
  * Copyright 2013 Twitter, Inc.
  * Licensed under http://www.apache.org/licenses/LICENSE-2.0
@@ -5464,6 +5464,15 @@ a.list-group-item.active:focus .list-group-item-text {
 
 .panel-little {
   width:375px;
+}
+
+.panel-book {
+  width:375px;
+  height: 630px;
+}
+
+.header-book {
+  height: 90px;
 }
 
 .panel-errors {

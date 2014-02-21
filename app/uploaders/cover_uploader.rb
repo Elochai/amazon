@@ -23,7 +23,7 @@ class CoverUploader < CarrierWave::Uploader::Base
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
   end
   # Process files as they are uploaded:
-  process :resize_to_fit => [360 , 600]
+  process :resize_to_limit => [360 , 450]
   # process :scale => [200, 300]
   #
   # def scale(width, height)
@@ -32,7 +32,7 @@ class CoverUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
   version :thumb do
-    process :resize_to_fit => [120, 200]
+    process :resize_to_limit => [240, 300]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

@@ -4,7 +4,7 @@
     %h4
       %br
       - if @book.cover.blank?
-        No cover for this book, sorry...
+        %strong.label.label-warning No cover for this book, sorry...
         %br
         %br
       - else

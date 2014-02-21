@@ -27,7 +27,7 @@ class Customer < ActiveRecord::Base
 
   def self.find_for_facebook_oauth access_token
     if customer = Customer.where(:url => access_token.info.urls.Facebook).first
-      Customer
+      customer
     else 
       Customer.create!(:provider => access_token.provider, :url => access_token.info.urls.Facebook, :email => access_token.extra.raw_info.email, :password => Devise.friendly_token[0,20]) 
     end

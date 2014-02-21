@@ -20,28 +20,31 @@
   %h3 
     %strong.label.label-warning Sorry, no books right now...
 - else
-  %table.table.table-hover.table-small
-    %thead
-      %tr.success
-        %th.text-center Rating
-        %th.text-center Title
-        %th.text-center Author
-        %th.text-center Category
-        %th.text-center Price
-        %th.text-center In stock
-        %th.text-center Buy
-      %tbody
-        - @books.each do |book|
-          %tr.text-center
-            %td
-              %label.label.label-success= book.avg_rating
-            %td
-              %strong= link_to "#{book.title}", book_path(book), method: :get
-            %td= book.author.full_name
-            %td= book.category.title
-            %td= number_to_currency(book.price)
-            %td= book.in_stock
-            - if book.in_stock > 0
-              %td== #{link_to "", add_to_order_book_path(book), method: :post, class:"icon-shopping-cart", title:"Add to cart"}
-            - else
-              %td
+  - @books.each do |book|
+    .inline
+      .panel.panel-info.panel-little
+        .panel-body.panel-book
+          %h5
+            = link_to image_tag(book.cover.thumb.url), book_path(book)
+            %br
+            %h4
+              %strong= link_to "#{book.title}", book_path(book)
+              .text-center
+                .label.label-success
+                  = book.avg_rating
+                  %i.icon-star
+            %strong Author: 
+            = book.author.full_name
+            %br
+            %strong Category:
+            = book.category.title
+            %br
+            %strong Description: 
+            %br= book.description
+        .panel-footer
+          %h4
+            %label.label.label-info= number_to_currency book.price
+          - if book.in_stock > 0
+            = link_to "Add to cart", add_to_order_book_path(book), method: :post, class:"btn btn-sm btn-success", title:"Add to cart"
+          - else
+            = link_to "Unavaliable", add_to_order_book_path(book), class:"btn btn-sm btn-warning", disabled: true, title:"Unavaliable"
