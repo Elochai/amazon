@@ -1,7 +1,7 @@
 Amazon::Application.routes.draw do
   get "omniauth_callbacks/facebook"
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
-  devise_for :customers, :controllers => {:sessions => "sessions", :omniauth_callbacks => "users/omniauth_callbacks"}
+  devise_for :customers, :controllers => {:sessions => "sessions", :omniauth_callbacks => "customers/omniauth_callbacks"}
   resources :books do
     member do
       post 'add_to_order'
