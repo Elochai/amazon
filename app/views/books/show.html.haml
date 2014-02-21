@@ -3,6 +3,14 @@
     %h2== "#{@book.title}" book info: 
     %h4
       %br
+      - if @book.cover.blank?
+        No cover for this book, sorry...
+        %br
+        %br
+      - else
+        = image_tag @book.cover.url
+        %br
+        %br
       == Full title: <strong>#{@book.title}</strong><br>
       == Author of this book: <strong>#{@book.author.full_name}</strong><br>
       == Category: <strong>#{@book.category.title}</strong><br>

@@ -1,4 +1,5 @@
 class Book < ActiveRecord::Base
+  mount_uploader :cover, CoverUploader
   has_many :ratings, dependent: :destroy
   belongs_to :author
   belongs_to :category
