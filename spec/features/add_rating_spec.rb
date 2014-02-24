@@ -15,9 +15,9 @@ feature "Add rating" do
 
   scenario "A customer can leave unapproved rating and review" do
     fill_in 'Your rating', with: '10'
-    fill_in 'Type review here...', with: 'Awesome book!'
+    fill_in 'Your review', with: 'Awesome book!'
     click_on 'Rate and review'
-    expect(page).to have_content 'Review by ' + customer.email.to_s + ' should be approved first'
+    expect(page).to_not have_content customer.email.to_s + ' wrote:'
     expect(page).to_not have_content 'Awesome book!' 
     expect(page).to_not have_content '10'
   end

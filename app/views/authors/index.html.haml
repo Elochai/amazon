@@ -1,11 +1,11 @@
 .container
   %center 
-    %h2 Authors:
+    %h2= t(:authors)
     %table.table.table-hover.table-little
       %thead
         %tr.success
-          %th.text-center Author name
-          %th.text-center Number of books
+          %th.text-center= t(:author_name)
+          %th.text-center= t(:number_of_book)
         %tbody
           - @authors.each do |author|
             %tr.text-center

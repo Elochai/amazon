@@ -3,84 +3,84 @@
     = devise_error_messages! 
     .panel.panel-info.panel-little#cc
       .panel-heading
-        %h4== Edit "#{current_customer.email}":
+        %h4= current_customer.email
       .panel-body
         %h5
-          %label.control-label== Firstname: #{f.text_field :firstname, class: 'form-control'}
+          %label.control-label== #{t(:fn)}: #{f.text_field :firstname, class: 'form-control'}
           %br
           %br
-          %label.control-label== Lastname: #{f.text_field :lastname, class: 'form-control'}
+          %label.control-label== #{t(:ln)} #{f.text_field :lastname, class: 'form-control'}
           %br
           %br
-          %label.control-label== Email: #{f.email_field :email, :autofocus => true, class: 'form-control'}
+          %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
           %br
           %br
           - if devise_mapping.confirmable? && resource.pending_reconfirmation?
             == Currently waiting confirmation for: "#{resource.unconfirmed_email}"
-          %label.control-label== Password: <i>(leave it blank if you do not want to change it)</i> #{f.password_field :password, :autocomplete => "off", class: 'form-control'}
+          %label.control-label== #{t(:pass)} <i>#{t(:curr_pass_info)}</i> #{f.password_field :password, :autocomplete => "off", class: 'form-control'}
           %br
           %br
-          %label.control-label== Password confirmation: #{f.password_field :password_confirmation, class: 'form-control'}
+          %label.control-label== #{t(:pass_confirm)} #{f.password_field :password_confirmation, class: 'form-control'}
           %br
           %br
-          %label.control-label== Current password: <i>(we need your current password to confirm your changes)</i>#{f.password_field :current_password, class: 'form-control'}
+          %label.control-label== #{t(:current_pass)} <i>#{t(:pass_confirm_info)}</i>#{f.password_field :current_password, class: 'form-control'}
           %br
           %br
-          = f.submit 'Update', class:'btn btn-success'
+          = f.submit t(:update), class:'btn btn-success'
           %hr
-          = link_to "Delete my account", registration_path(resource_name), class:'btn btn-danger', :data => { :confirm => "Are you sure?" }, :method => :delete 
+          = link_to t(:delete_account), registration_path(resource_name), class:'btn btn-danger', :data => { :confirm => t(:confirm) }, :method => :delete 
           %br
-          = link_to "Back", :back, class:'btn btn-default'   
+          = link_to t(:back), :back, class:'btn btn-default'   
   - if current_customer.credit_card.nil?  
-    = link_to 'Add credit card', new_credit_card_path, class: 'btn btn-info'    
+    = link_to t(:add_cc), new_credit_card_path, class: 'btn btn-info'    
   - else
     .panel.panel-info.panel-little
       .panel-heading
-        %h4 Your credit card: 
+        %h4= t(:your_cc)
         == #{link_to "", edit_credit_card_path(current_customer.credit_card), class:'icon-pencil', title: 'Edit credit card'} | #{link_to "", credit_card_path(current_customer.credit_card), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete credit card'}  
       .panel-body
-        %strong Owner:
+        %strong= t(:owner)
         = current_customer.credit_card.firstname 
         = current_customer.credit_card.lastname
         %br
-        %strong Number:
+        %strong= t(:cc_number)
         = current_customer.credit_card.number
         %br
-        %strong CVV:
+        %strong= t(:cvv)
         = current_customer.credit_card.cvv
         %br
-        %strong Expiration month:
+        %strong= t(:exp_m)
         = current_customer.credit_card.expiration_month
-        %strong , Expiration year:
+        %strong== , #{t(:exp_y)}
         = current_customer.credit_card.expiration_year
   - if current_customer.bill_address.nil?   
-    = link_to 'Add bill address', new_bill_address_path, class: 'btn btn-info' 
+    = link_to t(:add_ba), new_bill_address_path, class: 'btn btn-info' 
   - else   
     .inline
       .panel.panel-info.panel-little
         .panel-heading
-          %h4 Your bill address:  
+          %h4= t(:your_ba)
           == #{link_to "", edit_bill_address_path(current_customer.bill_address), class:'icon-pencil', title: 'Edit bill address'} | #{link_to "", bill_address_path(current_customer.bill_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete bill address'}
         .panel-body
           == #{current_customer.bill_address.country.name}<br>#{current_customer.bill_address.zipcode}, #{current_customer.bill_address.city}<br>#{current_customer.bill_address.address}
         .panel-footer
-          == Phone: #{current_customer.bill_address.phone}
+          == #{t(:phone)} #{current_customer.bill_address.phone}
   - if current_customer.ship_address.nil?   
-    = link_to 'Add ship address', new_ship_address_path, class: 'btn btn-info' 
+    = link_to t(:add_sa), new_ship_address_path, class: 'btn btn-info' 
   - else 
     .inline
       .panel.panel-info.panel-little
         .panel-heading
-          %h4 Your ship address:  
+          %h4= t(:your_sa) 
           == #{link_to "", edit_ship_address_path(current_customer.ship_address), class:'icon-pencil', title: 'Edit ship address'} | #{link_to "", ship_address_path(current_customer.ship_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete ship address'}
         .panel-body
           == #{current_customer.ship_address.country.name}<br>#{current_customer.ship_address.zipcode}, #{current_customer.ship_address.city}<br>#{current_customer.ship_address.address}
         .panel-footer
-          == Phone: #{current_customer.ship_address.phone} 
+          == #{t(:phone)} #{current_customer.ship_address.phone} 
     .outline
       .panel.panel-info.panel-little
         .panel-heading
-          %h4 Your wished books: 
+          %h4= t(:your_wishes) 
         .panel-body
           - current_customer.wishes.each do |wish|
             %strong= link_to "#{wish.title}", book_path(wish)

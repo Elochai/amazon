@@ -1,21 +1,21 @@
 .container
   %center 
-    %h2 Your orders:
+    %h2= t(:your_orders)
     - if customer_signed_in? && current_customer.orders.load.empty?
       %h2
-        %strong.label.label-warning You do not have any orders.
+        %strong.label.label-warning= t(:no_orders)
     - else    
       %table.table.table-hover.table-small
         %thead
           %tr.success
-            %th.text-center Date of update
-            %th.text-center Price
-            %th.text-center State
-            %th.text-center Date of complete
+            %th.text-center= t(:update_date)
+            %th.text-center= t(:price)
+            %th.text-center= t(:state)
+            %th.text-center= t(:complete_date)
           %tbody
             - @orders.each do |order|
               %tr.text-center
-                %td= link_to "#{order.updated_at}", order_path(order), method: :get
+                %td= link_to "#{order.created_at}", order_path(order), method: :get
                 %td= number_to_currency(order.price)
                 %td= order.state.humanize
                 %td= order.completed_at

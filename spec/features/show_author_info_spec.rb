@@ -14,9 +14,6 @@ feature "Show author info" do
   scenario "A customer can see author biography in show view" do
     expect(page).to have_content author.biography
   end
-  scenario "A customer can see author number of books in show view" do
-    expect(page).to have_content author.number_of_books
-  end
   scenario "A customer can see author books in show view" do
     expect(page).to have_content book.title
     expect(page).to have_content book2.title

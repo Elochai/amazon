@@ -41,9 +41,6 @@ feature "Show book info" do
   scenario "A customer can't see unapproved book rewiews and ratings in show view" do
     expect(page).to_not have_content rating2.text
     expect(page).to_not have_content rating2.rating.to_s + ' point(s)'
-    expect(page).to have_content rating2.customer.email
-  end
-  scenario "A customer can see that review should be approved first message for unapproved reviews in show view" do
-    expect(page).to have_content 'Review by ' + customer2.email.to_s + ' should be approved first'
+    expect(page).to_not have_content rating2.customer.email
   end
 end

@@ -13,11 +13,6 @@ class Book < ActiveRecord::Base
   scope :by_author, ->(author) {where('author_id = ?', author)}
   scope :by_category, ->(category) {where('category_id = ?', category)}
 
-  def add_in_stock!
-    self.in_stock += 1
-    save!
-  end
-
   def avg_rating
     sum = 0
     ratings.where(approved: true).each do |item|

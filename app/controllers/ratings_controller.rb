@@ -11,14 +11,14 @@ class RatingsController < ApplicationController
     respond_to do |format|
       if current_customer.did_not_rate?(@book.id)
         if @rating.save
-          format.html { redirect_to @book, notice: 'Successfully added.' }
+          format.html { redirect_to @book, notice: t(:rating_suc_create) }
           format.json { redirect_to @book, status: :created, location: @rating }
         else
-          format.html { redirect_to @book, alert: 'An error has occured while adding your rating' }
+          format.html { redirect_to @book, alert: t(:rating_fails_create) }
           format.json { render json: @rating.errors, status: :unprocessable_entity }
         end
       else
-        format.html { redirect_to @book, alert: 'You have already rated this book!' }
+        format.html { redirect_to @book, alert: t(:rated_already) }
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       end
     end

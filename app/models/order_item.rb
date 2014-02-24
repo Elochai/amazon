@@ -13,8 +13,8 @@ class OrderItem < ActiveRecord::Base
     self.price = (book.price * quantity).to_f
   end
 
-  def increase_quantity!
-    self.quantity += 1
+  def increase_quantity!(number)
+    self.quantity += number.to_f
     save
   end
 

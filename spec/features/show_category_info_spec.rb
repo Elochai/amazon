@@ -11,9 +11,6 @@ feature "Show category info" do
   scenario "A customer can see category title in show view" do
     expect(page).to have_content category.title
   end
-  scenario "A customer can see category number of books in show view" do
-    expect(page).to have_content category.number_of_books
-  end
   scenario "A customer can see category books in show view" do
     expect(page).to have_content book.title
     expect(page).to have_content book2.title

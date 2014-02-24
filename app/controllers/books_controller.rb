@@ -1,5 +1,4 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :add_in_stock, :add_to_order, :add_wish, :remove_wish, :wishers]
   before_filter :authenticate_customer!, only: [:add_to_order, :add_wish, :remove_wish]
   load_and_authorize_resource
   # GET /books
@@ -17,9 +16,9 @@ class BooksController < ApplicationController
 
   def add_to_order
     if current_customer.order_items.in_cart_with(@book).empty?
-      current_customer.order_items.create(book_id: @book.id, quantity: 1)
+      current_customer.order_items.create(book_id: @book.id, quantity: params[:quantity])
     else
-      current_customer.order_items.find_by(order_id: nil, book_id: @book.id).increase_quantity!
+      current_customer.order_items.find_by(order_id: nil, book_id: @book.id).increase_quantity!(params[:quantity])
     end
     redirect_to new_order_path
   end
@@ -36,12 +35,12 @@ class BooksController < ApplicationController
 
   def add_wish
     @book.wishers << current_customer unless current_customer.wishes.include?(@book)
-    redirect_to book_path(@book), notice: "Book was successfully added to wish list."
+    redirect_to book_path(@book), notice: t(:book_suc_add_wish)
   end
 
   def remove_wish
     @book.wishers.delete(current_customer)
-    redirect_to book_path(@book), notice: "Book was successfully deleted from wish list."
+    redirect_to book_path(@book), notice: t(:book_suc_delete_wish)
   end
 
   def wishers

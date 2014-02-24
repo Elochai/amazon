@@ -1,7 +1,6 @@
 class OrderItemsController < ApplicationController
-  before_action :set_order_item, only: [:show, :edit, :update, :destroy, :increase, :decrease, :set_quantity]
   before_filter :authenticate_customer!
-  authorize_resource
+  load_and_authorize_resource
  
   # GET /order_items/1/edit
   def edit
@@ -12,10 +11,10 @@ class OrderItemsController < ApplicationController
   def update
     respond_to do |format|
       if @order_item.update(order_item_params)
-        format.html { redirect_to new_order_path, notice: 'Quantity was successfully changed.' }
+        format.html { redirect_to new_order_path, notice: t(:quantity_suc_updated) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit', alert: "Sorry, we don't have so many in stock." }
+        format.html { render action: 'edit', alert: t(:quantity_fail_update) }
         format.json { render json: @order_item.errors, status: :unprocessable_entity }
       end
     end

@@ -1,5 +1,4 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: [:show]
   load_and_authorize_resource
  
   # GET /authors

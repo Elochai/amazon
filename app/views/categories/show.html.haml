@@ -1,12 +1,12 @@
 .container
   %center 
-    %h2== "#{@category.title}" category info: 
+    %h2== "#{@category.title}": 
     %h4
       %br
-      == Category title: <strong>#{@category.title}</strong>
+      == #{t(:category_name)} <strong>#{@category.title}</strong>
       %br
       %br
-      == We have <strong>#{@category.number_of_books}</strong> books of this category, they are below:
+      = t(:book_in_cat)
       - @category.books.each do |book|
         %br
         = link_to "#{book.title}", book_path(book), method: :get

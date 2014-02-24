@@ -1,14 +1,12 @@
 .container
   %center 
-    %h2== "#{@author.full_name}" author info: 
+    %h2== "#{@author.full_name}":
     %h4
-      %br
-      = @author.photo
-      %br== Full name of author: <strong>#{@author.full_name}</strong>
-      == Biography: <strong>#{@author.biography}</strong>
+      %br== #{t(:author_full_name)}<strong>#{@author.full_name}</strong>
+      == #{t(:bio)} <strong>#{@author.biography}</strong>
       %br
       %br
-      == We have <strong>#{@author.number_of_books}</strong> books of this author, they are below:
+      == #{t(:author_books)}
       - @author.books.each do |book|
         %br
         = link_to "#{book.title}", book_path(book), method: :get

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Amazon - web book store</title>
+  <title><%= t(:site_title)%></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -12,25 +12,25 @@
 		<a class="navbar-brand" href="/books/">AMAZON</a>
   </div>
     <ul class="nav navbar-nav navbar-left">
-        <li><%= link_to "Books", books_path %></li>
-        <li><%= link_to "Categories", categories_path %></li>
-        <li><%= link_to "Authors", authors_path %></li>
+        <li><%= link_to t(:books), books_path %></li>
+        <li><%= link_to t(:categories), categories_path %></li>
+        <li><%= link_to t(:authors), authors_path %></li>
         <% if customer_signed_in? %>
-          <li><%= link_to "Orders", orders_path %></li>
+          <li><%= link_to t(:orders), orders_path %></li>
         <% end %>
     </ul>
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
         <% if can? :manage, rails_admin %>
-          <li class='active'><%= link_to "Admin panel", rails_admin_path %></li>
+          <li class='active'><%= link_to t(:admin_panel), rails_admin_path %></li>
         <% end %>
-        <li class='active'><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
-  			<li><%= link_to "Profile (#{current_customer.email})", edit_customer_registration_path %></li>
-  			<li><%= link_to "Sign out", destroy_customer_session_path, :method => :delete %></li>
+        <li class='active'><%= link_to raw("#{t(:cart)} <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
+  			<li><%= link_to "#{t(:profile)} (#{current_customer.email})", edit_customer_registration_path %></li>
+  			<li><%= link_to t(:sign_out), destroy_customer_session_path, :method => :delete %></li>
   		<% else %>
-  			 <li><%= link_to "Sign up", new_customer_registration_path %></li>
-         <li><%= link_to "Sign in", new_customer_session_path %></li>
-         <li><%= link_to "Sign in with Facebook", customer_omniauth_authorize_path(:facebook)%></li>
+  			 <li><%= link_to t(:sign_up), new_customer_registration_path %></li>
+         <li><%= link_to t(:sign_in), new_customer_session_path %></li>
+         <li><%= link_to t(:sign_in_facebook), customer_omniauth_authorize_path(:facebook)%></li>
   		<% end %>
     </ul>
 </nav>

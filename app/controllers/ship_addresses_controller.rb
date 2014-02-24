@@ -1,14 +1,13 @@
 class ShipAddressesController < ApplicationController
-  before_action :set_address, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_customer!
-  authorize_resource
+  load_and_authorize_resource
  
   # GET /addresses/new
   def new
     if current_customer.ship_address.nil?
       @ship_address = current_customer.build_ship_address
     else
-      redirect_to edit_customer_registration_path, alert: 'You already have ship address. Edit it if you want.'
+      redirect_to edit_customer_registration_path, alert: t(:already_have_ship_address)
     end
   end
  
@@ -23,7 +22,7 @@ class ShipAddressesController < ApplicationController
  
     respond_to do |format|
       if @ship_address.save
-        format.html { redirect_to edit_customer_registration_path, notice: 'Ship address was successfully created.' }
+        format.html { redirect_to edit_customer_registration_path, notice: t(:ship_address_suc_create) }
         format.json { redirect_to edit_customer_registration_path, status: :created, location: @ship_address }
       else
         format.html { render action: 'new' }
@@ -37,7 +36,7 @@ class ShipAddressesController < ApplicationController
   def update
     respond_to do |format|
       if @ship_address.update(ship_address_params)
-        format.html { redirect_to edit_customer_registration_path, notice: 'Ship address was successfully updated.' }
+        format.html { redirect_to edit_customer_registration_path, notice: t(:ship_address_suc_update) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -51,7 +50,7 @@ class ShipAddressesController < ApplicationController
   def destroy
     @ship_address.destroy
     respond_to do |format|
-      format.html { redirect_to edit_customer_registration_path, notice: 'Ship address was successfully deleted.' }
+      format.html { redirect_to edit_customer_registration_path, notice: t(:ship_address_suc_delete) }
       format.json { head :no_content }
     end
   end

@@ -18,33 +18,43 @@
 %br
 - if @books.empty?
   %h3 
-    %strong.label.label-warning Sorry, no books right now...
+    %strong.label.label-warning= t(:no_books)
 - else
   - @books.each do |book|
     .inline
       .panel.panel-info.panel-little
+        .panel-heading.header-book
+          %h4
+            .pull-left
+              .label.label-success
+                = book.avg_rating
+                %i.icon-star
+            .pull-right
+              .label.label-info
+                = book.wishers.count
+                %i.icon-user
+            %strong.centered= link_to "#{book.title}", book_path(book)
         .panel-body.panel-book
           %h5
             = link_to image_tag(book.cover.thumb.url), book_path(book)
             %br
             %h4
-              %strong= link_to "#{book.title}", book_path(book)
-              .text-center
-                .label.label-success
-                  = book.avg_rating
-                  %i.icon-star
-            %strong Author: 
+            %strong= t(:author) 
             = book.author.full_name
             %br
-            %strong Category:
+            %strong= t(:category)
             = book.category.title
             %br
-            %strong Description: 
+            %strong= t(:description) 
             %br= book.description
         .panel-footer
           %h4
             %label.label.label-info= number_to_currency book.price
-          - if book.in_stock > 0
-            = link_to "Add to cart", add_to_order_book_path(book), method: :post, class:"btn btn-sm btn-success", title:"Add to cart"
-          - else
-            = link_to "Unavaliable", add_to_order_book_path(book), class:"btn btn-sm btn-warning", disabled: true, title:"Unavaliable"
+          = form_tag "/books/#{book.id}/add_to_order", class: 'form-inline' do
+            - if book.in_stock > 0
+              .form-group
+                = number_field_tag :quantity, 1, min: 1, max: "#{book.in_stock}", class: 'input-small form-control xs'
+              .form-group
+                = submit_tag t(:add_to_cart), class:"btn btn-sm btn-success"
+            - else
+              = submit_tag t(:unavaliable),class:"btn btn-sm btn-warning", disabled: true

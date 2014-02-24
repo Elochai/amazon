@@ -1,14 +1,13 @@
 class BillAddressesController < ApplicationController
-  before_action :set_address, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_customer!
-  authorize_resource
+  load_and_authorize_resource
  
   # GET /addresses/new
   def new
     if current_customer.bill_address.nil?
       @bill_address = current_customer.build_bill_address
     else
-      redirect_to edit_customer_registration_path, alert: 'You already have bill address. Edit it if you want.'
+      redirect_to edit_customer_registration_path, alert: t(:already_have_bill_address)
     end
   end
  
@@ -23,7 +22,7 @@ class BillAddressesController < ApplicationController
  
     respond_to do |format|
       if @bill_address.save
-        format.html { redirect_to edit_customer_registration_path, notice: 'Bill address was successfully created.' }
+        format.html { redirect_to edit_customer_registration_path, notice: t(:bill_address_suc_create) }
         format.json { redirect_to edit_customer_registration_path, status: :created, location: @bill_address}
       else
         format.html { render action: 'new' }
@@ -37,7 +36,7 @@ class BillAddressesController < ApplicationController
   def update
     respond_to do |format|
       if @bill_address.update(bill_address_params)
-        format.html { redirect_to edit_customer_registration_path, notice: 'Bill address was successfully updated.' }
+        format.html { redirect_to edit_customer_registration_path, notice: t(:bill_address_suc_update) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -51,7 +50,7 @@ class BillAddressesController < ApplicationController
   def destroy
     @bill_address.destroy
     respond_to do |format|
-      format.html { redirect_to edit_customer_registration_path, notice: 'Bill address was successfully deleted.' }
+      format.html { redirect_to edit_customer_registration_path, notice: t(:bill_address_suc_delete) }
       format.json { head :no_content }
     end
   end

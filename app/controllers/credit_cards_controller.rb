@@ -1,14 +1,13 @@
 class CreditCardsController < ApplicationController
-  before_action :set_credit_card, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_customer!
-  authorize_resource
+  load_and_authorize_resource
  
   # GET /credit_cards/new
   def new
     if current_customer.credit_card.nil?
       @credit_card = current_customer.build_credit_card
     else
-      redirect_to edit_customer_registration_path, alert: 'You already have credit card. Edit it if you want.'
+      redirect_to edit_customer_registration_path, alert: t(:already_have_cc)
     end
   end
  
@@ -23,7 +22,7 @@ class CreditCardsController < ApplicationController
  
     respond_to do |format|
       if @credit_card.save
-        format.html { redirect_to edit_customer_registration_path, notice: 'Credit card was successfully created.' }
+        format.html { redirect_to edit_customer_registration_path, notice: t(:cc_suc_create) }
         format.json { redirect_to edit_customer_registration_path, status: :created }
       else
         format.html { render action: 'new' }
@@ -37,7 +36,7 @@ class CreditCardsController < ApplicationController
   def update
     respond_to do |format|
       if @credit_card.update(credit_card_params)
-        format.html { redirect_to edit_customer_registration_path, notice: 'Credit card was successfully updated.' }
+        format.html { redirect_to edit_customer_registration_path, notice: t(:cc_suc_update) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -51,7 +50,7 @@ class CreditCardsController < ApplicationController
   def destroy
     @credit_card.destroy
     respond_to do |format|
-      format.html { redirect_to edit_customer_registration_path, notice: 'Credit card was successfully deleted.' }
+      format.html { redirect_to edit_customer_registration_path, notice: t(:cc_suc_delete) }
       format.json { head :no_content }
     end
   end

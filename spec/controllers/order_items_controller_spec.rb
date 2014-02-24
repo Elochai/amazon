@@ -6,85 +6,168 @@ describe OrderItemsController do
     @book = FactoryGirl.create :book, in_stock: 2
     @order_item = FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
     sign_in @customer
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    @controller.stub(:current_ability).and_return(@ability)
   end
 
   describe "GET #edit" do
-    before(:each) do
-      OrderItem.stub(:find).and_return @order_item
+    context "with manage ability" do
+      before do
+        @ability.can :manage, OrderItem
+        OrderItem.stub(:find).and_return @order_item
+      end
+      it "receives find and return order_item" do
+        expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
+        get :edit, id: @order_item.id
+      end
+      it "assigns order_item" do
+        get :edit, id: @order_item.id
+        expect(assigns(:order_item)).to eq @order_item
+      end
+      it "renders template edit" do
+        get :edit, id: @order_item.id
+        expect(response).to render_template("edit")
+      end
     end
-    it "receives find and return order_item" do
-      expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
-      get :edit, id: @order_item.id
-    end
-    it "assigns order_item" do
-      get :edit, id: @order_item.id
-      expect(assigns(:order_item)).to eq @order_item
-    end
-    it "renders template edit" do
-      get :edit, id: @order_item.id
-      expect(response).to render_template("edit")
+    context "without manage ability" do
+      before do
+        @ability.cannot :manage, OrderItem
+        OrderItem.stub(:find).and_return @order_item
+      end
+      it "redirects to customer_session_path" do
+        get :edit, id: @order_item.id
+        expect(response).to redirect_to customer_session_path
+      end
     end
   end
 
   describe "PUT #update" do
-    before(:each) do
-      OrderItem.stub(:find).and_return @order_item
-    end
-    it "receives find and return order_item" do
-      expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
-      put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item)
-    end
-    context "with valid attributes" do
-      it "updates @order_item's attributes" do
-        put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: 100)
-        @order_item.reload
-        expect(@order_item.quantity).to eq 100
+    context "with manage ability" do
+      before do
+        @ability.can :manage, OrderItem
+        OrderItem.stub(:find).and_return @order_item
       end
-      it "redirects to new_order_path" do  
+      it "receives find and return order_item" do
+        expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
         put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item)
-        expect(response).to redirect_to new_order_path
+      end
+      context "with valid attributes" do
+        it "updates @order_item's attributes" do
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: 2)
+          @order_item.reload
+          expect(@order_item.quantity).to eq 2
+        end
+        it "redirects to new_order_path" do  
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item)
+          expect(response).to redirect_to new_order_path
+        end
+      end
+      context "with invalid attributes" do
+        it "do not updates @order_item's attributes" do
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "quantity")
+          @order_item.reload
+          expect(@order_item.quantity).to_not eq "quantity"
+        end
+        it "renders template edit" do  
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "quantity")
+          expect(response).to render_template "edit"
+        end
       end
     end
-    context "with invalid attributes" do
-      it "do not updates @order_item's attributes" do
-        put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "one")
-        @order_item.reload
-        expect(@order_item.quantity).to_not eq "one"
+    context "without manage ability" do
+      before do
+        @ability.cannot :manage, OrderItem
+        OrderItem.stub(:find).and_return @order_item
       end
-      it "renders template edit" do  
-        put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: 0)
-        expect(response).to render_template "edit"
+      context "with valid attributes" do
+        it "do not updates @order_item's attributes" do
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: 2)
+          @order_item.reload
+          expect(@order_item.quantity).to_not eq 2
+        end
+        it "do not redirects to edit_customer_registration_path" do  
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item)
+          expect(response).to_not redirect_to edit_customer_registration_path
+        end
+      end
+      context "with invalid attributes" do
+        it "do not updates @order_item's attributes" do
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "quantity")
+          @order_item.reload
+          expect(@order_item.quantity).to_not eq "quantity"
+        end
+        it "redirects to customer_session_path" do  
+          put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "quantity")
+          expect(response).to redirect_to customer_session_path
+        end
       end
     end
   end
 
   describe 'DELETE destroy' do
-    before(:each) do
-      OrderItem.stub(:find).and_return @order_item
+    context "with manage ability" do
+      before do
+        @ability.can :manage, OrderItem
+        OrderItem.stub(:find).and_return @order_item
+      end
+      it "receives find and return order_item" do
+        expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
+        delete :destroy, id: @order_item.id
+      end
+      it "deletes order_item" do
+        expect{delete :destroy, id: @order_item.id}.to change(OrderItem, :count).by(-1)
+        delete :destroy, id: @order_item.id
+      end
+      it "redirects to new_order_path" do
+        delete :destroy, id: @order_item.id
+        expect(response).to redirect_to new_order_path
+      end
     end
-    it "receives find and return order_item" do
-      expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
-      delete :destroy, id: @order_item.id
-    end
-    it "deletes order_item" do
-      expect{delete :destroy, id: @order_item.id}.to change(OrderItem, :count).by(-1)
-      delete :destroy, id: @order_item.id
-    end
-    it "redirects to new_order_path" do
-      delete :destroy, id: @order_item.id
-      expect(response).to redirect_to new_order_path
+    context "without manage ability" do
+      before do
+        @ability.cannot :manage, OrderItem
+        OrderItem.stub(:find).and_return @order_item
+      end
+      it "do not deletes order_item" do
+        expect{delete :destroy, id: @order_item.id}.to_not change(OrderItem, :count)
+        delete :destroy, id: @order_item.id
+      end
+      it "redirects to customer_session_path" do
+        delete :destroy, id: @order_item.id
+        expect(response).to redirect_to customer_session_path
+      end
     end
   end
 
   describe 'GET clear_cart' do
-    it "deletes all order_items in cart" do
-      FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
-      expect{get :clear_cart}.to change(OrderItem, :count).by(-2)
-      get :clear_cart
+    context "with clear_cart ability" do
+      before do
+        @ability.can :clear_cart, OrderItem
+      end
+      it "deletes all order_items in cart" do
+        FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
+        expect{get :clear_cart}.to change(OrderItem, :count).by(-2)
+        get :clear_cart
+      end
+      it "redirects to new_order_path" do
+        get :clear_cart
+        expect(response).to redirect_to new_order_path
+      end
     end
-    it "redirects to new_order_path" do
-      get :clear_cart
-      expect(response).to redirect_to new_order_path
+    context "without clear_cart ability" do
+      before do
+        @ability.cannot :clear_cart, OrderItem
+      end
+      it "do not deletes all order_items in cart" do
+        FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
+        expect{get :clear_cart}.to_not change(OrderItem, :count).by(-2)
+        get :clear_cart
+      end
+      it "redirects to customer_session_path" do
+        get :clear_cart
+        expect(response).to redirect_to customer_session_path
+      end
     end
   end
 end

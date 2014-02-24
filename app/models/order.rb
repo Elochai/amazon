@@ -14,7 +14,7 @@ class Order < ActiveRecord::Base
   state_machine :state, :initial => :in_progress do
     after_transition :on => :complete_order, :do => :complete!
 
-    event :on_ship do
+    event :ship do
       transition :in_progress => :shipped
     end
 

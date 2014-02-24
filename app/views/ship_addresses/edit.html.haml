@@ -4,21 +4,21 @@
       = render partial: "errors/errors", locals: {object: sa.object}
       .panel.panel-info.panel-little#sa
         .panel-heading
-          %h3 Edit ship address:
+          %h3= t(:edit_sa)
         .panel-body
           %h5
-            %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+            %label.control-label== #{t(:country)} <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
             %br
             %br
-            %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
+            %label.control-label== #{t(:city)} #{sa.text_field :city, size: 15, class: 'form-control'}
             %br
             %br
-            %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
+            %label.control-label== #{t(:address)} #{sa.text_area :address, class: 'form-control'}
             %br
             %br
-            %label.control-label== Zip code: #{sa.number_field :zipcode, class: 'form-control s'}
+            %label.control-label== #{t(:zipcode)} #{sa.number_field :zipcode, class: 'form-control s'}
             %br
             %br
-            %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
+            %label.control-label== #{t(:phone)} #{sa.telephone_field :phone, class: 'form-control'}
         .panel-footer
-          = sa.submit "Update ship address", class: 'btn btn-success'
+          = sa.submit t(:update_sa), class: 'btn btn-success'

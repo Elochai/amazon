@@ -1,15 +1,15 @@
 .container
   %center 
-    %h2== Order from "#{@order.updated_at}": 
-    %h3 Books in order:
+    %h2== #{t(:order_from)} "#{@order.created_at}": 
+    %h3= t(:books_in_order)
     %table.table.table-hover.table-small
       %thead
         %tr.success
-          %th.text-center Book title
-          %th.text-center Author
-          %th.text-center Category
-          %th.text-center Quantity
-          %th.text-center Price
+          %th.text-center= t(:book_title)
+          %th.text-center= t(:author_name)
+          %th.text-center= t(:category_name)
+          %th.text-center= t(:quantity)
+          %th.text-center= t(:price)
         %tbody
           -  @order.order_items.each do |oi|
             %tr.text-center
@@ -22,20 +22,20 @@
       .inline
         .panel.panel-info.panel-little
           .panel-heading
-            %h4 Bill address:  
+            %h4= t(:ba_info) 
           .panel-body
             == #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}
           .panel-footer
-            == Phone: #{@order.bill_address.phone}
+            == #{t(:phone)} #{@order.bill_address.phone}
       .inline
         .panel.panel-info.panel-little
           .panel-heading
-            %h4 Ship address:  
+            %h4= t(:sa_info) 
           .panel-body
             == #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}
           .panel-footer
-            == Phone: #{@order.ship_address.phone} 
+            == #{t(:phone)} #{@order.ship_address.phone} 
     .outline           
       %hr    
-      %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
-      %h2== Order status: <label class="label label-info">#{@order.state.humanize}</label>
+      %h2== #{t(:total_price)} <span class="label label-success">#{number_to_currency(@order.price)}</span>
+      %h2== #{t(:status)} <label class="label label-info">#{@order.state.humanize}</label>
