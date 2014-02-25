@@ -13,6 +13,7 @@
   </div>
     <ul class="nav navbar-nav navbar-left">
         <li><%= link_to t(:books), books_path %></li>
+        <li><%= link_to t(:top_rated), top_rated_books_path %></li>
         <li><%= link_to t(:categories), categories_path %></li>
         <li><%= link_to t(:authors), authors_path %></li>
         <% if customer_signed_in? %>

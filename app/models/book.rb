@@ -1,5 +1,6 @@
 class Book < ActiveRecord::Base
   mount_uploader :cover, CoverUploader
+  paginates_per 9
   has_many :ratings, dependent: :destroy
   belongs_to :author
   belongs_to :category
@@ -12,18 +13,5 @@ class Book < ActiveRecord::Base
 
   scope :by_author, ->(author) {where('author_id = ?', author)}
   scope :by_category, ->(category) {where('category_id = ?', category)}
-
-  def avg_rating
-    sum = 0
-    ratings.where(approved: true).each do |item|
-      unless item.rating.nil?
-        sum += item.rating
-      end
-    end
-    if ratings.where(approved: true).count > 0
-      sum/ratings.where(approved: true).count
-    else
-      0
-    end
-  end
+  scope :top_rated, -> {where("avg_rating > 0").order("avg_rating DESC").limit(5)}
 end

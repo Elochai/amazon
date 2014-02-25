@@ -9,7 +9,7 @@ describe Book do
   let(:author) { FactoryGirl.create(:author) }
   let(:book_with_author) { FactoryGirl.create(:book, author: author) }
   let(:book_with_category) { FactoryGirl.create(:book, category: category) }
-  let(:rating_for_second_book) { FactoryGirl.create(:rating, rating: 6, book_id: second_book.id, approved: true) }
+  let(:rating_for_second_book) { FactoryGirl.create(:rating, rating: 6, book_id: second_book.id) }
   
   context "associations" do
     it { expect(book).to have_many(:ratings).dependent(:destroy) }
@@ -23,6 +23,17 @@ describe Book do
     it { expect(book).to validate_presence_of(:in_stock) }
     it { expect(book).to validate_numericality_of(:in_stock).is_greater_than_or_equal_to(0) }
     it { expect(book).to validate_numericality_of(:price).is_greater_than_or_equal_to(0.01) }
+  end
+  context ".top_rated scope" do
+    it "orders first 5 records with descending avg_rating" do
+      rating.approved = true
+      rating2.approved = true
+      rating_for_second_book.approved = true
+      rating.save!
+      rating2.save!
+      rating_for_second_book.save!
+      expect(Book.top_rated).to eq([book, second_book])
+    end
   end
   context ".by_author scope" do
     it "selects recors with certain author_id" do
@@ -38,26 +49,6 @@ describe Book do
     end
     it "do not selects recors without certain category_id" do
       expect(Book.by_category(category.id)).to_not include(book_with_author)
-    end
-  end
-  context ".avg_rating" do
-    it "shows avarage rating of the book if it has approved rating" do
-      rating.approved = true
-      rating2.approved = true
-      rating.save!
-      rating2.save!
-      expect(book.avg_rating).to eq(8)
-    end
-    it "shows zero rating for the book if it hasn't approved rating" do
-      rating.approved = false
-      rating2.approved = false
-      rating.save!
-      rating2.save!
-      expect(book.avg_rating).to eq(0)
-    end
-    it "shows zero rating for the book if it has no rating" do
-      Rating.all.destroy_all
-      expect(book.avg_rating).to eq(0)
     end
   end
 end

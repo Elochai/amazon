@@ -4,7 +4,7 @@ describe RatingsController do
   before(:each) do
     @book = FactoryGirl.create :book
     @customer = FactoryGirl.create :customer
-    @rating= FactoryGirl.create :rating
+    @rating= FactoryGirl.create :rating, book_id: @book.id
     sign_in @customer
     @ability = Object.new
     @ability.extend(CanCan::Ability)

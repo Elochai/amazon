@@ -4,7 +4,6 @@ Amazon::Application.routes.draw do
   devise_for :customers, :controllers => {:sessions => "sessions", :omniauth_callbacks => "customers/omniauth_callbacks"}
   resources :books do
     member do
-      post 'add_to_order'
       post 'add_wish'
       post 'remove_wish'
       get 'wishers'
@@ -25,6 +24,8 @@ Amazon::Application.routes.draw do
   resources :orders 
 
   get 'clear_cart', to: 'order_items#clear_cart'
+  post 'add_to_order/:book_id', to: 'order_items#add_to_order', as: 'add_to_order'
+  get 'top_rated_books', to: 'books#top_rated_books', as: 'top_rated_books'
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

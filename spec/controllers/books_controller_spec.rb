@@ -4,6 +4,8 @@ describe BooksController do
   before(:each) do
     @customer = FactoryGirl.create :customer
     @book = FactoryGirl.create :book
+    @rated_book = FactoryGirl.create :book
+    FactoryGirl.create :rating, rating: 10, book_id: @rated_book.id, approved: true
     @ability = Object.new
     @ability.extend(CanCan::Ability)
     @controller.stub(:current_ability).and_return(@ability)
@@ -17,7 +19,7 @@ describe BooksController do
       end
       it "returns an array of books" do
         get :index 
-        expect(assigns(:books)).to eq [@book]
+        expect(assigns(:books)).to eq [@book, @rated_book]
       end 
       it "renders the index template" do
         get :index
@@ -30,6 +32,31 @@ describe BooksController do
       end
       it "redirects to customer_session_path" do
         get :index
+        expect(response).to redirect_to customer_session_path
+      end
+    end
+  end
+
+  describe "GET #top_rated_books" do
+    context "with top_rated_books ability" do
+      before do
+        @ability.can :top_rated_books, Book
+      end
+      it "returns an array of top rated books" do
+        get :top_rated_books 
+        expect(assigns(:books)).to eq [@rated_book]
+      end 
+      it "renders the index template" do
+        get :top_rated_books
+        expect(response).to render_template("top_rated_books")
+      end
+    end
+    context "without read ability" do
+      before do
+        @ability.cannot :top_rated_books, Book
+      end
+      it "redirects to customer_session_path" do
+        get :top_rated_books
         expect(response).to redirect_to customer_session_path
       end
     end
@@ -64,50 +91,6 @@ describe BooksController do
       end
       it "redirects to customer_session_path" do
         get :show, id: @book.id
-        expect(response).to redirect_to customer_session_path
-      end
-    end
-  end
-
-  describe "POST #add_to_order" do
-    context "with add_to_order ability" do
-      before do
-        @ability.can :add_to_order, Book
-        Book.stub(:find).and_return @book
-      end
-      it "receives find and return book" do
-        expect(Book).to receive(:find).with(@book.id.to_s).and_return @book
-        get :add_to_order, id: @book.id
-      end
-      it "creates new order_item if it is not in the cart already" do
-        expect {post :add_to_order, id: @book.id, quantity: 1}.to change(OrderItem, :count).by(1)
-      end
-      it "updates order_item quantity by 1 if it is in the cart already" do
-        @oi = FactoryGirl.create :order_item, customer_id: @customer.id, book_id: @book.id, quantity: 1
-        post :add_to_order, id: @book.id, quantity: 1
-        @oi.reload
-        expect(@oi.quantity).to eq(2)
-      end
-      it "redirects to new_order_path" do
-        post :add_to_order, id: @book.id
-        expect(response).to redirect_to new_order_path
-      end
-    end
-    context "without add_to_order ability" do
-      before do
-        @ability.cannot :add_to_order, Book
-      end
-      it "do not creates new order_item if it is not in the cart already" do
-        expect {post :add_to_order, id: @book.id, quantity: 1}.to_not change(OrderItem, :count)
-      end
-      it "do not updates order_item quantity by 1 if it is in the cart already" do
-        @oi = FactoryGirl.create :order_item, customer_id: @customer.id, book_id: @book.id, quantity: 1
-        post :add_to_order, id: @book.id, quantity: 1
-        @oi.reload
-        expect(@oi.quantity).to_not eq(2)
-      end
-      it "redirects to customer_session_path" do
-        post :add_to_order, id: @book.id
         expect(response).to redirect_to customer_session_path
       end
     end

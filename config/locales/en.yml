@@ -121,6 +121,7 @@ en:
   forgot_pass: Forgot your password?
   sign_in_with: Sign in with
   books: Books
+  top_rated: Top rated
   categories: Categories
   authors: Authors
   admin_panel: Admin panel
@@ -156,7 +157,14 @@ en:
   author_full_name: 'Full name of author:'
   bio: 'Biography:'
   author_books: 'Books of this author:'
-
+  no_rated_books: 'No rated books right now'
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Prev"
+      next: "Next &rsaquo;"
+      truncate: "..."
 
 
 

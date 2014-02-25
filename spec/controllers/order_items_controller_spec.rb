@@ -3,7 +3,7 @@ require 'spec_helper'
 describe OrderItemsController do
   before(:each) do
     @customer = FactoryGirl.create :customer
-    @book = FactoryGirl.create :book, in_stock: 2
+    @book = FactoryGirl.create :book, in_stock: 4
     @order_item = FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
     sign_in @customer
     @ability = Object.new
@@ -166,6 +166,45 @@ describe OrderItemsController do
       end
       it "redirects to customer_session_path" do
         get :clear_cart
+        expect(response).to redirect_to customer_session_path
+      end
+    end
+  end
+
+  describe "POST #add_to_order" do
+    context "with add_to_order ability" do
+      before do
+        @ability.can :add_to_order, OrderItem
+      end
+      it "creates new order_item if it is not in the cart already" do
+        OrderItem.destroy_all
+        expect {post :add_to_order, book_id: @book.id, quantity: 1}.to change(OrderItem, :count).by(1)
+      end
+      it "updates order_item quantity by 1 if it is in the cart already" do
+        post :add_to_order, book_id: @book.id, quantity: 1
+        @order_item.reload
+        expect(@order_item.quantity).to eq(2)
+      end
+      it "redirects to new_order_path" do
+        post :add_to_order, book_id: @book.id
+        expect(response).to redirect_to new_order_path
+      end
+    end
+    context "without add_to_order ability" do
+      before do
+        @ability.cannot :add_to_order, OrderItem
+      end
+      it "do not creates new order_item if it is not in the cart already" do
+        expect {post :add_to_order, book_id: @book.id, quantity: 1}.to_not change(OrderItem, :count)
+      end
+      it "do not updates order_item quantity by 1 if it is in the cart already" do
+        @oi = FactoryGirl.create :order_item, customer_id: @customer.id, book_id: @book.id, quantity: 1
+        post :add_to_order, book_id: @book.id, quantity: 1
+        @oi.reload
+        expect(@oi.quantity).to_not eq(2)
+      end
+      it "redirects to customer_session_path" do
+        post :add_to_order, book_id: @book.id
         expect(response).to redirect_to customer_session_path
       end
     end

@@ -4,7 +4,11 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all
+    @books = Book.all.page(params[:page])
+  end
+
+  def top_rated_books
+    @books = Book.top_rated
   end
  
   # GET /books/1
@@ -12,15 +16,6 @@ class BooksController < ApplicationController
   def show
     @current_book = Book.find(@book.id)
     @rating = @book.ratings.new
-  end
-
-  def add_to_order
-    if current_customer.order_items.in_cart_with(@book).empty?
-      current_customer.order_items.create(book_id: @book.id, quantity: params[:quantity])
-    else
-      current_customer.order_items.find_by(order_id: nil, book_id: @book.id).increase_quantity!(params[:quantity])
-    end
-    redirect_to new_order_path
   end
 
   def author_filter

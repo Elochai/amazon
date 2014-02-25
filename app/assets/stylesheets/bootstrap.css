@@ -5470,7 +5470,12 @@ a.list-group-item.active:focus .list-group-item-text {
 
 .panel-book {
   width:375px;
-  height: 630px;
+  height: 600px;
+}
+
+.centered {
+  height: 6em;
+  line-height: 3em;
 }
 
 .footer-book {
@@ -6215,6 +6220,10 @@ button.close {
   position: relative;
 }
 
+#top_rated_carousel {
+
+}
+
 .carousel-inner {
   position: relative;
   width: 100%;
@@ -6277,31 +6286,37 @@ button.close {
 .carousel-control {
   position: absolute;
   top: 0;
+  padding-top: 190px;
   bottom: 0;
   left: 0;
   width: 15%;
   font-size: 20px;
-  color: #ffffff;
+  color: #000000;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 
+.book-info {
+  display: inline-block;
+  text-align: justify;
+  vertical-align: top;
+  width: 240px;
+  overflow: hidden;
+}
+
+.carousel-panel {
+  width: 530px;
+}
+
 .carousel-control.left {
-  background-image: -webkit-linear-gradient(left, color-stop(rgba(0, 0, 0, 0.5) 0), color-stop(rgba(0, 0, 0, 0.0001) 100%));
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.0001) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
+  left: 120px;
 }
 
 .carousel-control.right {
   right: 0;
-  left: auto;
-  background-image: -webkit-linear-gradient(left, color-stop(rgba(0, 0, 0, 0.0001) 0), color-stop(rgba(0, 0, 0, 0.5) 100%));
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
+  left: 845px;
 }
 
 .carousel-control:hover,
@@ -6351,9 +6366,11 @@ button.close {
 }
 
 .carousel-indicators {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: -10px;
+  bottom: 50px;
+  left: 15%;
   z-index: 15;
   width: 60%;
   padding-left: 0;
@@ -6364,22 +6381,22 @@ button.close {
 
 .carousel-indicators li {
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 1px;
+  width: 6px;
+  height: 6px;
+  margin: 4px;
   text-indent: -999px;
   cursor: pointer;
   background-color: #000 \9;
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid #ffffff;
+  border: 1px solid #000000;
   border-radius: 10px;
 }
 
 .carousel-indicators .active {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   margin: 0;
-  background-color: #ffffff;
+  background-color: #000000;
 }
 
 .carousel-caption {

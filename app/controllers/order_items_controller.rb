@@ -34,6 +34,15 @@ class OrderItemsController < ApplicationController
     current_customer.order_items.destroy_all
     redirect_to new_order_path
   end
+
+  def add_to_order
+    if current_customer.order_items.in_cart_with(params[:book_id]).empty?
+      current_customer.order_items.create(book_id: params[:book_id], quantity: params[:quantity])
+    else
+      current_customer.order_items.find_by(order_id: nil, book_id: params[:book_id]).increase_quantity!(params[:quantity])
+    end
+    redirect_to new_order_path
+  end
  
   private
     # Use callbacks to share common setup or constraints between actions.

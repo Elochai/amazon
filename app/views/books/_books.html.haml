@@ -30,15 +30,16 @@
                 = book.avg_rating
                 %i.icon-star
             .pull-right
-              .label.label-info
+              .label.label-primary
                 = book.wishers.count
                 %i.icon-user
-            %strong.centered= link_to "#{book.title}", book_path(book)
+            %strong= link_to "#{book.title}", book_path(book)
         .panel-body.panel-book
           %h5
             = link_to image_tag(book.cover.thumb.url), book_path(book)
             %br
             %h4
+              %label.label.label-primary= number_to_currency book.price
             %strong= t(:author) 
             = book.author.full_name
             %br
@@ -48,9 +49,7 @@
             %strong= t(:description) 
             %br= book.description
         .panel-footer
-          %h4
-            %label.label.label-info= number_to_currency book.price
-          = form_tag "/books/#{book.id}/add_to_order", class: 'form-inline' do
+          = form_tag "/add_to_order/#{book.id}", class: 'form-inline' do
             - if book.in_stock > 0
               .form-group
                 = number_field_tag :quantity, 1, min: 1, max: "#{book.in_stock}", class: 'input-small form-control xs'

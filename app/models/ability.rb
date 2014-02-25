@@ -34,22 +34,23 @@ class Ability
         can :manage, :all
         can :access, :rails_admin
         can :dashboard
-        can [:clear_cart], OrderItem
+        can [:clear_cart, :add_to_order], OrderItem
         can :state, Order
       else
-        can [:add_wish, :remove_wish, :author_filter, :category_filter, :wishers, :add_to_order], Book
+        can [:add_wish, :remove_wish, :author_filter, :category_filter, :wishers], Book
         can [:create, :new], Order
         can :manage, OrderItem
         can :manage, [CreditCard, Customer, Address]
         can :read, :all
         can [:new, :create], Rating
-        can [:clear_cart], OrderItem
+        can [:clear_cart, :add_to_order], OrderItem
+        can [:top_rated_books], Book
       end
     else
       can :read, Book
       can :read, Category
       can :read, Author
-      can [:author_filter, :category_filter, :wishers,], Book
+      can [:author_filter, :category_filter, :wishers], Book
     end
   end
 end
