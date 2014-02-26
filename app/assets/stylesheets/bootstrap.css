@@ -325,6 +325,16 @@ a {
   text-decoration: none;
 }
 
+a.wishers-link {
+  color: #ffffff;
+}
+
+a.wishers-link:hover,
+a.wishers-link:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+
 a:hover,
 a:focus {
   color: #2a6496;
@@ -5471,6 +5481,10 @@ a.list-group-item.active:focus .list-group-item-text {
 .panel-book {
   width:375px;
   height: 600px;
+}
+
+.book-body {
+  height: 330px;
 }
 
 .centered {

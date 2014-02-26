@@ -1,58 +1,61 @@
 .container
   %center 
-    %h2== "#{@book.title}": 
-    %h4
-      %br
-        = image_tag @book.cover.url
-        %br
-      == #{t(:full_title)} <strong>#{@book.title}</strong><br>
-      == #{t(:author)} <strong>#{@book.author.full_name}</strong><br>
-      == #{t(:category)} <strong>#{@book.category.title}</strong><br>
-      == #{t(:description)} <strong>#{@book.description}</strong><br><br>
-      == #{t(:ratings)} <strong>#{@book.avg_rating}</strong><br>
-      == #{t(:wished_by)}
-      = link_to "#{@book.wishers.count}", wishers_book_path(@book), title:"Show book wishers" 
-      = t(:customers)
-      %br
-      %br
-      == #{t(:sell_price)} <strong>#{number_to_currency(@book.price)}</strong><br>
-      == #{t(:in_stock)} <strong>#{@book.in_stock}</strong> 
-    %center
-      - if customer_signed_in? && current_customer.wishes.include?(@book)
-        %br= link_to t(:remove_wish), remove_wish_book_path(@book), method: :post, class:"btn btn-warning"
-      - else
-        %br= link_to t(:add_wish), add_wish_book_path(@book), method: :post, class:"btn btn-info"
-      - if @book.in_stock > 0
-        = form_tag "/add_to_order/#{@book.id}", class: 'form-inline' do
+    .panel.panel-info.panel-small
+      .panel-heading
+        %h3== "#{@book.title}": 
+      .panel-body
+        %h4
           %br
-          .form-group
-            = number_field_tag :quantity, 1, min: 1, max: "#{@book.in_stock}", class: 'form-control xs'
-          .form-group
-            = submit_tag t(:add_to_cart), class:"btn btn-success"
-      - else
-        %h3
-          %strong.label.label-warning= t(:no_book)
-      %hr
-      %h3= t(:ratings)
-      - if @current_book.ratings.empty?
-        %h3 
-          %small= t(:no_ratings)
-      - else
-        - @current_book.ratings.load.each do |review|
-          - if review.approved == true
-            .panel.panel-info.panel-small
-              .panel-heading 
-                %h5== <strong>#{review.customer.email}</strong> #{t(:wrote)}
-              .panel-body
-                %h5
-                  %em== - "#{review.text}"
-              .panel-footer
-                %h5== #{t(:rating)} <strong>#{review.rating}</strong> 
-      - if can? :new, Rating
-        %h3= t(:rate_this)
-        = form_for [@book, @rating] do |rating|
-          %h5
-            %label.control-label== #{t(:your_rating)} #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control', style:'width:60px'}
+            = image_tag @book.cover.url
             %br
-            %label.control-label== #{t(:your_review)} #{rating.text_area :text, class: 'form-control', style:'width:400px'}
-            %br= rating.submit t(:rate_and_review), class:"btn btn-info"
+          == #{t(:full_title)} <strong>#{@book.title}</strong><br>
+          == #{t(:author)} <strong>#{@book.author.full_name}</strong><br>
+          == #{t(:category)} <strong>#{@book.category.title}</strong><br>
+          == #{t(:description)} <strong>#{@book.description}</strong><br><br>
+          == #{t(:ratings)} <strong>#{@book.avg_rating}</strong><br>
+          == #{t(:wished_by)}
+          = link_to "#{@book.wishers.count}", wishers_book_path(@book), title:"Show book wishers" 
+          = t(:customers)
+          %br
+          %br
+          == #{t(:sell_price)} <strong>#{number_to_currency(@book.price)}</strong><br>
+          == #{t(:in_stock)} <strong>#{@book.in_stock}</strong> 
+        %center
+          - if customer_signed_in? && current_customer.wishes.include?(@book)
+            %br= link_to t(:remove_wish), remove_wish_book_path(@book), method: :post, class:"btn btn-warning"
+          - else
+            %br= link_to t(:add_wish), add_wish_book_path(@book), method: :post, class:"btn btn-info"
+          - if @book.in_stock > 0
+            = form_tag "/add_to_order/#{@book.id}", class: 'form-inline' do
+              %br
+              .form-group
+                = number_field_tag :quantity, 1, min: 1, max: "#{@book.in_stock}", class: 'form-control xs'
+              .form-group
+                = submit_tag t(:add_to_cart), class:"btn btn-success"
+          - else
+            %h3
+              %strong.label.label-warning= t(:no_book)
+          %hr
+          %h3= t(:ratings)
+          - if @current_book.ratings.empty?
+            %h3 
+              %small= t(:no_ratings)
+          - else
+            - @current_book.ratings.load.each do |review|
+              - if review.approved == true
+                .panel.panel-info.panel-little
+                  .panel-heading 
+                    %h5== <strong>#{review.customer.email}</strong> #{t(:wrote)}
+                  .panel-body
+                    %h5
+                      %em== - "#{review.text}"
+                  .panel-footer
+                    %h5== #{t(:rating)} <strong>#{review.rating}</strong> 
+          - if can? :new, Rating
+            %h4#rate= t(:rate_this)
+            = form_for [@book, @rating] do |rating|
+              %h5
+                %label.control-label== #{t(:your_rating)} #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control', style:'width:60px'}
+                %br
+                %label.control-label== #{t(:your_review)} #{rating.text_area :text, class: 'form-control', style:'width:400px'}
+                %br= rating.submit t(:rate_and_review), class:"btn btn-info"

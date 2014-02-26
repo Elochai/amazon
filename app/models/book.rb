@@ -1,6 +1,6 @@
 class Book < ActiveRecord::Base
   mount_uploader :cover, CoverUploader
-  paginates_per 9
+  paginates_per 6
   has_many :ratings, dependent: :destroy
   belongs_to :author
   belongs_to :category

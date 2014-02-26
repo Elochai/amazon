@@ -22,24 +22,27 @@
 - else
   - @books.each do |book|
     .inline
-      .panel.panel-info.panel-little
-        .panel-heading.header-book
+      .panel.panel-info.carousel-panel
+        .panel-heading
           %h4
             .pull-left
               .label.label-success
                 = book.avg_rating
-                %i.icon-star
+                - klass = book.avg_rating > 0 ? 'icon-star' : 'icon-star-empty'
+                = link_to "", book_path(book) + '#rate', title:"Rate this book", class:klass
             .pull-right
               .label.label-primary
-                = book.wishers.count
-                %i.icon-user
+                = link_to "#{book.wishers.count}", wishers_book_path(book), title:"Book wishers", class:'wishers-link' 
+                - if customer_signed_in? && current_customer.wishes.include?(book)
+                  %i.icon-user
+                  = link_to '', remove_wish_book_path(book), method: :post, class:"icon-remove", title: 'Remove from wish list'
+                - else
+                  %i.icon-user
+                  = link_to '', add_wish_book_path(book), method: :post, class:"icon-plus", title: 'Add to wish list'
             %strong= link_to "#{book.title}", book_path(book)
-        .panel-body.panel-book
-          %h5
-            = link_to image_tag(book.cover.thumb.url), book_path(book)
-            %br
-            %h4
-              %label.label.label-primary= number_to_currency book.price
+        .panel-body.book-body
+          = link_to image_tag(book.cover.thumb.url), book_path(book)
+          .book-info
             %strong= t(:author) 
             = book.author.full_name
             %br
@@ -47,7 +50,11 @@
             = book.category.title
             %br
             %strong= t(:description) 
-            %br= book.description
+            = book.description
+            %br
+            %h4
+              %strong== #{t(:price)}:
+              %strong= number_to_currency book.price
         .panel-footer
           = form_tag "/add_to_order/#{book.id}", class: 'form-inline' do
             - if book.in_stock > 0

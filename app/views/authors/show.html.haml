@@ -1,12 +1,15 @@
 .container
   %center 
-    %h2== "#{@author.full_name}":
-    %h4
-      %br== #{t(:author_full_name)}<strong>#{@author.full_name}</strong>
-      == #{t(:bio)} <strong>#{@author.biography}</strong>
-      %br
-      %br
-      == #{t(:author_books)}
-      - @author.books.each do |book|
-        %br
-        = link_to "#{book.title}", book_path(book), method: :get
+    .panel.panel-info.panel-small
+      .panel-heading
+        %h3== "#{@author.full_name}":
+      .panel-body
+        %h4
+          == #{t(:author_full_name)}<strong>#{@author.full_name}</strong>
+          %br
+          == #{t(:bio)} <strong>#{@author.biography}</strong>
+          %hr
+          == #{t(:author_books)}
+          - @author.books.each do |book|
+            %br
+            = link_to "#{book.title}", book_path(book), method: :get

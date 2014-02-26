@@ -1,12 +1,13 @@
 .container
   %center 
-    %h2== "#{@category.title}": 
-    %h4
-      %br
-      == #{t(:category_name)} <strong>#{@category.title}</strong>
-      %br
-      %br
-      = t(:book_in_cat)
-      - @category.books.each do |book|
-        %br
-        = link_to "#{book.title}", book_path(book), method: :get
+    .panel.panel-info.panel-small
+      .panel-heading
+        %h3== "#{@category.title}": 
+      .panel-body
+        %h4
+          == #{t(:category_name)} <strong>#{@category.title}</strong>
+          %hr
+          = t(:book_in_cat)
+          - @category.books.each do |book|
+            %br
+            = link_to "#{book.title}", book_path(book), method: :get

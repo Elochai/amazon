@@ -20,6 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  welcome: 'Welcome to AMAZON!'
+  our_books: 'Our books:'
   sign_up_first: You need to sign in or sign up before continuing.
   already_have_bill_address: You already have bill address. Edit it if you want.
   bill_address_suc_create: Bill address was successfully created.
@@ -158,6 +160,7 @@ en:
   bio: 'Biography:'
   author_books: 'Books of this author:'
   no_rated_books: 'No rated books right now'
+  our_top_rated: 'Our top rated books:'
   views:
     pagination:
       first: "&laquo; First"
