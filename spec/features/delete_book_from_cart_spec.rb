@@ -13,7 +13,7 @@ feature "Delete book from cart" do
     click_button 'Sign in'
     visit book_path(book)
     click_on 'Add to cart'
-    click_on 'Delete from cart'
+    click_on 'Remove from cart'
     expect(page).to_not have_content book.title
     expect(customer.order_items.load.count).to eq(0) 
     expect(page).to have_content 'Your cart is empty...'

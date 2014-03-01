@@ -16,7 +16,7 @@ feature "Show book wishers" do
 
   scenario "A customer can see list of book wishers" do
     click_on "Add to wish list"
-    click_on "Show book wishers"
+    click_on "Book wishers"
     expect(page).to have_content "user@gmail.com"
   end
 end
