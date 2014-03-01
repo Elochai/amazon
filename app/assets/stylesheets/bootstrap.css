@@ -6320,6 +6320,10 @@ button.close {
   overflow: hidden;
 }
 
+.big {
+  font-size: 17px;
+}
+
 .carousel-panel {
   width: 530px;
 }

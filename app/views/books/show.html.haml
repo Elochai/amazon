@@ -14,7 +14,7 @@
           == #{t(:description)} <strong>#{@book.description}</strong><br><br>
           == #{t(:ratings)} <strong>#{@book.avg_rating}</strong><br>
           == #{t(:wished_by)}
-          = link_to "#{@book.wishers.count}", wishers_book_path(@book), title:"Show book wishers" 
+          = link_to "#{@book.wishers.count}", wishers_book_path(@book), title: t(:book_wishers)
           = t(:customers)
           %br
           %br

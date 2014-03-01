@@ -37,7 +37,7 @@
     .panel.panel-info.panel-little
       .panel-heading
         %h4= t(:your_cc)
-        == #{link_to "", edit_credit_card_path(current_customer.credit_card), class:'icon-pencil', title: 'Edit credit card'} | #{link_to "", credit_card_path(current_customer.credit_card), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete credit card'}  
+        == #{link_to "", edit_credit_card_path(current_customer.credit_card), class:'icon-pencil', title: t(:edit_credit_card)} | #{link_to "", credit_card_path(current_customer.credit_card), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_credit_card)}  
       .panel-body
         %strong= t(:owner)
         = current_customer.credit_card.firstname 
@@ -60,7 +60,7 @@
       .panel.panel-info.panel-little
         .panel-heading
           %h4= t(:your_ba)
-          == #{link_to "", edit_bill_address_path(current_customer.bill_address), class:'icon-pencil', title: 'Edit bill address'} | #{link_to "", bill_address_path(current_customer.bill_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete bill address'}
+          == #{link_to "", edit_bill_address_path(current_customer.bill_address), class:'icon-pencil', title: t(:edit_bill_address)} | #{link_to "", bill_address_path(current_customer.bill_address), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_bill_address)}
         .panel-body
           == #{current_customer.bill_address.country.name}<br>#{current_customer.bill_address.zipcode}, #{current_customer.bill_address.city}<br>#{current_customer.bill_address.address}
         .panel-footer
@@ -72,7 +72,7 @@
       .panel.panel-info.panel-little
         .panel-heading
           %h4= t(:your_sa) 
-          == #{link_to "", edit_ship_address_path(current_customer.ship_address), class:'icon-pencil', title: 'Edit ship address'} | #{link_to "", ship_address_path(current_customer.ship_address), method: :delete, data: {confirm: 'Are you sure?'}, class:'icon-trash', title: 'Delete ship address'}
+          == #{link_to "", edit_ship_address_path(current_customer.ship_address), class:'icon-pencil', title: t(:edit_ship_address)} | #{link_to "", ship_address_path(current_customer.ship_address), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_ship_address)}
         .panel-body
           == #{current_customer.ship_address.country.name}<br>#{current_customer.ship_address.zipcode}, #{current_customer.ship_address.city}<br>#{current_customer.ship_address.address}
         .panel-footer

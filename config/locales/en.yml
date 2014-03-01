@@ -88,6 +88,12 @@ en:
   create_sa: Create ship address
   new_ba: 'Create ship address:'
   edit_cc: 'Edit credit card:'
+  edit_credit_card: 'Edit credit card'
+  delete_credit_card: 'Delete credit card'
+  edit_bill_address: 'Edit bill address'
+  edit_ship_address: 'Edit ship address'
+  delete_bill_address: 'Delete bill address'
+  delete_ship_address: 'Delete ship address'
   update_cc: Update credit card
   create_cc: Create credit card 
   new_cc: 'Create credit card:'
@@ -161,6 +167,12 @@ en:
   author_books: 'Books of this author:'
   no_rated_books: 'No rated books right now'
   our_top_rated: 'Our top rated books:'
+  book_wishers: 'Book wishers'
+  rate_book: 'Rate this book'
+  clear_cart: 'Clear shopping cart'
+  remove_from_cart: 'Remove from cart'
+  change_oi_quantity: 'Change quantity'
+  are_you_sure: 'Are you sure?'
   views:
     pagination:
       first: "&laquo; First"

@@ -4,7 +4,7 @@
       %h2
         %strong.label.label-warning= t(:empty_cart)
     - else 
-      == #{link_to "Clear shopping cart", clear_cart_path, data: {confirm: "Are you sure?"}, class:'btn btn-warning', title:"Clear shopping cart"}
+      == #{link_to t(:clear_cart), clear_cart_path, data: {confirm: t(:are_you_sure)}, class:'btn btn-warning'}
       %h2= t(:new_order)
       %table.table.table-hover.table-small
         %thead
@@ -23,7 +23,7 @@
                 %td= oi.book.category.title
                 %td= oi.quantity
                 %td= number_to_currency(oi.price)
-                %td== #{link_to '', edit_order_item_path(oi), class: 'icon-pencil', title:"Change quantity"} | #{link_to "", order_item_path(oi), method: :delete, data: {confirm: "Are you sure?"}, class:'icon-trash', title:"Delete from cart"}
+                %td== #{link_to '', edit_order_item_path(oi), class: 'icon-pencil', title: t(:change_oi_quantity)} | #{link_to "", order_item_path(oi), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:remove_from_cart)}
       %center
         %h3== #{t(:total_price)} <span class="label label-primary">#{number_to_currency(current_customer.order_price)}</span> 
         = form_for @order do |order|

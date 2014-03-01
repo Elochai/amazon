@@ -23,22 +23,22 @@
   - @books.each do |book|
     .inline
       .panel.panel-info.carousel-panel
-        .panel-heading
+        .panel-heading.header-book
           %h4
             .pull-left
               .label.label-success
                 = book.avg_rating
                 - klass = book.avg_rating > 0 ? 'icon-star' : 'icon-star-empty'
-                = link_to "", book_path(book) + '#rate', title:"Rate this book", class:klass
+                = link_to "", book_path(book) + '#rate', title: t(:rate_book), class:klass
             .pull-right
               .label.label-primary
-                = link_to "#{book.wishers.count}", wishers_book_path(book), title:"Book wishers", class:'wishers-link' 
+                = link_to "#{book.wishers.count}", wishers_book_path(book), title: t(:book_wishers), class:'wishers-link' 
                 - if customer_signed_in? && current_customer.wishes.include?(book)
                   %i.icon-user
-                  = link_to '', remove_wish_book_path(book), method: :post, class:"icon-remove", title: 'Remove from wish list'
+                  = link_to '', remove_wish_book_path(book), method: :post, class:"icon-remove", title: t(:remove_wish)
                 - else
                   %i.icon-user
-                  = link_to '', add_wish_book_path(book), method: :post, class:"icon-plus", title: 'Add to wish list'
+                  = link_to '', add_wish_book_path(book), method: :post, class:"icon-plus", title: t(:add_wish)
             %strong= link_to "#{book.title}", book_path(book)
         .panel-body.book-body
           = link_to image_tag(book.cover.thumb.url), book_path(book)
@@ -52,11 +52,9 @@
             %strong= t(:description) 
             = book.description
             %br
-            %h4
-              %strong== #{t(:price)}:
-              %strong= number_to_currency book.price
         .panel-footer
           = form_tag "/add_to_order/#{book.id}", class: 'form-inline' do
+            %strong.label.label-primary.big= number_to_currency book.price
             - if book.in_stock > 0
               .form-group
                 = number_field_tag :quantity, 1, min: 1, max: "#{book.in_stock}", class: 'input-small form-control xs'
