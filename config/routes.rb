@@ -11,6 +11,7 @@ Amazon::Application.routes.draw do
     collection do
       get 'author_filter/:author_id', to: 'books#author_filter', as: 'author_filter'
       get 'category_filter/:category_id', to: 'books#category_filter', as: 'category_filter'
+      get 'top_rated', to: 'books#top_rated', as: 'top_rated'
     end
     resources :ratings
   end
@@ -25,7 +26,7 @@ Amazon::Application.routes.draw do
 
   get 'clear_cart', to: 'order_items#clear_cart'
   post 'add_to_order/:book_id', to: 'order_items#add_to_order', as: 'add_to_order'
-  get 'top_rated_books', to: 'books#top_rated_books', as: 'top_rated_books'
+
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -44,7 +44,7 @@ class Ability
         can :read, :all
         can [:new, :create], Rating
         can [:clear_cart, :add_to_order], OrderItem
-        can [:top_rated_books], Book
+        can [:top_rated], Book
       end
     else
       can :read, Book

@@ -7,7 +7,7 @@ class BooksController < ApplicationController
     @books = Book.all.page(params[:page])
   end
 
-  def top_rated_books
+  def top_rated
     @books = Book.top_rated
   end
  

@@ -37,26 +37,26 @@ describe BooksController do
     end
   end
 
-  describe "GET #top_rated_books" do
-    context "with top_rated_books ability" do
+  describe "GET #top_rated" do
+    context "with top_rated ability" do
       before do
-        @ability.can :top_rated_books, Book
+        @ability.can :top_rated, Book
       end
       it "returns an array of top rated books" do
-        get :top_rated_books 
+        get :top_rated 
         expect(assigns(:books)).to eq [@rated_book]
       end 
       it "renders the index template" do
-        get :top_rated_books
-        expect(response).to render_template("top_rated_books")
+        get :top_rated
+        expect(response).to render_template("top_rated")
       end
     end
     context "without read ability" do
       before do
-        @ability.cannot :top_rated_books, Book
+        @ability.cannot :top_rated, Book
       end
       it "redirects to customer_session_path" do
-        get :top_rated_books
+        get :top_rated
         expect(response).to redirect_to customer_session_path
       end
     end
