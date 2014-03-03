@@ -176,36 +176,70 @@ describe OrderItemsController do
       before do
         @ability.can :create, OrderItem
       end
-      it "creates new order_item if it is not in the cart already" do
-        OrderItem.destroy_all
-        expect {post :create, book_id: @book.id, quantity: 1}.to change(OrderItem, :count).by(1)
+      context "with valid attributes" do
+        it "creates new order_item if it is not in the cart already" do
+          OrderItem.destroy_all
+          expect {post :create, book_id: @book.id, quantity: 1}.to change(OrderItem, :count).by(1)
+        end
+        it "updates order_item quantity by 1 if it is in the cart already" do
+          post :create, book_id: @book.id, quantity: 1
+          @order_item.reload
+          expect(@order_item.quantity).to eq(2)
+        end
+        it "redirects to new_order_path" do
+          post :create, book_id: @book.id
+          expect(response).to redirect_to new_order_path
+        end
       end
-      it "updates order_item quantity by 1 if it is in the cart already" do
-        post :create, book_id: @book.id, quantity: 1
-        @order_item.reload
-        expect(@order_item.quantity).to eq(2)
-      end
-      it "redirects to new_order_path" do
-        post :create, book_id: @book.id
-        expect(response).to redirect_to new_order_path
+      context "with invalid attributes" do
+        it "do not creates new order_item if it is not in the cart already" do
+          OrderItem.destroy_all
+          expect {post :create, book_id: @book.id, quantity: -1}.to_not change(OrderItem, :count)
+        end
+        it "do not updates order_item quantity by 1 if it is in the cart already" do
+          post :create, book_id: @book.id, quantity: -1
+          @order_item.reload
+          expect(@order_item.quantity).to eq(1)
+        end
+        it "redirects to root_path" do
+          post :create, book_id: @book.id, quantity: -1
+          expect(response).to redirect_to root_path
+        end
       end
     end
     context "without create ability" do
       before do
         @ability.cannot :create, OrderItem
       end
-      it "do not creates new order_item if it is not in the cart already" do
-        expect {post :create, book_id: @book.id, quantity: 1}.to_not change(OrderItem, :count)
+      context "with valid attributes" do
+        it "do not creates new order_item if it is not in the cart already" do
+          OrderItem.destroy_all
+          expect {post :create, book_id: @book.id, quantity: 1}.to_not change(OrderItem, :count)
+        end
+        it "do not updates order_item quantity by 1 if it is in the cart already" do
+          post :create, book_id: @book.id, quantity: 1
+          @order_item.reload
+          expect(@order_item.quantity).to eq(1)
+        end
+        it "redirects to customer_session_path" do
+          post :create, book_id: @book.id
+          expect(response).to redirect_to customer_session_path
+        end
       end
-      it "do not updates order_item quantity by 1 if it is in the cart already" do
-        @oi = FactoryGirl.create :order_item, customer_id: @customer.id, book_id: @book.id, quantity: 1
-        post :create, book_id: @book.id, quantity: 1
-        @oi.reload
-        expect(@oi.quantity).to_not eq(2)
-      end
-      it "redirects to customer_session_path" do
-        post :create, book_id: @book.id
-        expect(response).to redirect_to customer_session_path
+      context "with invalid attributes" do
+        it "do not creates new order_item if it is not in the cart already" do
+          OrderItem.destroy_all
+          expect {post :create, book_id: @book.id, quantity: -1}.to_not change(OrderItem, :count)
+        end
+        it "do not updates order_item quantity by 1 if it is in the cart already" do
+          post :create, book_id: @book.id, quantity: -1
+          @order_item.reload
+          expect(@order_item.quantity).to eq(1)
+        end
+        it "redirects to customer_session_path" do
+          post :create, book_id: @book.id, quantity: -1
+          expect(response).to redirect_to customer_session_path
+        end
       end
     end
   end
