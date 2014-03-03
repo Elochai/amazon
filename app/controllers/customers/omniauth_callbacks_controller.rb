@@ -5,7 +5,7 @@ class Customers::OmniauthCallbacksController < ApplicationController
       flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "Facebook"
       sign_in_and_redirect @customer, :event => :authentication
     else
-      flash[:notice] = "authentication error"
+      flash[:notice] = t(:auth_error)
       redirect_to root_path
     end
   end

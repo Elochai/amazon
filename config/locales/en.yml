@@ -180,6 +180,9 @@ en:
       previous: "&lsaquo; Prev"
       next: "Next &rsaquo;"
       truncate: "..."
+  auth_error: authentication error
+  oi_succ_create: 'Book was successfully added to cart.'
+  oi_fail_create: 'An error has occured while adding book to cart.'
 
 
 

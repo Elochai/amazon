@@ -25,7 +25,7 @@
     @order = current_customer.orders.new(order_params)
     respond_to do |format|
       if current_customer.has_anything_in_cart?
-        if @order.save!
+        if @order.save
           @order.update_store!(current_customer)
           format.html { redirect_to @order, notice: t(:order_suc_create) }
           format.json { render action: 'show', status: :created, location: @order }

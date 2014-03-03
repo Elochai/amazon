@@ -14,4 +14,14 @@ class Book < ActiveRecord::Base
   scope :by_author, ->(author) {where('author_id = ?', author)}
   scope :by_category, ->(category) {where('category_id = ?', category)}
   scope :top_rated, -> {where("avg_rating > 0").order("avg_rating DESC").limit(5)}
+
+  def recalculate_avg_rating!
+    if ratings.where(approved: true).any?
+      self.avg_rating = self.ratings.where(approved: true).sum(:rating)/ratings.where(approved: true).count
+      self.save
+    else
+      self.avg_rating = 0
+      self.save
+    end
+  end
 end

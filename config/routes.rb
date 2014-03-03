@@ -18,14 +18,14 @@ Amazon::Application.routes.draw do
   
   resources :authors 
   resources :categories 
-  resources :order_items 
+  resources :order_items, except: [:create, :new, :index, :show] 
   resources :bill_addresses 
   resources :ship_addresses 
   resources :credit_cards 
   resources :orders 
 
   get 'clear_cart', to: 'order_items#clear_cart'
-  post 'add_to_order/:book_id', to: 'order_items#add_to_order', as: 'add_to_order'
+  post 'add_to_order/:book_id', to: 'order_items#create', as: 'create'
 
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.

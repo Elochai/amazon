@@ -34,7 +34,6 @@ class Ability
         can :manage, :all
         can :access, :rails_admin
         can :dashboard
-        can [:clear_cart, :add_to_order], OrderItem
         can :state, Order
       else
         can [:add_wish, :remove_wish, :author_filter, :category_filter, :wishers], Book
@@ -43,7 +42,7 @@ class Ability
         can :manage, [CreditCard, Customer, Address]
         can :read, :all
         can [:new, :create], Rating
-        can [:clear_cart, :add_to_order], OrderItem
+        can [:clear_cart, :create], OrderItem
         can [:top_rated], Book
       end
     else

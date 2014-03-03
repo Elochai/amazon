@@ -35,13 +35,17 @@ class OrderItemsController < ApplicationController
     redirect_to new_order_path
   end
 
-  def add_to_order
-    if current_customer.order_items.in_cart_with(params[:book_id]).empty?
-      current_customer.order_items.create(book_id: params[:book_id], quantity: params[:quantity])
-    else
-      current_customer.order_items.find_by(order_id: nil, book_id: params[:book_id]).increase_quantity!(params[:quantity])
+  def create
+    @order_item = OrderItem.new
+    respond_to do |format|
+      if @order_item.add_to_order!(params[:book_id], params[:quantity], current_customer)
+        format.html { redirect_to new_order_path, notice: t(:oi_succ_create) }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to root_path, alert: t(:oi_fail_create) }
+        format.json { render json: @order_item.errors, status: :unprocessable_entity }
+      end
     end
-    redirect_to new_order_path
   end
  
   private

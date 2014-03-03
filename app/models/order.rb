@@ -12,13 +12,13 @@ class Order < ActiveRecord::Base
   validates :state, :price, presence: true
 
   state_machine :state, :initial => :in_progress do
-    after_transition :on => :complete_order, :do => :complete!
+    after_transition :on => :complete, :do => :complete!
 
     event :ship do
       transition :in_progress => :shipped
     end
 
-    event :complete_order do
+    event :complete do
       transition :shipped => :completed
     end
   end
@@ -54,7 +54,7 @@ class Order < ActiveRecord::Base
 
   def complete!
     self.completed_at = Date.today
-    save!
+    save
   end
 end
 

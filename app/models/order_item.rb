@@ -23,6 +23,15 @@ class OrderItem < ActiveRecord::Base
     save
   end
 
+  def add_to_order!(book, quantity, customer)
+    if customer.order_items.in_cart_with(book).empty?
+      self.update(book_id: book, quantity: quantity, customer_id: customer.id)
+      self.save
+    else
+      OrderItem.find_by(order_id: nil, book_id: book, customer_id: customer.id).increase_quantity!(quantity)
+    end
+  end
+
   private 
   def if_in_stock
     unless book.in_stock.to_i >= quantity.to_i

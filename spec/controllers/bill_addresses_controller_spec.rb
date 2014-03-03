@@ -3,7 +3,8 @@ require 'spec_helper'
 describe BillAddressesController do
   before(:each) do
     @customer = FactoryGirl.create :customer
-    @bill_address= FactoryGirl.create :bill_address, zipcode: 12345
+    @country = FactoryGirl.create :country
+    @bill_address= FactoryGirl.create :bill_address, zipcode: 12345, country: @country
     sign_in @customer
     @ability = Object.new
     @ability.extend(CanCan::Ability)
@@ -24,7 +25,7 @@ describe BillAddressesController do
         expect(response).to render_template 'new'
       end
       it "redirects to edit_customer_registration_path if customer already have bill_address" do
-        FactoryGirl.create :bill_address, customer_id: @customer.id
+        FactoryGirl.create :bill_address, customer_id: @customer.id, country: @country
         get :new
         expect(response).to redirect_to edit_customer_registration_path
       end
@@ -78,19 +79,19 @@ describe BillAddressesController do
       end
       context "with valid attributes" do
         it "creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address)}.to change(BillAddress, :count).by(1)
+          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)}.to change(BillAddress, :count).by(1)
         end
         it "redirects to edit_customer_registration_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address)
+          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)
           expect(response).to redirect_to edit_customer_registration_path
         end
       end
       context "with invalid attributes" do
         it "do not creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")}.to_not change(BillAddress, :count)      
+          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(BillAddress, :count)      
         end
         it "renders template new" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")
+          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")
           expect(response).to render_template "new"
         end
       end
@@ -101,19 +102,19 @@ describe BillAddressesController do
       end
       context "with valid attributes" do
         it "do not creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address)}.to_not change(BillAddress, :count)
+          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)}.to_not change(BillAddress, :count)
         end
         it "do not redirects to edit_customer_registration_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address)
+          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)
           expect(response).to_not redirect_to edit_customer_registration_path
         end
       end
       context "with invalid attributes" do
         it "do not creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")}.to_not change(BillAddress, :count)      
+          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(BillAddress, :count)      
         end
         it "redirects to customer_session_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")
+          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")
           expect(response).to redirect_to customer_session_path
         end
       end
@@ -128,27 +129,27 @@ describe BillAddressesController do
       end
       it "receives find and return bill_address" do
         expect(BillAddress).to receive(:find).with(@bill_address.id.to_s).and_return @bill_address
-        put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address)
+        put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country)
       end
       context "with valid attributes" do
         it "updates @bill_address's attributes" do
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, address: "new address")
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, address: "new address")
           @bill_address.reload
           expect(@bill_address.address).to eq "new address"
         end
         it "redirects to edit_customer_registration_path" do  
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address)
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country)
           expect(response).to redirect_to edit_customer_registration_path
         end
       end
       context "with invalid attributes" do
         it "do not updates @bill_address's attributes" do
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, zipcode: "zipcode")
           @bill_address.reload
           expect(@bill_address.zipcode).to_not eq "zipcode"
         end
         it "renders template edit" do  
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, zipcode: "zipcode")
           expect(response).to render_template "edit"
         end
       end
@@ -160,23 +161,23 @@ describe BillAddressesController do
       end
       context "with valid attributes" do
         it "do not updates @bill_address's attributes" do
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, address: "new address")
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, address: "new address")
           @bill_address.reload
           expect(@bill_address.address).to_not eq "new address"
         end
         it "do not redirects to edit_customer_registration_path" do  
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address)
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country)
           expect(response).to_not redirect_to edit_customer_registration_path
         end
       end
       context "with invalid attributes" do
         it "do not updates @bill_address's attributes" do
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, zipcode: "zipcode")
           @bill_address.reload
           expect(@bill_address.zipcode).to_not eq "zipcode"
         end
         it "redirects to customer_session_path" do  
-          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, zipcode: "zipcode")
+          put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, zipcode: "zipcode")
           expect(response).to redirect_to customer_session_path
         end
       end

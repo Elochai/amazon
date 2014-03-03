@@ -11,8 +11,6 @@ describe "Customer" do
       it{ should be_able_to(:manage, :all) }
       it{ should be_able_to(:access, :rails_admin) }
       it{ should be_able_to(:state, Order.new) }
-      it{ should be_able_to(:clear_cart, OrderItem.new) }
-      it{ should be_able_to(:add_to_order, OrderItem.new) }
     end
 
     context "when signed in as simple customer" do
@@ -23,7 +21,7 @@ describe "Customer" do
       it{ should be_able_to(:author_filter, Book.new) }
       it{ should be_able_to(:category_filter, Book.new) }
       it{ should be_able_to(:top_rated, Book.new) }
-      it{ should be_able_to(:add_to_order, OrderItem.new) }
+      it{ should be_able_to(:create, OrderItem.new) }
       it{ should be_able_to(:read, :all) }
       it{ should be_able_to(:manage, Address.new) }
       it{ should be_able_to(:manage, CreditCard.new) }

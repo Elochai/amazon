@@ -17,6 +17,7 @@ describe Book do
     it { expect(book).to belong_to(:category) }
     it { expect(book).to have_and_belong_to_many(:wishers).class_name("Customer") }
   end
+
   context "validations" do
     it { expect(book).to validate_presence_of(:title) }
     it { expect(book).to validate_presence_of(:price) }
@@ -24,6 +25,7 @@ describe Book do
     it { expect(book).to validate_numericality_of(:in_stock).is_greater_than_or_equal_to(0) }
     it { expect(book).to validate_numericality_of(:price).is_greater_than_or_equal_to(0.01) }
   end
+
   context ".top_rated scope" do
     it "orders first 5 records with descending avg_rating" do
       rating.approved = true
@@ -35,6 +37,7 @@ describe Book do
       expect(Book.top_rated).to eq([book, second_book])
     end
   end
+
   context ".by_author scope" do
     it "selects recors with certain author_id" do
       expect(Book.by_author(author.id)).to include(book_with_author)
@@ -43,12 +46,37 @@ describe Book do
       expect(Book.by_author(author.id)).to_not include(book_with_category)
     end
   end
+
   context ".by_category scope" do
     it "selects recors with certain category_id" do
       expect(Book.by_category(category.id)).to include(book_with_category)
     end
     it "do not selects recors without certain category_id" do
       expect(Book.by_category(category.id)).to_not include(book_with_author)
+    end
+  end
+
+  context ".recalculate_avg_rating!" do
+    it "counts and set avarage rating of the book if it has approved ratings" do
+      rating.approved = true
+      rating2.approved = true
+      rating.save!
+      rating2.save!
+      book.recalculate_avg_rating!
+      expect(book.reload.avg_rating).to eq(8)
+    end
+    it "sets zero rating for the book if it hasn't approved rating" do
+      rating.approved = false
+      rating2.approved = false
+      rating.save!
+      rating2.save!
+      book.recalculate_avg_rating!
+      expect(book.avg_rating).to eq(0)
+    end
+    it "sets zero rating for the book if it has no rating" do
+      Rating.all.destroy_all
+      book.recalculate_avg_rating!
+      expect(book.avg_rating).to eq(0)
     end
   end
 end
