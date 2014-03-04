@@ -19,7 +19,7 @@ describe BooksController do
       end
       it "returns an array of books" do
         get :index 
-        expect(assigns(:books)).to eq [@book, @rated_book]
+        expect(assigns(:books)).to eq [@rated_book, @book]
       end 
       it "renders the index template" do
         get :index

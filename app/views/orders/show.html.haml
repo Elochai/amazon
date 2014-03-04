@@ -1,6 +1,6 @@
 .container
   %center 
-    %h2== #{t(:order_from)} "#{@order.created_at}": 
+    %h2== #{t(:order_from)} #{@order.customer.id}#{@order.created_at.to_formatted_s(:number)} (#{@order.created_at.to_formatted_s(:long)})
     %h3= t(:books_in_order)
     %table.table.table-hover.table-small
       %thead
@@ -13,11 +13,11 @@
         %tbody
           -  @order.order_items.each do |oi|
             %tr.text-center
-              %td= oi.book.title
-              %td= oi.book.author.full_name
-              %td= oi.book.category.title
+              %td= link_to "#{oi.book.title}", book_path(oi.book.id), method: :get
+              %td= link_to "#{oi.book.author.full_name}", author_path(oi.book.author.id), method: :get
+              %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
               %td= oi.quantity
-              %td= number_to_currency(oi.price)
+              %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
     %h5
       .inline
         .panel.panel-info.panel-little

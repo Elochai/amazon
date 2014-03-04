@@ -9,8 +9,9 @@ class Book < ActiveRecord::Base
   validates :title, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
   validates :in_stock, numericality: { greater_than_or_equal_to: 0 }, presence: true
-  validates :description, length: { maximum: 350 }
+  validates :description, length: { maximum: 400 }
 
+  default_scope { order('id DESC') } 
   scope :by_author, ->(author) {where('author_id = ?', author)}
   scope :by_category, ->(category) {where('category_id = ?', category)}
   scope :top_rated, -> {where("avg_rating > 0").order("avg_rating DESC").limit(5)}

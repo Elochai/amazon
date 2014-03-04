@@ -5,5 +5,5 @@
         %h4== #{t(:change_quantity)} "#{@order_item.book.title}":
       .panel-body
         = form_for @order_item do |item|
-          %label.control-label== #{t(:new_quantity)} #{item.number_field :quantity, min: 1, step: 1, class: 'form-control s'}
+          %label.control-label== #{t(:new_quantity)} #{item.number_field :quantity, min: 1, max: "#{@order_item.book.in_stock}", step: 1, class: 'form-control s'}
           %br= item.submit t(:save), class: 'btn btn-info'

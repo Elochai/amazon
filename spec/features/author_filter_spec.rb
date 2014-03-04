@@ -9,9 +9,11 @@ feature "Author filter" do
   before(:each) do
     visit books_path
   end
-  scenario "A customer can navigate books by categories" do
+  scenario "A customer can navigate books by authors" do
     click_on 'Filter by author'
-    click_on 'John Tolkien'
+    within '#author_filter' do
+      click_on 'John Tolkien'
+    end
     expect(page).to have_content book.title
     expect(page).to_not have_content book2.title
   end

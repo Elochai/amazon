@@ -24,6 +24,16 @@ describe Book do
     it { expect(book).to validate_presence_of(:in_stock) }
     it { expect(book).to validate_numericality_of(:in_stock).is_greater_than_or_equal_to(0) }
     it { expect(book).to validate_numericality_of(:price).is_greater_than_or_equal_to(0.01) }
+    it { expect(book).to ensure_length_of(:description).is_at_most(400) }
+  end
+
+  context "default scope" do
+    it "orders by descending ID" do
+      Book.destroy_all
+      first_book = FactoryGirl.create(:book)
+      second_book = FactoryGirl.create(:book)
+      expect(Book.all).to eq [second_book, first_book]
+    end
   end
 
   context ".top_rated scope" do
@@ -34,7 +44,7 @@ describe Book do
       rating.save!
       rating2.save!
       rating_for_second_book.save!
-      expect(Book.top_rated).to eq([book, second_book])
+      expect(Book.top_rated).to eq([second_book, book])
     end
   end
 

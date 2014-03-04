@@ -134,7 +134,7 @@ en:
   authors: Authors
   admin_panel: Admin panel
   orders: Orders
-  cart: My shopping cart
+  cart: Cart
   profile: Profile
   sign_out: Sign out
   sign_in_facebook: Sign in with Facebook
@@ -144,7 +144,8 @@ en:
   save: Save
   your_orders: 'Your orders:'
   no_orders: You do not have any orders.
-  update_date: Date of update
+  create_date: Date of create
+  order_number: Order number
   price: Price
   state: State
   complete_date: Date of complete
@@ -160,7 +161,8 @@ en:
   sa_info: 'Ship address info:'
   buy: 'Let me buy already!'
   books_in_order: 'Books in order:'
-  order_from: Order from
+  order_from: Order №
+  total: 'total:'
   status: 'Order status:'
   author_full_name: 'Full name of author:'
   bio: 'Biography:'

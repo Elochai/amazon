@@ -9,7 +9,7 @@
 <body>
 <nav class="navbar navbar-inverse navbar-static-top">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="/books/">AMAZON</a>
+		<%= link_to raw("<i class='icon-home icon-white'></i> AMAZON"), root_path, class:'navbar-brand' %>
   </div>
     <ul class="nav navbar-nav navbar-left">
         <li><%= link_to t(:books), books_path %></li>
@@ -23,15 +23,16 @@
     <ul class="nav navbar-nav navbar-right">
   		<% if customer_signed_in? %>
         <% if can? :manage, rails_admin %>
-          <li class='active'><%= link_to t(:admin_panel), rails_admin_path %></li>
+          <li class='active'><%= link_to raw("<i class='icon-cog icon-white'></i> #{t(:admin_panel)}"), rails_admin_path %></li>
         <% end %>
-        <li class='active'><%= link_to raw("#{t(:cart)} <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
-  			<li><%= link_to "#{t(:profile)} (#{current_customer.email})", edit_customer_registration_path %></li>
-  			<li><%= link_to t(:sign_out), destroy_customer_session_path, :method => :delete %></li>
+        <% klass = current_customer.has_anything_in_cart? ? 'active' : '' %>
+        <li class="<%= klass %>"><%= link_to raw("<i class='icon-shopping-cart icon-white'></i> #{t(:cart)} <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
+  			<li><%= link_to raw("<i class='icon-user icon-white'></i> #{t(:profile)} (#{current_customer.email})"), edit_customer_registration_path %></li>
+  			<li><%= link_to raw("<i class='icon-off icon-white'></i> #{t(:sign_out)}"), destroy_customer_session_path, :method => :delete %></li>
   		<% else %>
-  			 <li><%= link_to t(:sign_up), new_customer_registration_path %></li>
-         <li><%= link_to t(:sign_in), new_customer_session_path %></li>
-         <li><%= link_to t(:sign_in_facebook), customer_omniauth_authorize_path(:facebook)%></li>
+  			 <li><%= link_to raw("<i class='icon-plus icon-white'></i> #{t(:sign_up)}"), new_customer_registration_path %></li>
+         <li><%= link_to raw("<i class='icon-ok icon-white'></i> #{t(:sign_in)}"), new_customer_session_path %></li>
+         <li><%= link_to raw("<i class='icon-magnet icon-white'></i> #{t(:sign_in_facebook)}"), customer_omniauth_authorize_path(:facebook)%></li>
   		<% end %>
     </ul>
 </nav>

@@ -8,14 +8,16 @@
       %table.table.table-hover.table-small
         %thead
           %tr.success
-            %th.text-center= t(:update_date)
+            %th.text-center= t(:order_number)
+            %th.text-center= t(:create_date)
             %th.text-center= t(:price)
             %th.text-center= t(:state)
             %th.text-center= t(:complete_date)
           %tbody
             - @orders.each do |order|
               %tr.text-center
-                %td= link_to "#{order.created_at}", order_path(order), method: :get
+                %td= link_to "#{order.customer.id}"+"#{order.created_at.to_formatted_s(:number)}", order_path(order), method: :get
+                %td= order.created_at.to_formatted_s(:long)
                 %td= number_to_currency(order.price)
                 %td= order.state.humanize
                 %td= order.completed_at

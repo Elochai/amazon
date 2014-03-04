@@ -1,14 +1,14 @@
 .row
-  .btn-group
-    %button.btn.btn-info.dropdown-toggle#dropdownMenu1{'type' => 'button', 'data-toggle' => 'dropdown'}
+  .btn-group#category_filter
+    %button.btn.btn-info.dropdown-toggle#categories{'type' => 'button', 'data-toggle' => 'dropdown'}
       Filter by category
       %span.caret
     %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
       - Category.all.each do |cat|
         %li{'role' => 'presentation'}
           = link_to "#{cat.title}", category_filter_books_path(cat), 'role' => 'menuitem', 'tabindex' => '-1'
-  .btn-group 
-    %button.btn.btn-info.dropdown-toggle#dropdownMenu1{'type' => 'button', 'data-toggle' => 'dropdown'}
+  .btn-group#author_filter 
+    %button.btn.btn-info.dropdown-toggle#authors{'type' => 'button', 'data-toggle' => 'dropdown'}
       Filter by author
       %span.caret
     %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
@@ -44,10 +44,10 @@
           = link_to image_tag(book.cover.thumb.url), book_path(book)
           .book-info
             %strong= t(:author) 
-            = book.author.full_name
+            = link_to "#{book.author.full_name}", author_path(book.author.id), method: :get
             %br
             %strong= t(:category)
-            = book.category.title
+            = link_to "#{book.category.title}", category_path(book.category.id), method: :get
             %br
             %strong= t(:description) 
             = book.description

@@ -32,10 +32,10 @@
                   = link_to image_tag(book.cover.thumb.url), book_path(book)
                   .book-info
                     %strong= t(:author) 
-                    = book.author.full_name
+                    = link_to "#{book.author.full_name}", author_path(book.author.id), method: :get
                     %br
                     %strong= t(:category)
-                    = book.category.title
+                    = link_to "#{book.category.title}", category_path(book.category.id), method: :get
                     %br
                     %strong= t(:description) 
                     = book.description

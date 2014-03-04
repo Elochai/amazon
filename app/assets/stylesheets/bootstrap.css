@@ -4341,9 +4341,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-brand {
   float: left;
-  padding: 15px 15px;
-  font-size: 18px;
+  padding: 15px 10px;
+  font-size: 16px;
   line-height: 20px;
+  font-weight:bold;
 }
 
 .navbar-brand:hover,
@@ -4659,13 +4660,14 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-brand {
-  color: #999999;
+  color: #D0D0D0;
+  text-shadow: 1px 1px 3px #000, -1px -1px 3px #000, 1px 1px #000, -1px -1px #fff; 
 }
 
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
   color: #ffffff;
-  background-color: transparent;
+  text-shadow: 0 0 8px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
 }
 
 .navbar-inverse .navbar-text {
@@ -4678,15 +4680,21 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffffff;
+  color: #999999;
   background-color: transparent;
+  font-size: 16px;
 }
 
-.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a {
+  color: #ffffff;
+  background-color: #101010;
+}
+
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #ffffff;
-  background-color: #080808;
+  background-color: #000000;
+  font-size: 16px;
 }
 
 .navbar-inverse .navbar-nav > .disabled > a,
@@ -6318,6 +6326,14 @@ button.close {
   vertical-align: top;
   width: 240px;
   overflow: hidden;
+}
+
+.justified {
+  text-align: justify;
+}
+
+.book-info.l {
+  width: 340px;
 }
 
 .big {

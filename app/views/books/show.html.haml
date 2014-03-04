@@ -2,21 +2,22 @@
   %center 
     .panel.panel-info.panel-small
       .panel-heading
-        %h3== "#{@book.title}": 
+        %h3== "#{@book.title}"
       .panel-body
         %h4
           %br
-            = image_tag @book.cover.url
-            %br
-          == #{t(:full_title)} <strong>#{@book.title}</strong><br>
-          == #{t(:author)} <strong>#{@book.author.full_name}</strong><br>
-          == #{t(:category)} <strong>#{@book.category.title}</strong><br>
-          == #{t(:description)} <strong>#{@book.description}</strong><br><br>
+          = image_tag @book.cover.url
+          .book-info.l
+            == #{t(:full_title)} <strong>#{@book.title}</strong><br>
+            == #{t(:author)} <strong>#{link_to "#{@book.author.full_name}", author_path(@book.author.id), method: :get}</strong><br>
+            == #{t(:category)} <strong>#{link_to "#{@book.category.title}", category_path(@book.category.id), method: :get}</strong><br>
+            == #{t(:description)} <strong>#{@book.description}</strong><br>
+          %br
+          %br
           == #{t(:ratings)} <strong>#{@book.avg_rating}</strong><br>
           == #{t(:wished_by)}
           = link_to "#{@book.wishers.count}", wishers_book_path(@book), title: t(:book_wishers)
           = t(:customers)
-          %br
           %br
           == #{t(:sell_price)} <strong>#{number_to_currency(@book.price)}</strong><br>
           == #{t(:in_stock)} <strong>#{@book.in_stock}</strong> 
@@ -46,8 +47,9 @@
                 .panel.panel-info.panel-little
                   .panel-heading 
                     %h5== <strong>#{review.customer.email}</strong> #{t(:wrote)}
+                    %h6== (#{review.created_at.to_formatted_s(:long)})
                   .panel-body
-                    %h5
+                    %h5.justified
                       %em== - "#{review.text}"
                   .panel-footer
                     %h5== #{t(:rating)} <strong>#{review.rating}</strong> 
@@ -55,7 +57,7 @@
             %h4#rate= t(:rate_this)
             = form_for [@book, @rating] do |rating|
               %h5
-                %label.control-label== #{t(:your_rating)} #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control', style:'width:60px'}
+                %label.control-label== #{t(:your_rating)} #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control xs'}
                 %br
-                %label.control-label== #{t(:your_review)} #{rating.text_area :text, class: 'form-control', style:'width:400px'}
+                %label.control-label== #{t(:your_review)} #{rating.text_area :text, rows: 6, cols: 60, class: 'form-control' }
                 %br= rating.submit t(:rate_and_review), class:"btn btn-info"
