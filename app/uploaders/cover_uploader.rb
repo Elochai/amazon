@@ -18,7 +18,7 @@ class CoverUploader < CarrierWave::Uploader::Base
   # Provide a default URL as a default if there hasn't been a file uploaded:
   def default_url
     if Rails.env.production? || Rails.env.staging?
-      "amazon_uploads/" + [version_name, "default.png"].compact.join('_')
+      "/" + Figaro.env.fog_directory + "/" + [version_name, "default.png"].compact.join('_')
     else
       ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.png"].compact.join('_'))
     end
