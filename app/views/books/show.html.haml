@@ -6,7 +6,7 @@
       .panel-body
         %h4
           %br
-          = image_tag "/#{@book.cover.url}"
+          = image_tag "#{@book.cover.url}"
           .book-info.l
             == #{t(:full_title)} <strong>#{@book.title}</strong><br>
             == #{t(:author)} <strong>#{link_to "#{@book.author.full_name}", author_path(@book.author.id), method: :get}</strong><br>
