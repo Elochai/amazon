@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Category filter" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:category) {FactoryGirl.create(:category, title: 'Fantasy')}

@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Show all categories" do
   given!(:category) {FactoryGirl.create(:category)}
   given!(:category2) {FactoryGirl.create(:category, title: "Historic")}

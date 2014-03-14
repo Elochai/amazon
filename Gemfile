@@ -38,6 +38,9 @@ gem 'carrierwave'
 gem "mini_magick"
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'whenever', :require => false
+gem 'fog'
+gem 'figaro'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

@@ -1,43 +1,70 @@
   class OrdersController < ApplicationController
+  before_filter :if_no_current_order?, except: [:show, :index]
   load_and_authorize_resource
   # GET /orders
   # GET /orders.json
   def index
-    @orders = current_customer.orders.load
+    @orders = current_customer.orders
   end
  
   # GET /orders/1
   # GET /orders/1.json
   def show
   end
- 
-  # GET /orders/new
-  def new
-    @order = current_customer.orders.new
-    @credit_card = @order.build_credit_card
-    @bill_address = @order.build_bill_address
-    @ship_address = @order.build_ship_address
-  end
- 
-  # POST /orders
-  # POST /orders.json
-  def create
-    @order = current_customer.orders.new(order_params)
-    respond_to do |format|
-      if current_customer.has_anything_in_cart?
-        if @order.save
-          @order.update_store!(current_customer)
-          format.html { redirect_to @order, notice: t(:order_suc_create) }
-          format.json { render action: 'show', status: :created, location: @order }
-        else
-          format.html { render action: 'new'}
-          format.json { render json: @order.errors, status: :unprocessable_entity }
-        end
-      else
-        format.html { render action: 'new', alert: t(:select_books_to_buy)}
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
+
+  def update_with_coupon
+    if @coupon = Coupon.find_by(number: params[:coupon])
+      current_order.update(coupon_id: @coupon.id)
+      redirect_to order_items_path, notice: t(:succ_coupon) 
+    else
+      redirect_to order_items_path, alert: t(:fail_coupon)
     end
+  end
+
+  def remove_coupon
+    current_order.update(coupon_id: nil)
+    redirect_to order_items_path, notice: t(:remove_coupon_notice)
+  end
+
+  def delivery
+    if current_order.checkout_step > 3
+      redirect_to new_credit_card_path
+    elsif current_order.checkout_step < 3
+      redirect_to new_ship_address_path
+    end
+  end
+
+  def confirm
+    if current_order.checkout_step < 5
+      redirect_to new_credit_card_address_path
+    elsif current_order.order_items.empty?
+      redirect_to root_path, alert: t(:select_books_to_buy)
+    end
+  end
+
+  def add_delivery
+    if Delivery.where(id: params[:delivery_id]).any?
+      current_order.update(delivery_id: params[:delivery_id])
+      current_order.next_step!
+      redirect_to new_credit_card_path, notice: t(:delivery_suc_create)
+    else
+      redirect_to order_delivery_path, alert: t(:delivery_fail_create)
+    end
+  end
+
+  def edit_delivery
+  end
+
+  def place
+    current_order.to_queue!(current_customer)
+    cookies.delete :current_order
+    redirect_to root_path, notice: t(:order_suc_create)
+  end
+
+  def destroy
+    current_order.destroy
+    cookies.delete :current_order
+    redirect_to root_path, notice: t(:order_suc_delete)
   end
 
   private

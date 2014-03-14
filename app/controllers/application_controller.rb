@@ -17,6 +17,24 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_customer)
   end
 
+  def current_order
+    if cookies[:current_order]  
+      if Order.where(id: cookies[:current_order]).any?
+        Order.find(cookies[:current_order])
+      end
+    end
+  end
+
+  def if_no_current_order?
+    if cookies[:current_order].nil? 
+      redirect_to root_path, alert: t(:select_books_to_buy)
+    else
+      if Order.where(id: cookies[:current_order]).empty?
+        redirect_to root_path, alert: t(:select_books_to_buy)
+      end
+    end
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) { |u| 
       u.permit(:firstname, :lastname, :password, :password_confirmation, :current_password) 

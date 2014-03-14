@@ -21,12 +21,14 @@
         <% end %>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <% klass = !current_order.nil? && current_order.order_items.any? ? 'active' : '' %>
+      <% items = !current_order.nil? && current_order.order_items.any? ? "#{current_order.order_items.count}" : 'Empty' %>
+      <% price = !current_order.nil? && current_order.order_items.any? ? "(#{number_to_currency current_order.total_price})" : '' %>
+          <li class="<%= klass %>"><%= link_to raw("<i class='icon-shopping-cart icon-white'></i> #{t(:cart)}: #{items} #{price}"), order_items_path %></li>
   		<% if customer_signed_in? %>
         <% if can? :manage, rails_admin %>
           <li class='active'><%= link_to raw("<i class='icon-cog icon-white'></i> #{t(:admin_panel)}"), rails_admin_path %></li>
         <% end %>
-        <% klass = current_customer.has_anything_in_cart? ? 'active' : '' %>
-        <li class="<%= klass %>"><%= link_to raw("<i class='icon-shopping-cart icon-white'></i> #{t(:cart)} <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
   			<li><%= link_to raw("<i class='icon-user icon-white'></i> #{t(:profile)} (#{current_customer.email})"), edit_customer_registration_path %></li>
   			<li><%= link_to raw("<i class='icon-off icon-white'></i> #{t(:sign_out)}"), destroy_customer_session_path, :method => :delete %></li>
   		<% else %>

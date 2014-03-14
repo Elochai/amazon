@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Create order" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:country) {FactoryGirl.create(:country)}
@@ -7,39 +7,41 @@ feature "Create order" do
   given!(:customer) {FactoryGirl.create(:customer)}
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author, category: category)}
 
-  before do
-    visit new_customer_session_path
-    fill_in 'Email', with: 'user@gmail.com'
-    fill_in 'Password', with: '12345678'
-    click_button 'Sign in'
+  before do 
     visit book_path(book)
     click_on 'Add to cart'
-    within '#cc' do 
-      fill_in 'Card number', with: '12345678901234'
-      fill_in 'CVV', with: '1234'
-      fill_in 'Owner firstname', with: 'Firstname'
-      fill_in 'Owner lastname', with: 'Lastname'
-      fill_in 'Exp month', with: '1'
-      fill_in 'Exp year', with: '2015'
-    end
-    within '#ba' do
-      select 'Ukraine', from: 'Country'
-      fill_in 'City', with:'Dnipropetrovsk'
-      fill_in 'Address', with:'Some address'
-      fill_in 'Zip code', with:'12345'
-      fill_in 'Phone', with:'0671111111'
-    end
-    within '#sa' do
-      select 'Ukraine', from: 'Country'
-      fill_in 'City', with:'Dnipropetrovsk'
-      fill_in 'Address', with:'Some address'
-      fill_in 'Zip code', with:'12345'
-      fill_in 'Phone', with:'0671111111'
-    end
   end
 
-  scenario "A customer creates order successfully with valid data" do
-    click_on 'Let me buy already!'
-    expect(page).to have_content 'Order was successfully created.'
+  scenario "A customer add book to cart first" do
+    expect(page).to have_content 'Book was successfully added to cart.'
+  end
+  scenario "A customer adds bill address info then" do
+    fill_bill_address
+    expect(page).to have_content 'Bill address was successfully created.'
+  end
+  scenario "A customer adds ship address info then" do
+    fill_ship_address
+    expect(page).to have_content 'Ship address was successfully created.'
+  end
+  scenario "A customer chooses delivery then" do
+    choose_delivery
+    expect(page).to have_content 'Delivery was successfully added to order.'
+  end
+  scenario "A customer adds credit_card info then" do
+    fill_credit_card
+    expect(page).to have_content 'Credit card was successfully added to order.'
+  end
+  scenario "A customer confirm changes then and creates his order, if he signed in" do
+    fill_credit_card
+    sign_in_that customer
+    visit order_items_path
+    click_on 'Place order'
+    expect(page).to have_content 'Order was successfully created, wait for call from our shipping department, thanks!'
+  end
+  scenario "A customer cannot create his order, if he not signed in" do
+    fill_credit_card
+    click_on 'Place order'
+    expect(page).to_not have_content 'Order was successfully created, wait for call from our shipping department, thanks!'
+    expect(page).to have_content 'Sign in'
   end
 end

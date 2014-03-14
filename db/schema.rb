@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140225110210) do
+ActiveRecord::Schema.define(version: 20140312112945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,14 @@ ActiveRecord::Schema.define(version: 20140225110210) do
     t.datetime "updated_at"
   end
 
+  create_table "coupons", force: true do |t|
+    t.string   "name"
+    t.string   "number"
+    t.float    "discount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "credit_cards", force: true do |t|
     t.string   "number"
     t.integer  "cvv"
@@ -116,6 +124,13 @@ ActiveRecord::Schema.define(version: 20140225110210) do
   add_index "customers", ["email"], name: "index_customers_on_email", unique: true, using: :btree
   add_index "customers", ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true, using: :btree
 
+  create_table "deliveries", force: true do |t|
+    t.string   "name"
+    t.float    "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "order_items", force: true do |t|
     t.float    "price"
     t.integer  "quantity",    default: 1
@@ -137,6 +152,9 @@ ActiveRecord::Schema.define(version: 20140225110210) do
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "delivery_id"
+    t.integer  "coupon_id"
+    t.integer  "checkout_step", default: 1
   end
 
   add_index "orders", ["customer_id"], name: "index_orders_on_customer_id", using: :btree

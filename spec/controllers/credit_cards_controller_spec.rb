@@ -2,12 +2,11 @@ require 'spec_helper'
 
 describe CreditCardsController do
   before(:each) do
+    create_order!
+    create_ability!
     @customer = FactoryGirl.create :customer
     @credit_card= FactoryGirl.create :credit_card, cvv: 123
     sign_in @customer
-    @ability = Object.new
-    @ability.extend(CanCan::Ability)
-    @controller.stub(:current_ability).and_return(@ability)
   end
 
   describe "GET #new" do
@@ -20,13 +19,9 @@ describe CreditCardsController do
         expect(assigns(:credit_card)).to be_a_new CreditCard
       end
       it "renders template new if have manage ability" do
+        @order.update(checkout_step: 4)
         get :new
         expect(response).to render_template 'new'
-      end
-      it "redirects to edit_customer_registration_path if customer already have credit_card" do
-        FactoryGirl.create :credit_card, customer_id: @customer.id
-        get :new
-        expect(response).to redirect_to edit_customer_registration_path
       end
     end
     context "without manage ability" do
@@ -80,9 +75,9 @@ describe CreditCardsController do
         it "creates new credit_card" do
           expect{post :create, credit_card: FactoryGirl.attributes_for(:credit_card)}.to change(CreditCard, :count).by(1)
         end
-        it "redirects to edit_customer_registration_path" do  
+        it "redirects to order_confirm_path" do  
           post :create, credit_card: FactoryGirl.attributes_for(:credit_card)
-          expect(response).to redirect_to edit_customer_registration_path
+          expect(response).to redirect_to order_confirm_path
         end
       end
       context "with invalid attributes" do
@@ -103,9 +98,9 @@ describe CreditCardsController do
         it "do not creates new credit_card" do
           expect{post :create, credit_card: FactoryGirl.attributes_for(:credit_card)}.to_not change(CreditCard, :count)
         end
-        it "do not redirects to edit_customer_registration_path" do  
+        it "do not redirects to order_confirm_path" do  
           post :create, credit_card: FactoryGirl.attributes_for(:credit_card)
-          expect(response).to_not redirect_to edit_customer_registration_path
+          expect(response).to_not redirect_to order_confirm_path
         end
       end
       context "with invalid attributes" do
@@ -136,9 +131,9 @@ describe CreditCardsController do
           @credit_card.reload
           expect(@credit_card.cvv).to eq 666
         end
-        it "redirects to edit_customer_registration_path" do  
+        it "redirects to order_confirm_path" do  
           put :update, id: @credit_card.id, credit_card: FactoryGirl.attributes_for(:credit_card)
-          expect(response).to redirect_to edit_customer_registration_path
+          expect(response).to redirect_to order_confirm_path
         end
       end
       context "with invalid attributes" do
@@ -164,9 +159,9 @@ describe CreditCardsController do
           @credit_card.reload
           expect(@credit_card.cvv).to_not eq 666
         end
-        it "do not redirects to edit_customer_registration_path" do  
+        it "do not redirects to order_confirm_path" do  
           put :update, id: @credit_card.id, credit_card: FactoryGirl.attributes_for(:credit_card)
-          expect(response).to_not redirect_to edit_customer_registration_path
+          expect(response).to_not redirect_to order_confirm_path
         end
       end
       context "with invalid attributes" do
@@ -179,41 +174,6 @@ describe CreditCardsController do
           put :update, id: @credit_card.id, credit_card: FactoryGirl.attributes_for(:credit_card, cvv: "cvv")
           expect(response).to redirect_to customer_session_path
         end
-      end
-    end
-  end
-
-  describe 'DELETE destroy' do
-    context "with manage ability" do
-      before do
-        @ability.can :manage, CreditCard
-        CreditCard.stub(:find).and_return @credit_card
-      end
-      it "receives find and return credit_card" do
-        expect(CreditCard).to receive(:find).with(@credit_card.id.to_s).and_return @credit_card
-        delete :destroy, id: @credit_card.id
-      end
-      it "deletes credit_card" do
-        expect{delete :destroy, id: @credit_card.id}.to change(CreditCard, :count).by(-1)
-        delete :destroy, id: @credit_card.id
-      end
-      it "redirects to edit_customer_registration_path if customer already have credit_card" do
-        delete :destroy, id: @credit_card.id
-        expect(response).to redirect_to edit_customer_registration_path
-      end
-    end
-    context "without manage ability" do
-      before do
-        @ability.cannot :manage, CreditCard
-        CreditCard.stub(:find).and_return @credit_card
-      end
-      it "do not deletes credit_card" do
-        expect{delete :destroy, id: @credit_card.id}.to_not change(CreditCard, :count)
-        delete :destroy, id: @credit_card.id
-      end
-      it "redirects to customer_session_path" do
-        delete :destroy, id: @credit_card.id
-        expect(response).to redirect_to customer_session_path
       end
     end
   end

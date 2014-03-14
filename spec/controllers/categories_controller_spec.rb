@@ -2,11 +2,9 @@ require 'spec_helper'
 
 describe CategoriesController do
   before(:each) do
+    create_ability!
     customer = FactoryGirl.create :customer
     @category = FactoryGirl.create :category
-    @ability = Object.new
-    @ability.extend(CanCan::Ability)
-    @controller.stub(:current_ability).and_return(@ability)
     sign_in customer
   end
 

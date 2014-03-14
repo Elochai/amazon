@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Author filter" do
   given!(:author) {FactoryGirl.create(:author)} #John Tolkien
   given!(:author2) {FactoryGirl.create(:author, firstname: 'Lev', lastname: 'Tolstoy')}

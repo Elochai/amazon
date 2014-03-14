@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe BillAddressesController do
   before(:each) do
+    create_order!
+    create_ability!
     @customer = FactoryGirl.create :customer
     @country = FactoryGirl.create :country
     @bill_address= FactoryGirl.create :bill_address, zipcode: 12345, country: @country
     sign_in @customer
-    @ability = Object.new
-    @ability.extend(CanCan::Ability)
-    @controller.stub(:current_ability).and_return(@ability)
   end
 
   describe "GET #new" do
@@ -23,11 +22,6 @@ describe BillAddressesController do
       it "renders template new if have manage ability" do
         get :new
         expect(response).to render_template 'new'
-      end
-      it "redirects to edit_customer_registration_path if customer already have bill_address" do
-        FactoryGirl.create :bill_address, customer_id: @customer.id, country: @country
-        get :new
-        expect(response).to redirect_to edit_customer_registration_path
       end
     end
     context "without manage ability" do
@@ -81,9 +75,9 @@ describe BillAddressesController do
         it "creates new bill_address" do
           expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)}.to change(BillAddress, :count).by(1)
         end
-        it "redirects to edit_customer_registration_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)
-          expect(response).to redirect_to edit_customer_registration_path
+        it "redirects to new_ship_address_path" do  
+          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, order: @order)
+          expect(response).to redirect_to new_ship_address_path
         end
       end
       context "with invalid attributes" do
@@ -104,9 +98,9 @@ describe BillAddressesController do
         it "do not creates new bill_address" do
           expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)}.to_not change(BillAddress, :count)
         end
-        it "do not redirects to edit_customer_registration_path" do  
+        it "do not redirects to new_ship_address_path" do  
           post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)
-          expect(response).to_not redirect_to edit_customer_registration_path
+          expect(response).to_not redirect_to new_ship_address_path
         end
       end
       context "with invalid attributes" do
@@ -137,9 +131,9 @@ describe BillAddressesController do
           @bill_address.reload
           expect(@bill_address.address).to eq "new address"
         end
-        it "redirects to edit_customer_registration_path" do  
+        it "redirects to order_confirm_path" do  
           put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country)
-          expect(response).to redirect_to edit_customer_registration_path
+          expect(response).to redirect_to order_confirm_path
         end
       end
       context "with invalid attributes" do
@@ -165,9 +159,9 @@ describe BillAddressesController do
           @bill_address.reload
           expect(@bill_address.address).to_not eq "new address"
         end
-        it "do not redirects to edit_customer_registration_path" do  
+        it "do not redirects to order_confirm_path" do  
           put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country)
-          expect(response).to_not redirect_to edit_customer_registration_path
+          expect(response).to_not redirect_to order_confirm_path
         end
       end
       context "with invalid attributes" do
@@ -180,41 +174,6 @@ describe BillAddressesController do
           put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, zipcode: "zipcode")
           expect(response).to redirect_to customer_session_path
         end
-      end
-    end
-  end
-
-  describe 'DELETE destroy' do
-    context "with manage ability" do
-      before do
-        @ability.can :manage, BillAddress
-        BillAddress.stub(:find).and_return @bill_address
-      end
-      it "receives find and return bill_address" do
-        expect(BillAddress).to receive(:find).with(@bill_address.id.to_s).and_return @bill_address
-        delete :destroy, id: @bill_address.id
-      end
-      it "deletes bill_address" do
-        expect{delete :destroy, id: @bill_address.id}.to change(BillAddress, :count).by(-1)
-        delete :destroy, id: @bill_address.id
-      end
-      it "redirects to edit_customer_registration_path if customer already have bill_address" do
-        delete :destroy, id: @bill_address.id
-        expect(response).to redirect_to edit_customer_registration_path
-      end
-    end
-    context "without manage ability" do
-      before do
-        @ability.cannot :manage, BillAddress
-        BillAddress.stub(:find).and_return @bill_address
-      end
-      it "do not deletes bill_address" do
-        expect{delete :destroy, id: @bill_address.id}.to_not change(BillAddress, :count)
-        delete :destroy, id: @bill_address.id
-      end
-      it "redirects to customer_session_path" do
-        delete :destroy, id: @bill_address.id
-        expect(response).to redirect_to customer_session_path
       end
     end
   end

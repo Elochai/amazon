@@ -31,52 +31,30 @@
           = link_to t(:delete_account), registration_path(resource_name), class:'btn btn-danger', :data => { :confirm => t(:confirm) }, :method => :delete 
           %br
           = link_to t(:back), :back, class:'btn btn-default'   
-  - if current_customer.credit_card.nil?  
-    = link_to t(:add_cc), new_credit_card_path, class: 'btn btn-info'    
-  - else
-    .panel.panel-info.panel-little
-      .panel-heading
-        %h4= t(:your_cc)
-        == #{link_to "", edit_credit_card_path(current_customer.credit_card), class:'icon-pencil', title: t(:edit_credit_card)} | #{link_to "", credit_card_path(current_customer.credit_card), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_credit_card)}  
-      .panel-body
-        %strong= t(:owner)
-        = current_customer.credit_card.firstname 
-        = current_customer.credit_card.lastname
-        %br
-        %strong= t(:cc_number)
-        = current_customer.credit_card.number
-        %br
-        %strong= t(:cvv)
-        = current_customer.credit_card.cvv
-        %br
-        %strong= t(:exp_m)
-        = current_customer.credit_card.expiration_month
-        %strong== , #{t(:exp_y)}
-        = current_customer.credit_card.expiration_year
-  - if current_customer.bill_address.nil?   
-    = link_to t(:add_ba), new_bill_address_path, class: 'btn btn-info' 
+  - if current_customer.customer_bill_address.nil?   
+    = link_to t(:add_ba), new_customer_bill_address_path, class: 'btn btn-info' 
   - else   
     .inline
       .panel.panel-info.panel-little
         .panel-heading
           %h4= t(:your_ba)
-          == #{link_to "", edit_bill_address_path(current_customer.bill_address), class:'icon-pencil', title: t(:edit_bill_address)} | #{link_to "", bill_address_path(current_customer.bill_address), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_bill_address)}
+          == #{link_to "", edit_customer_bill_address_path(current_customer.customer_bill_address), class:'icon-pencil', title: t(:edit_bill_address)} | #{link_to "", customer_bill_address_path(current_customer.customer_bill_address), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_bill_address)}
         .panel-body
-          == #{current_customer.bill_address.country.name}<br>#{current_customer.bill_address.zipcode}, #{current_customer.bill_address.city}<br>#{current_customer.bill_address.address}
+          == #{current_customer.customer_bill_address.country.name}<br>#{current_customer.customer_bill_address.zipcode}, #{current_customer.customer_bill_address.city}<br>#{current_customer.customer_bill_address.address}
         .panel-footer
-          == #{t(:phone)} #{current_customer.bill_address.phone}
-  - if current_customer.ship_address.nil?   
-    = link_to t(:add_sa), new_ship_address_path, class: 'btn btn-info' 
+          == #{t(:phone)} #{current_customer.customer_bill_address.phone}
+  - if current_customer.customer_ship_address.nil?   
+    = link_to t(:add_sa), new_customer_ship_address_path, class: 'btn btn-info' 
   - else 
     .inline
       .panel.panel-info.panel-little
         .panel-heading
           %h4= t(:your_sa) 
-          == #{link_to "", edit_ship_address_path(current_customer.ship_address), class:'icon-pencil', title: t(:edit_ship_address)} | #{link_to "", ship_address_path(current_customer.ship_address), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_ship_address)}
+          == #{link_to "", edit_customer_ship_address_path(current_customer.customer_ship_address), class:'icon-pencil', title: t(:edit_ship_address)} | #{link_to "", customer_ship_address_path(current_customer.customer_ship_address), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:delete_ship_address)}
         .panel-body
-          == #{current_customer.ship_address.country.name}<br>#{current_customer.ship_address.zipcode}, #{current_customer.ship_address.city}<br>#{current_customer.ship_address.address}
+          == #{current_customer.customer_ship_address.country.name}<br>#{current_customer.customer_ship_address.zipcode}, #{current_customer.customer_ship_address.city}<br>#{current_customer.customer_ship_address.address}
         .panel-footer
-          == #{t(:phone)} #{current_customer.ship_address.phone} 
+          == #{t(:phone)} #{current_customer.customer_ship_address.phone} 
     .outline
       .panel.panel-info.panel-little
         .panel-heading

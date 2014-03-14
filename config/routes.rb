@@ -1,7 +1,9 @@
 Amazon::Application.routes.draw do
+  resources :coupons
+
   get "omniauth_callbacks/facebook"
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
-  devise_for :customers, :controllers => {:sessions => "sessions", :omniauth_callbacks => "customers/omniauth_callbacks"}
+  devise_for :customers, :controllers => {:omniauth_callbacks => "customers/omniauth_callbacks"}
   resources :books do
     member do
       post 'add_wish'
@@ -19,13 +21,23 @@ Amazon::Application.routes.draw do
   resources :authors 
   resources :categories 
   resources :order_items, except: [:create, :new, :index, :show] 
-  resources :bill_addresses 
-  resources :ship_addresses 
+  resources :bill_addresses
+  resources :ship_addresses
+  resources :customer_ship_addresses
+  resources :customer_bill_addresses
   resources :credit_cards 
-  resources :orders 
+  resources :orders, except: :new 
 
   get 'clear_cart', to: 'order_items#clear_cart'
   post 'add_to_order/:book_id', to: 'order_items#create', as: 'create'
+  get 'cart', to: 'order_items#index', as: 'order_items'
+  post 'update_with_coupon', to: 'orders#update_with_coupon', as: 'update_with_coupon'
+  post 'remove_coupon', to: 'orders#remove_coupon', as: 'remove_coupon'
+  get 'order/delivery', to: 'orders#delivery'
+  get 'order/edit_delivery', to: 'orders#edit_delivery'
+  post 'order/add_delivery', to: 'orders#add_delivery'
+  get 'order/confirm', to: 'orders#confirm'
+  post 'order/complete', to: 'orders#place'
 
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.

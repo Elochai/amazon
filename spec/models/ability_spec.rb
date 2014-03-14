@@ -21,7 +21,7 @@ describe "Customer" do
       it{ should be_able_to(:author_filter, Book.new) }
       it{ should be_able_to(:category_filter, Book.new) }
       it{ should be_able_to(:top_rated, Book.new) }
-      it{ should be_able_to(:create, OrderItem.new) }
+      it{ should be_able_to(:manage, OrderItem.new) }
       it{ should be_able_to(:read, :all) }
       it{ should be_able_to(:manage, Address.new) }
       it{ should be_able_to(:manage, CreditCard.new) }
@@ -29,8 +29,14 @@ describe "Customer" do
       it{ should be_able_to(:new, Rating.new) }
       it{ should be_able_to(:create, Rating.new) }
       it{ should be_able_to(:new, Order.new) }
-      it{ should be_able_to(:create, Order.new) }
-      it{ should be_able_to(:clear_cart, OrderItem.new) }   
+      it{ should be_able_to(:update_with_coupon, Order.new) }
+      it{ should be_able_to(:remove_coupon, Order.new) }
+      it{ should be_able_to(:confirm, Order.new) }
+      it{ should be_able_to(:place, Order.new) }
+      it{ should be_able_to(:delivery, Order.new) }
+      it{ should be_able_to(:add_delivery, Order.new) }
+      it{ should be_able_to(:edit_delivery, Order.new) }
+      it{ should be_able_to(:destroy, Order.new) }  
       it{ should_not be_able_to(:manage, :all) }
       it{ should_not be_able_to(:access, :rails_admin) }
     end
@@ -42,6 +48,19 @@ describe "Customer" do
       it{ should be_able_to(:wishers, Book.new) }
       it{ should be_able_to(:author_filter, Book.new) }
       it{ should be_able_to(:category_filter, Book.new) }
+      it{ should be_able_to(:top_rated, Book.new) }
+      it{ should be_able_to(:manage, OrderItem.new) }  
+      it{ should be_able_to(:manage, ShipAddress.new) }
+      it{ should be_able_to(:manage, BillAddress.new) }
+      it{ should be_able_to(:manage, CreditCard.new) }
+      it{ should be_able_to(:new, Order.new) }
+      it{ should be_able_to(:update_with_coupon, Order.new) }
+      it{ should be_able_to(:remove_coupon, Order.new) }
+      it{ should be_able_to(:confirm, Order.new) }
+      it{ should be_able_to(:delivery, Order.new) }
+      it{ should be_able_to(:add_delivery, Order.new) }
+      it{ should be_able_to(:edit_delivery, Order.new) }
+      it{ should be_able_to(:destroy, Order.new) }  
       it{ should_not be_able_to(:manage, :all) }
       it{ should_not be_able_to(:access, :rails_admin) }
     end        

@@ -2,13 +2,11 @@ require 'spec_helper'
 
 describe BooksController do
   before(:each) do
+    create_ability!
     @customer = FactoryGirl.create :customer
     @book = FactoryGirl.create :book
     @rated_book = FactoryGirl.create :book
     FactoryGirl.create :rating, rating: 10, book_id: @rated_book.id, approved: true
-    @ability = Object.new
-    @ability.extend(CanCan::Ability)
-    @controller.stub(:current_ability).and_return(@ability)
     sign_in @customer
   end
 

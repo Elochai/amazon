@@ -1,0 +1,13 @@
+%label.control-label== #{t(:country)} <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name, current_customer.customer_bill_address.country.id), {}, {:class => 'form-control'}}
+%br
+%br
+%label.control-label== #{t(:city)} #{ba.text_field :city, size: 15, class: 'form-control', value: current_customer.customer_bill_address.city}
+%br
+%br
+%label.control-label== #{t(:address)} #{ba.text_area :address, class: 'form-control', value: current_customer.customer_bill_address.address}
+%br
+%br
+%label.control-label== #{t(:zipcode)} #{ba.number_field :zipcode, class: 'form-control s', value: current_customer.customer_bill_address.zipcode}
+%br
+%br
+%label.control-label== #{t(:phone)} #{ba.telephone_field :phone, class: 'form-control', value: current_customer.customer_bill_address.phone}

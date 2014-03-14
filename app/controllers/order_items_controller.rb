@@ -1,6 +1,14 @@
 class OrderItemsController < ApplicationController
-  before_filter :authenticate_customer!
   load_and_authorize_resource
+  before_filter :if_no_current_order?, except: :create
+
+  def index 
+    if current_order.checkout_step == 1
+      @order_items = current_order.order_items
+    elsif current_order.checkout_step > 1
+      redirect_to new_bill_address_path
+    end
+  end
  
   # GET /order_items/1/edit
   def edit
@@ -11,7 +19,7 @@ class OrderItemsController < ApplicationController
   def update
     respond_to do |format|
       if @order_item.update(order_item_params)
-        format.html { redirect_to new_order_path, notice: t(:quantity_suc_updated) }
+        format.html { redirect_to order_items_path, notice: t(:quantity_suc_updated) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit', alert: t(:quantity_fail_update) }
@@ -25,21 +33,28 @@ class OrderItemsController < ApplicationController
   def destroy
     @order_item.destroy
     respond_to do |format|
-      format.html { redirect_to new_order_path }
+      format.html { redirect_to order_items_path }
       format.json { head :no_content }
     end
   end
 
   def clear_cart
-    current_customer.order_items.destroy_all
-    redirect_to new_order_path
+    current_order.order_items.destroy_all
+    redirect_to order_items_path
   end
 
   def create
-    @order_item = OrderItem.new
+    if cookies[:current_order]
+      if Order.where(id: cookies[:current_order]).empty?
+        cookies[:current_order] = Order.create(state: 'in_progress', price: 0.01).id
+      end
+    else
+      cookies[:current_order] ||= Order.create(state: 'in_progress', price: 0.01).id
+      @order_item = OrderItem.new
+    end
     respond_to do |format|
-      if @order_item.add_to_order!(params[:book_id], params[:quantity], current_customer)
-        format.html { redirect_to new_order_path, notice: t(:oi_succ_create) }
+      if @order_item.add_to_order!(params[:book_id], params[:quantity], cookies[:current_order])
+        format.html { redirect_to order_items_path, notice: t(:oi_succ_create) }
         format.json { head :no_content }
       else
         format.html { redirect_to root_path, alert: t(:oi_fail_create) }
@@ -47,7 +62,7 @@ class OrderItemsController < ApplicationController
       end
     end
   end
- 
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order_item

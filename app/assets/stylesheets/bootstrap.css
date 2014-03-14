@@ -1668,11 +1668,25 @@ th {
   background-color: #ffffff;
 }
 
+.table-order {
+  width: 90%;
+  vertical-align: top;
+  background-color: #ffffff;
+}
+
+.top {
+  vertical-align: top;
+}
+
 .table-little {
   width: 40%;
   margin-bottom: 20px;
   vertical-align: center;
   background-color: #ffffff;
+}
+
+.table-order {
+  vertical-align: top;
 }
 
 .xl
@@ -1988,6 +2002,10 @@ output {
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
           transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.form-control.xlg {
+  width: 250px;
 }
 
 .form-control.lg {
@@ -4666,6 +4684,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
+  background-color: transparent;
   color: #ffffff;
   text-shadow: 0 0 8px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
 }
@@ -5491,6 +5510,18 @@ a.list-group-item.active:focus .list-group-item-text {
   height: 600px;
 }
 
+.panel-order {
+  width: 200px;
+}
+
+.panel-order-info-header {
+  height: 100px;
+}
+
+.panel-order-info {
+  height: 60px;
+}
+
 .book-body {
   height: 330px;
 }
@@ -5506,6 +5537,10 @@ a.list-group-item.active:focus .list-group-item-text {
 
 .header-book {
   height: 62px;
+}
+
+.header-address {
+  height: 100px;
 }
 
 .panel-errors {
@@ -6330,6 +6365,10 @@ button.close {
 
 .justified {
   text-align: justify;
+}
+
+.left {
+  text-align: left;
 }
 
 .book-info.l {

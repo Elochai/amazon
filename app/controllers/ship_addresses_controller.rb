@@ -1,13 +1,15 @@
 class ShipAddressesController < ApplicationController
-  before_filter :authenticate_customer!
+  before_filter :if_no_current_order?
   load_and_authorize_resource
  
   # GET /addresses/new
   def new
-    if current_customer.ship_address.nil?
-      @ship_address = current_customer.build_ship_address
-    else
-      redirect_to edit_customer_registration_path, alert: t(:already_have_ship_address)
+    if current_order.checkout_step == 2
+      @ship_address = current_order.build_ship_address
+    elsif current_order.checkout_step > 2
+      redirect_to order_delivery_path
+    elsif current_order.checkout_step < 2
+      redirect_to new_bill_address_path
     end
   end
  
@@ -18,12 +20,16 @@ class ShipAddressesController < ApplicationController
   # POST /addresses
   # POST /addresses.json
   def create
-    @ship_address = current_customer.build_ship_address(ship_address_params)
- 
+    if params[:use_ba]
+      @ship_address = current_order.build_ship_address(address: current_order.bill_address.address, city: current_order.bill_address.city, phone: current_order.bill_address.phone, zipcode: current_order.bill_address.zipcode, country_id: current_order.bill_address.country.id)
+    else
+      @ship_address = current_order.build_ship_address(ship_address_params)
+    end
     respond_to do |format|
       if @ship_address.save
-        format.html { redirect_to edit_customer_registration_path, notice: t(:ship_address_suc_create) }
-        format.json { redirect_to edit_customer_registration_path, status: :created, location: @ship_address }
+        current_order.next_step!
+        format.html { redirect_to order_delivery_path, notice: t(:ship_address_suc_create) }
+        format.json { redirect_to order_delivery_path, status: :created, location: @ship_address}
       else
         format.html { render action: 'new' }
         format.json { render json: @ship_address.errors, status: :unprocessable_entity }
@@ -36,22 +42,12 @@ class ShipAddressesController < ApplicationController
   def update
     respond_to do |format|
       if @ship_address.update(ship_address_params)
-        format.html { redirect_to edit_customer_registration_path, notice: t(:ship_address_suc_update) }
+        format.html { redirect_to order_confirm_path, notice: t(:ship_address_suc_update) }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render "edit" }
         format.json { render json: @ship_address.errors , status: :unprocessable_entity }
       end
-    end
-  end
- 
-  # DELETE /addresses/1
-  # DELETE /addresses/1.json
-  def destroy
-    @ship_address.destroy
-    respond_to do |format|
-      format.html { redirect_to edit_customer_registration_path, notice: t(:ship_address_suc_delete) }
-      format.json { head :no_content }
     end
   end
  

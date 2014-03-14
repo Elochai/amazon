@@ -2,13 +2,11 @@ require 'spec_helper'
 
 describe RatingsController do
   before(:each) do
+    create_ability!
     @book = FactoryGirl.create :book
     @customer = FactoryGirl.create :customer
     @rating= FactoryGirl.create :rating, book_id: @book.id
     sign_in @customer
-    @ability = Object.new
-    @ability.extend(CanCan::Ability)
-    @controller.stub(:current_ability).and_return(@ability)
   end
 
   describe "POST #create" do

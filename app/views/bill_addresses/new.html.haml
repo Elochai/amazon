@@ -1,24 +1,28 @@
 .container
   %center 
+    %h4.well.xl
+      %u= t(:order_ba)
+      == >> #{t(:order_sa)} - #{t(:order_delivery)} - #{t(:order_payment)} - #{t(:order_confirm)} - #{t(:order_complete)}
     = form_for @bill_address do |ba|
       = render partial: "errors/errors", locals: {object: ba.object}
       .panel.panel-info.panel-little#ba
         .panel-heading
-          %h3= t(:new_ba)
+          %h4= t(:new_ba)
         .panel-body
           %h5
-            %label.control-label== #{t(:country)} <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-            %br
-            %br
-            %label.control-label== #{t(:city)} #{ba.text_field :city, size: 15, class: 'form-control'}
-            %br
-            %br
-            %label.control-label== #{t(:address)} #{ba.text_area :address, class: 'form-control'}
-            %br
-            %br
-            %label.control-label== #{t(:zipcode)} #{ba.number_field :zipcode, class: 'form-control s'}
-            %br
-            %br
-            %label.control-label== #{t(:phone)} #{ba.telephone_field :phone, class: 'form-control'}
+          - if customer_signed_in? 
+            - if current_customer.customer_bill_address
+              = render partial: "form_for_customer", locals: {ba: ba}
+            - else
+              = render partial: "form", locals: {ba: ba}
+          - else
+            = render partial: "form", locals: {ba: ba}
         .panel-footer
-          = ba.submit t(:create_ba), class: 'btn btn-success'
+          %h4
+            = t(:books_price)
+            %strong.label.label-info= number_to_currency current_order.books_price
+          %h4
+            = t(:total_price)
+            %strong.label.label-info= number_to_currency current_order.total_price
+          = ba.submit t(:next), class: 'btn btn-primary'
+    = link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

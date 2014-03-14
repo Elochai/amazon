@@ -4,7 +4,9 @@
       = render partial: "errors/errors", locals: {object: sa.object}
       .panel.panel-info.panel-little#sa
         .panel-heading
-          %h3= t(:edit_sa)
+          %h4= t(:edit_sa)
+          = check_box_tag :use_ba, checked = false
+          = t(:use_ba)
         .panel-body
           %h5
             %label.control-label== #{t(:country)} <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
@@ -21,4 +23,4 @@
             %br
             %label.control-label== #{t(:phone)} #{sa.telephone_field :phone, class: 'form-control'}
         .panel-footer
-          = sa.submit t(:update_sa), class: 'btn btn-success'
+          = sa.submit t(:update_sa), class: 'btn btn-primary'

@@ -1,0 +1,2 @@
+class CustomerBillAddress < Address
+end

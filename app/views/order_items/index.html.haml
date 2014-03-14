@@ -1,0 +1,43 @@
+.container
+  %center 
+    - if current_order.order_items.empty? 
+      %h2
+        %strong.label.label-warning= t(:empty_cart)
+    - else 
+      == #{link_to t(:clear_cart), clear_cart_path, data: {confirm: t(:are_you_sure)}, class:'btn btn-warning'}
+      %h2= t(:new_order)
+      %table.table.table-hover.table-small
+        %thead
+          %tr
+            %th.text-center= t(:book_title)
+            %th.text-center= t(:author_name)
+            %th.text-center= t(:category_name)
+            %th.text-center= t(:quantity)
+            %th.text-center= t(:price)
+            %th.text-center= t(:manage)
+          %tbody
+            - @order_items.each do |oi|
+              %tr.text-center
+                %td= link_to "#{oi.book.title}", book_path(oi.book.id), method: :get
+                %td= link_to "#{oi.book.author.full_name}", author_path(oi.book.author.id), method: :get
+                %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
+                %td= oi.quantity
+                %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
+                %td== #{link_to '', edit_order_item_path(oi), class: 'icon-pencil', title: t(:change_oi_quantity)} | #{link_to "", order_item_path(oi), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:remove_from_cart)}
+      - if current_order.coupon.nil?
+        = form_tag "/update_with_coupon", class: 'form-inline' do
+          %h4.form-group
+            = text_field_tag :coupon, nil, placeholder: t(:enter_coupon_number), class: 'form-control xlg'
+            = submit_tag t(:update), class:'btn btn-info'
+      - else
+        %h4
+          =t(:current_discount)
+          %strong.label.label-danger== #{current_order.coupon.discount*100}%
+          == (#{t(:coupon_number)} "#{current_order.coupon.number}")
+        = link_to t(:remove_coupon), remove_coupon_path, method: :post, class:'btn btn-warning'
+      %h3
+        %strong Total price:
+        %strong.label.label-primary= number_to_currency(current_order.total_price)
+      = link_to t(:next), new_bill_address_path, method: :get, class:'btn btn-primary'
+      %br
+      %br= link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

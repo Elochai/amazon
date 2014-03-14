@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe OrderItemsController do
   before(:each) do
+    create_ability!
+    create_order!
     @customer = FactoryGirl.create :customer
     @book = FactoryGirl.create :book, in_stock: 4
-    @order_item = FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
+    @order_item = FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, order_id: @order.id
     sign_in @customer
-    @ability = Object.new
-    @ability.extend(CanCan::Ability)
-    @controller.stub(:current_ability).and_return(@ability)
   end
 
   describe "GET #edit" do
@@ -58,9 +57,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to eq 2
         end
-        it "redirects to new_order_path" do  
+        it "redirects to order_items_path" do  
           put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item)
-          expect(response).to redirect_to new_order_path
+          expect(response).to redirect_to order_items_path
         end
       end
       context "with invalid attributes" do
@@ -86,9 +85,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to_not eq 2
         end
-        it "do not redirects to edit_customer_registration_path" do  
+        it "do not redirects to order_items_path" do  
           put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item)
-          expect(response).to_not redirect_to edit_customer_registration_path
+          expect(response).to_not redirect_to order_items_path
         end
       end
       context "with invalid attributes" do
@@ -119,9 +118,9 @@ describe OrderItemsController do
         expect{delete :destroy, id: @order_item.id}.to change(OrderItem, :count).by(-1)
         delete :destroy, id: @order_item.id
       end
-      it "redirects to new_order_path" do
+      it "redirects to order_items_path" do
         delete :destroy, id: @order_item.id
-        expect(response).to redirect_to new_order_path
+        expect(response).to redirect_to order_items_path
       end
     end
     context "without manage ability" do
@@ -146,13 +145,13 @@ describe OrderItemsController do
         @ability.can :clear_cart, OrderItem
       end
       it "deletes all order_items in cart" do
-        FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
+        FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, order_id: @order.id
         expect{get :clear_cart}.to change(OrderItem, :count).by(-2)
         get :clear_cart
       end
-      it "redirects to new_order_path" do
+      it "redirects to order_items_path" do
         get :clear_cart
-        expect(response).to redirect_to new_order_path
+        expect(response).to redirect_to order_items_path
       end
     end
     context "without clear_cart ability" do
@@ -160,7 +159,7 @@ describe OrderItemsController do
         @ability.cannot :clear_cart, OrderItem
       end
       it "do not deletes all order_items in cart" do
-        FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, customer_id: @customer.id
+        FactoryGirl.create :order_item, quantity: 1, book_id: @book.id, order_id: @order.id
         expect{get :clear_cart}.to_not change(OrderItem, :count).by(-2)
         get :clear_cart
       end
@@ -181,14 +180,14 @@ describe OrderItemsController do
           OrderItem.destroy_all
           expect {post :create, book_id: @book.id, quantity: 1}.to change(OrderItem, :count).by(1)
         end
-        it "updates order_item quantity by 1 if it is in the cart already" do
+        it "updates order_item quantity by certain amount if it is in the cart already" do
           post :create, book_id: @book.id, quantity: 1
           @order_item.reload
           expect(@order_item.quantity).to eq(2)
         end
-        it "redirects to new_order_path" do
+        it "redirects to order_items_path" do
           post :create, book_id: @book.id
-          expect(response).to redirect_to new_order_path
+          expect(response).to redirect_to order_items_path
         end
       end
       context "with invalid attributes" do

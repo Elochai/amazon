@@ -2,7 +2,7 @@
   %center 
     %h2== #{t(:order_from)} #{@order.customer.id}#{@order.created_at.to_formatted_s(:number)} (#{@order.created_at.to_formatted_s(:long)})
     %h3= t(:books_in_order)
-    %table.table.table-hover.table-small
+    %table.table.table-hover.table-order
       %thead
         %tr.success
           %th.text-center= t(:book_title)
@@ -18,23 +18,25 @@
               %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
               %td= oi.quantity
               %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
-    %h5
-      .inline
-        .panel.panel-info.panel-little
-          .panel-heading
-            %h4= t(:ba_info) 
-          .panel-body
-            == #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}
-          .panel-footer
-            == #{t(:phone)} #{@order.bill_address.phone}
-      .inline
-        .panel.panel-info.panel-little
-          .panel-heading
-            %h4= t(:sa_info) 
-          .panel-body
-            == #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}
-          .panel-footer
-            == #{t(:phone)} #{@order.ship_address.phone} 
+    %h3= t(:order_info)
+    %table.table.table-order
+      %thead
+        %tr.success
+          %th.left= t(:ba_info)
+          %th.left= t(:sa_info)
+          %th.left= t(:delivery_info)
+          %th.left= t(:cc_info)
+        %tbody
+          %tr.justified
+            %td== #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}<br>Phone: #{@order.bill_address.phone}
+            %td== #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}<br>Phone: #{@order.ship_address.phone}
+            %td== #{@order.delivery.name} (+#{number_to_currency @order.delivery.price})
+            %td== ** ** ** #{@order.credit_card.number.last(4)}<br>#{@order.credit_card.expiration_month}/ #{@order.credit_card.expiration_year}
+    - if !@order.coupon.nil?
+      %h4
+        =t(:oder_discount)
+        %strong.label.label-danger== #{@order.coupon.discount*100}%
+        == (#{t(:coupon_number)} "#{@order.coupon.number}")
     .outline           
       %hr    
       %h2== #{t(:total_price)} <span class="label label-success">#{number_to_currency(@order.price)}</span>

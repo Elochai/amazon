@@ -34,7 +34,7 @@ en:
   book_suc_add_wish: Book was successfully added to wish list.
   book_suc_delete_wish: Book was successfully deleted from wish list.
   already_have_cc: You already have credit card. Edit it if you want.
-  cc_suc_create: Credit card was successfully created.
+  cc_suc_create: Credit card was successfully added to order.
   cc_suc_update: Credit card was successfully updated.
   cc_suc_delete: Credit card was successfully deleted.
   quantity_suc_updated: Quantity was successfully changed.
@@ -52,8 +52,10 @@ en:
   zipcode: 'Zip code:'
   phone: 'Phone:'
   city: 'City:'
-  new_ba: 'Create bill address:'
+  new_ba: 'Add bill address:'
+  new_addr: 'Add address:'
   create_ba: Create bill address
+  create_addr: Create address
   authors: 'Authors:'
   author_name: Author name
   number_of_books: Number of books
@@ -84,9 +86,11 @@ en:
   category_name: 'Category name'
   book_in_cat: 'Books in this category:'
   edit_sa: 'Edit ship address:'
+  edit_addr: 'Edit address:'
+  update_addr: Update address
   update_sa: Update ship address
   create_sa: Create ship address
-  new_ba: 'Create ship address:'
+  new_sa: 'Add ship address:'
   edit_cc: 'Edit credit card:'
   edit_credit_card: 'Edit credit card'
   delete_credit_card: 'Delete credit card'
@@ -96,7 +100,7 @@ en:
   delete_ship_address: 'Delete ship address'
   update_cc: Update credit card
   create_cc: Create credit card 
-  new_cc: 'Create credit card:'
+  new_cc: 'Add credit card:'
   cc_number: 'Card number:'
   cvv: 'CVV:'
   owner_fn: 'Owner firstname:'
@@ -156,9 +160,9 @@ en:
   manage: Manage
   total_price: 'Total price:'
   order_info: 'Please provide us with next infomation:'
-  cc_info: 'Credit card info:'
-  ba_info: 'Bill address info:'
-  sa_info: 'Ship address info:'
+  cc_info: 'Credit card info'
+  ba_info: 'Bill address info'
+  sa_info: 'Ship address info'
   buy: 'Let me buy already!'
   books_in_order: 'Books in order:'
   order_from: Order №
@@ -185,8 +189,38 @@ en:
   auth_error: authentication error
   oi_succ_create: 'Book was successfully added to cart.'
   oi_fail_create: 'An error has occured while adding book to cart.'
-
-
-
-
-
+  next: Save and continue
+  enter_coupon_number: Enter coupon number...
+  fail_coupon: Invalid coupon number
+  succ_coupon: Coupon was successfully added to order.
+  remove_coupon_notice: Coupon was successfully deleted from order.
+  remove_coupon: Remove coupon
+  current_discount: 'Current discount:'
+  coupon_number: 'coupon number:'
+  add_addresses: Add addresses
+  address_suc_create: Address was successfully added.
+  address_suc_update: Address was successfully updated.
+  address_suc_delete: Address was successfully deleted.
+  address_fail_create: An error has occured while adding your address.
+  use_ba: Use bill address
+  choose_delivery: Choose delivery
+  delivery: 'Delivery:'
+  delivery_suc_create: "Delivery was successfully added to order."
+  delivery_fail_create: "Please, select delivery."
+  place_order: Place order
+  order_info: 'Order info:'
+  delivery_info: Delivery info
+  coupon: Coupon
+  change_delivery: Change delivery
+  order_suc_create: "Order was successfully created, wait for call from our shipping department, thanks!"
+  oder_discount: 'Order discount:'
+  order_suc_delete: Order was successfully deleted.
+  delete_order: Delete order
+  books_price: 'Books total:'
+  delivery_price: 'Delivery price:'
+  order_ba: Bill address
+  order_sa: Ship address
+  order_payment: Payment
+  order_delivery: Delivery
+  order_confirm: Confirm
+  order_complete: Complete
