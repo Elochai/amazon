@@ -5,70 +5,78 @@ describe Order do
 
   context "associations" do
     it { expect(order).to belong_to(:customer) }
+    it { expect(order).to belong_to(:delivery) }
     it { expect(order).to have_one(:credit_card).dependent(:destroy) }
     it { expect(order).to have_one(:ship_address).class_name('ShipAddress').dependent(:destroy) }
     it { expect(order).to have_one(:bill_address).class_name('BillAddress').dependent(:destroy) }
     it { expect(order).to have_many(:order_items).dependent(:destroy) }
-    it { expect(order).to accept_nested_attributes_for(:credit_card).allow_destroy(true) }
-    it { expect(order).to accept_nested_attributes_for(:ship_address).allow_destroy(true) }
-    it { expect(order).to accept_nested_attributes_for(:bill_address).allow_destroy(true) }
   end
+
   context "validations" do
     it { expect(order).to validate_presence_of(:state) }
     it { expect(order).to validate_presence_of(:price) }
-    it { expect(order).to ensure_inclusion_of(:state).in_array(%w(in_progress shipped completed))}
+    it { expect(order).to ensure_inclusion_of(:checkout_step).in_range(1..5) }
+    it { expect(order).to ensure_inclusion_of(:state).in_array(%w(in_progress in_queue in_delivery delivered))}
   end
-  context ".shipped!" do
-    it "changes state to 'shipped' if previous state was 'in_progress'" do
-      order.state = "in_progress"
-      order.save
-      expect { order.shipped! }.to change{ order.state }.to("shipped")  
-    end
-    it "don't changes state to 'shipped' if previous state was 'completed'" do
-      order.state = "completed"
-      order.save
-      expect { order.shipped! }.to_not change{ order.state }.to("shipped")  
-    end
-  end
+
   context ".complete!" do
-    it "set today's day into 'completed_at' param if previous state was 'shipped'" do
-      order.state = "shipped"
-      order.save
+    it "set today's day into 'completed_at' attribute " do
       expect { order.complete! }.to change{order.completed_at}.to(Date.today)  
     end
-    it "set today's day into 'completed_at' param if previous state was 'in_progress'" do
-      order.state = "in_progress"
-      order.save
-      expect { order.complete! }.to_not change{order.completed_at}.to(Date.today)  
+  end
+
+  context 'other methods' do
+    before do
+      @book = FactoryGirl.create :book, price: 20, in_stock: 4
+      FactoryGirl.create :order_item, quantity: 2, book_id: @book.id, order_id: order.id
+      @coupon = FactoryGirl.create :coupon, discount: 0.5
+      @delivery = FactoryGirl.create :delivery, price: 10
     end
-    it "changes state to 'completed' if previous state was 'shipped'" do
-      order.state = "shipped"
-      order.save
-      expect { order.complete! }.to change{ order.state }.to("completed")  
+
+    context '.total_price' do
+      it "shows current order total price (with discount, delivery, books)" do
+        order.update(delivery_id: @delivery.id, coupon_id: @coupon.id)
+        expect(order.total_price).to eq(30)
+      end
     end
-    it "don't changes state to 'completed' if previous state was 'in_progress'" do
-      order.state = "in_progress"
-      order.save
-      expect { order.complete! }.to_not change{ order.state }.to("completed")  
+
+    context '.books_price' do
+      it "shows current order books price (with discount)" do
+        order.update(delivery_id: @delivery.id, coupon_id: @coupon.id)
+        expect(order.books_price).to eq(20) # do not takes in mind delivery price
+      end
+    end
+
+    context '.to_queue!' do
+      before do
+        @customer = FactoryGirl.create :customer
+      end
+      it "decreases order books 'in_stock' value by bought amount" do
+        order.to_queue!(@customer)
+        expect(@book.reload.in_stock).to eq(2) 
+      end
+      it "updates current order with current_customer" do
+        expect{order.to_queue!(@customer)}.to change(order, :customer_id).to(@customer.id) 
+      end
+      it "updates current order with total_price" do
+        expect{order.to_queue!(@customer)}.to change(order, :price).to(order.total_price) 
+      end
+      it "updates current order with 'in_queue' state" do
+        expect{order.to_queue!(@customer)}.to change(order, :state).to('in_queue') 
+      end
     end
   end
-  context ".decrease_in_stock!" do
-    it "decreases 'in_stock' attr by amount of purchased books" do
-      book = FactoryGirl.create(:book, title: "1", in_stock: 4, price: 10.00)
-      order_with_items = FactoryGirl.create(:order, state: 'in_progress', price: 20.00)
-      item1 = FactoryGirl.create(:order_item, book_id: book.id, quantity:1, order_id: order_with_items.id) 
-      item2 = FactoryGirl.create(:order_item, book_id: book.id, quantity:1, order_id: order_with_items.id) 
-      expect { order_with_items.decrease_in_stock! }.to change{ book.reload.in_stock }.to(2) 
+
+  context '.next_step!' do
+    it "increases order 'checkout_step' attribute by 1" do
+      expect{order.next_step!}.to change(order, :checkout_step).by(1)
     end
   end
-  context ".return_in_stock!" do
-    it "increases 'in_stock' attr by amount of purchased books" do
-      book = FactoryGirl.create(:book, title: "1", in_stock: 4, price: 10.00)
-      order_with_items = FactoryGirl.create(:order, state: 'in_progress', price: 20.00)
-      item1 = FactoryGirl.create(:order_item, book_id: book.id, quantity:1, order_id: order_with_items.id) 
-      item2 = FactoryGirl.create(:order_item, book_id: book.id, quantity:1, order_id: order_with_items.id)
-      order_with_items.decrease_in_stock! #in_stock now == 2 
-      expect { order_with_items.return_in_stock! }.to change{ book.reload.in_stock }.to(4) 
+
+  context 'self.delete_abandoned!' do
+    it "destroyes orders, created 5 hours ago and with 'in_progress' state" do
+      order.update(updated_at: 5.hours.ago)
+      expect{Order.delete_abandoned!}.to change(Order, :count).by(-1)
     end
   end
 end

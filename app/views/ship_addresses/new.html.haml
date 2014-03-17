@@ -1,24 +1,29 @@
 .container
   %center 
+    %h4.well.xl
+      == #{t(:order_ba)} - <u>#{t(:order_sa)}</u> >> #{t(:order_delivery)} - #{t(:order_payment)} - #{t(:order_confirm)} - #{t(:order_complete)}
     = form_for @ship_address do |sa|
       = render partial: "errors/errors", locals: {object: sa.object}
       .panel.panel-info.panel-little#sa
         .panel-heading
-          %h3 Create ship address:
+          %h4= t(:new_sa)
+          = check_box_tag :use_ba, checked = false
+          = t(:use_ba)
         .panel-body
           %h5
-            %label.control-label== Country: <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-            %br
-            %br
-            %label.control-label== City: #{sa.text_field :city, size: 15, class: 'form-control'}
-            %br
-            %br
-            %label.control-label== Address: #{sa.text_area :address, class: 'form-control'}
-            %br
-            %br
-            %label.control-label== Zip code: #{sa.number_field :zipcode, class: 'form-control s'}
-            %br
-            %br
-            %label.control-label== Phone: #{sa.telephone_field :phone, class: 'form-control'}
+          - if customer_signed_in? 
+            - if current_customer.customer_bill_address
+              = render partial: "form_for_customer", locals: {sa: sa}
+            - else
+              = render partial: "form", locals: {sa: sa}
+          - else
+            = render partial: "form", locals: {sa: sa}
         .panel-footer
-          = sa.submit "Create ship address", class: 'btn btn-success'
+          %h4
+            = t(:books_price)
+            %strong.label.label-info= number_to_currency current_order.books_price
+          %h4
+            = t(:total_price)
+            %strong.label.label-info= number_to_currency current_order.total_price
+          = sa.submit t(:next), class: 'btn btn-primary'
+    = link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

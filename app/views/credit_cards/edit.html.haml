@@ -4,14 +4,14 @@
       = render partial: "errors/errors", locals: {object: cc.object}
       .panel.panel-info.panel-small#cc
         .panel-heading
-          %h3 Edit credit card info:
+          %h3= t(:edit_cc)
         .panel-body
           %h5
-            %label.control-label== Card number: #{cc.text_field :number, class: 'form-control'}
-            %label.control-label== CVV: #{cc.number_field :cvv, step: 1, class: 'form-control s'}
-            %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control'}
-            %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
-            %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
-            %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
+            %label.control-label== #{t(:cc_number)} #{cc.text_field :number, class: 'form-control'}
+            %label.control-label== #{t(:cvv)} #{cc.number_field :cvv, step: 1, class: 'form-control s'}
+            %label.control-label== #{t(:owner_fn)} #{cc.text_field :firstname, size: 8, class: 'form-control'}
+            %label.control-label== #{t(:owner_ln)} #{cc.text_field :lastname, size: 8, class: 'form-control'}
+            %label.control-label== #{t(:exp_m)} #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
+            %label.control-label== #{t(:exp_y)} #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
         .panel-footer
-          = cc.submit "Update credit card", class: 'btn btn-success'
+          = cc.submit t(:update_cc), class: 'btn btn-success'

@@ -1,46 +1,43 @@
 .container
   %center 
-    %h2== Order from "#{@order.updated_at}": 
-    %h3 Books in order:
-    %table.table.table-hover.table-small
+    %h2== #{t(:order_from)} #{@order.customer.id}#{@order.created_at.to_formatted_s(:number)} (#{@order.created_at.to_formatted_s(:long)})
+    %h3= t(:books_in_order)
+    %table.table.table-hover.table-order
       %thead
         %tr.success
-          %th.text-center Book title
-          %th.text-center Author
-          %th.text-center Category
-          %th.text-center Quantity
-          %th.text-center Price
+          %th.text-center= t(:book_title)
+          %th.text-center= t(:author_name)
+          %th.text-center= t(:category_name)
+          %th.text-center= t(:quantity)
+          %th.text-center= t(:price)
         %tbody
           -  @order.order_items.each do |oi|
             %tr.text-center
-              %td= oi.book.title
-              %td= oi.book.author.full_name
-              %td= oi.book.category.title
+              %td= link_to "#{oi.book.title}", book_path(oi.book.id), method: :get
+              %td= link_to "#{oi.book.author.full_name}", author_path(oi.book.author.id), method: :get
+              %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
               %td= oi.quantity
-              %td= number_to_currency(oi.price)
-    %h5
-      .inline
-        .panel.panel-info.panel-little
-          .panel-heading
-            %h4 Bill address:  
-          .panel-body
-            == #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}
-          .panel-footer
-            == Phone: #{@order.bill_address.phone}
-      .inline
-        .panel.panel-info.panel-little
-          .panel-heading
-            %h4 Ship address:  
-          .panel-body
-            == #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}
-          .panel-footer
-            == Phone: #{@order.ship_address.phone} 
+              %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
+    %h3= t(:order_info)
+    %table.table.table-order
+      %thead
+        %tr.success
+          %th.left= t(:ba_info)
+          %th.left= t(:sa_info)
+          %th.left= t(:delivery_info)
+          %th.left= t(:cc_info)
+        %tbody
+          %tr.justified
+            %td== #{@order.bill_address.country.name}<br>#{@order.bill_address.zipcode}, #{@order.bill_address.city}<br>#{@order.bill_address.address}<br>Phone: #{@order.bill_address.phone}
+            %td== #{@order.ship_address.country.name}<br>#{@order.ship_address.zipcode}, #{@order.ship_address.city}<br>#{@order.ship_address.address}<br>Phone: #{@order.ship_address.phone}
+            %td== #{@order.delivery.name} (+#{number_to_currency @order.delivery.price})
+            %td== ** ** ** #{@order.credit_card.number.last(4)}<br>#{@order.credit_card.expiration_month}/ #{@order.credit_card.expiration_year}
+    - if !@order.coupon.nil?
+      %h4
+        =t(:oder_discount)
+        %strong.label.label-danger== #{@order.coupon.discount*100}%
+        == (#{t(:coupon_number)} "#{@order.coupon.number}")
     .outline           
       %hr    
-      %h2== Total price: <span class="label label-success">#{number_to_currency(@order.price)}</span>
-      %h2== Order status: <label class="label label-info">#{@order.state.humanize}</label>
-      %br
-      -if customer_signed_in? && current_customer.admin
-        =link_to 'Set shipped', shipped_order_path, method: :post, class: 'btn btn-warning'
-        =link_to 'Set completed', complete_order_path, method: :post, class: 'btn btn-warning'
-        =link_to 'Delete order', order_path, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}
+      %h2== #{t(:total_price)} <span class="label label-success">#{number_to_currency(@order.price)}</span>
+      %h2== #{t(:status)} <label class="label label-info">#{@order.state.humanize}</label>

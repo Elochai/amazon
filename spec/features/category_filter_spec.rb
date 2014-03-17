@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Category filter" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:category) {FactoryGirl.create(:category, title: 'Fantasy')}
@@ -11,7 +11,9 @@ feature "Category filter" do
   end
   scenario "A customer can navigate books by categories" do
     click_on 'Filter by category'
-    click_on 'Fantasy'
+    within '#category_filter' do
+      click_on 'Fantasy'
+    end
     expect(page).to have_content book.title
     expect(page).to_not have_content book2.title
   end

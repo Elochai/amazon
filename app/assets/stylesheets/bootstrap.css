@@ -1,4 +1,4 @@
-/*!
+s/*!
  * Bootstrap v3.0.3 (http://getbootstrap.com)
  * Copyright 2013 Twitter, Inc.
  * Licensed under http://www.apache.org/licenses/LICENSE-2.0
@@ -322,6 +322,16 @@ textarea {
 
 a {
   color: #428bca;
+  text-decoration: none;
+}
+
+a.wishers-link {
+  color: #ffffff;
+}
+
+a.wishers-link:hover,
+a.wishers-link:focus {
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -1658,11 +1668,25 @@ th {
   background-color: #ffffff;
 }
 
+.table-order {
+  width: 90%;
+  vertical-align: top;
+  background-color: #ffffff;
+}
+
+.top {
+  vertical-align: top;
+}
+
 .table-little {
   width: 40%;
   margin-bottom: 20px;
   vertical-align: center;
   background-color: #ffffff;
+}
+
+.table-order {
+  vertical-align: top;
 }
 
 .xl
@@ -1980,6 +2004,10 @@ output {
           transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
+.form-control.xlg {
+  width: 250px;
+}
+
 .form-control.lg {
   width: 150px;
 }
@@ -2094,7 +2122,7 @@ fieldset[disabled] .checkbox-inline {
   cursor: not-allowed;
 }
 
-.input-sm {
+.input-small {
   height: 30px;
   padding: 5px 10px;
   font-size: 12px;
@@ -2685,6 +2713,8 @@ fieldset[disabled] .btn-link:focus {
   line-height: 1.5;
   border-radius: 3px;
 }
+
+.in
 
 .btn-xs {
   padding: 1px 5px;
@@ -4329,9 +4359,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-brand {
   float: left;
-  padding: 15px 15px;
-  font-size: 18px;
+  padding: 15px 10px;
+  font-size: 16px;
   line-height: 20px;
+  font-weight:bold;
 }
 
 .navbar-brand:hover,
@@ -4647,13 +4678,15 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-brand {
-  color: #999999;
+  color: #D0D0D0;
+  text-shadow: 1px 1px 3px #000, -1px -1px 3px #000, 1px 1px #000, -1px -1px #fff; 
 }
 
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #ffffff;
   background-color: transparent;
+  color: #ffffff;
+  text-shadow: 0 0 8px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
 }
 
 .navbar-inverse .navbar-text {
@@ -4666,15 +4699,21 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffffff;
+  color: #999999;
   background-color: transparent;
+  font-size: 16px;
 }
 
-.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a {
+  color: #ffffff;
+  background-color: #101010;
+}
+
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #ffffff;
-  background-color: #080808;
+  background-color: #000000;
+  font-size: 16px;
 }
 
 .navbar-inverse .navbar-nav > .disabled > a,
@@ -5466,6 +5505,44 @@ a.list-group-item.active:focus .list-group-item-text {
   width:375px;
 }
 
+.panel-book {
+  width:375px;
+  height: 600px;
+}
+
+.panel-order {
+  width: 200px;
+}
+
+.panel-order-info-header {
+  height: 100px;
+}
+
+.panel-order-info {
+  height: 60px;
+}
+
+.book-body {
+  height: 330px;
+}
+
+.centered {
+  height: 6em;
+  line-height: 3em;
+}
+
+.footer-book {
+  height: 90px;
+}
+
+.header-book {
+  height: 62px;
+}
+
+.header-address {
+  height: 100px;
+}
+
 .panel-errors {
   width:450px;
 }
@@ -6200,6 +6277,10 @@ button.close {
   position: relative;
 }
 
+#top_rated_carousel {
+
+}
+
 .carousel-inner {
   position: relative;
   width: 100%;
@@ -6262,31 +6343,53 @@ button.close {
 .carousel-control {
   position: absolute;
   top: 0;
+  padding-top: 190px;
   bottom: 0;
   left: 0;
   width: 15%;
   font-size: 20px;
-  color: #ffffff;
+  color: #000000;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
 
+.book-info {
+  display: inline-block;
+  text-align: justify;
+  vertical-align: top;
+  width: 240px;
+  overflow: hidden;
+}
+
+.justified {
+  text-align: justify;
+}
+
+.left {
+  text-align: left;
+}
+
+.book-info.l {
+  width: 340px;
+}
+
+.big {
+  font-size: 17px;
+}
+
+.carousel-panel {
+  width: 530px;
+}
+
 .carousel-control.left {
-  background-image: -webkit-linear-gradient(left, color-stop(rgba(0, 0, 0, 0.5) 0), color-stop(rgba(0, 0, 0, 0.0001) 100%));
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.0001) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
+  left: 120px;
 }
 
 .carousel-control.right {
   right: 0;
-  left: auto;
-  background-image: -webkit-linear-gradient(left, color-stop(rgba(0, 0, 0, 0.0001) 0), color-stop(rgba(0, 0, 0, 0.5) 100%));
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
+  left: 845px;
 }
 
 .carousel-control:hover,
@@ -6336,9 +6439,11 @@ button.close {
 }
 
 .carousel-indicators {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: -10px;
+  bottom: 50px;
+  left: 15%;
   z-index: 15;
   width: 60%;
   padding-left: 0;
@@ -6349,22 +6454,22 @@ button.close {
 
 .carousel-indicators li {
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 1px;
+  width: 6px;
+  height: 6px;
+  margin: 4px;
   text-indent: -999px;
   cursor: pointer;
   background-color: #000 \9;
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid #ffffff;
+  border: 1px solid #000000;
   border-radius: 10px;
 }
 
 .carousel-indicators .active {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   margin: 0;
-  background-color: #ffffff;
+  background-color: #000000;
 }
 
 .carousel-caption {

@@ -1,5 +1,8 @@
 .container
   %center 
-    %h1 Welcome to Amazon!
-    %h2 Our books:
+    %h1= t(:welcome)
+    %h2= t(:our_books)
+    = paginate @books
     = render partial: 'books'
+    %br
+    = paginate @books

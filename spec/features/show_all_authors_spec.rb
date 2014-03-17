@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Show all authors" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:author2) {FactoryGirl.create(:author, firstname: 'Lev', lastname: 'Tolstoy')}

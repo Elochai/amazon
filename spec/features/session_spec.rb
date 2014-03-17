@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Session" do
   before(:each) do
     customer = FactoryGirl.create(:customer)

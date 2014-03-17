@@ -1,60 +1,63 @@
 .container
   %center 
-    %h2== "#{@book.title}" book info: 
-    %h4
-      %br
-      == Full title: <strong>#{@book.title}</strong><br>
-      == Author of this book: <strong>#{@book.author.full_name}</strong><br>
-      == Category: <strong>#{@book.category.title}</strong><br>
-      == Description: <strong>#{@book.description}</strong><br><br>
-      == Customers rating: <strong>#{@book.avg_rating}</strong><br><br>
-      == We can sell it for: <strong>#{number_to_currency(@book.price)}</strong><br>
-      == We have <strong>#{@book.in_stock}</strong> exemplar(s) of this book in stock
-    %center
-      - if @book.in_stock > 0
-        %br= link_to "Add to cart", add_to_order_book_path, method: :post, class:"btn btn-success"
-      - else
-        %h3
-          %strong.label.label-warning Sorry, we dont have this book right now
-      %hr
-      - if customer_signed_in? && current_customer.admin 
-        =link_to 'Add 1 to stock', add_in_stock_book_path, method: :post, class: 'btn btn-primary'
-        =link_to 'Edit book info', edit_book_path, class: 'btn btn-warning'
-        =link_to 'Delete book', book_path, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}
-      %h3 Customer's reviews:
-      - if @current_book.ratings.empty?
-        %h3 
-          %small No reviews for this book right now...You can be first!
-      - else
-        - @current_book.ratings.load.each do |review|
-          - if review.approved == true
-            .panel.panel-info.panel-small
-              .panel-heading 
-                %h5== <strong>#{review.customer.email}</strong> wrote:
-                - if customer_signed_in? && current_customer.admin
-                  == #{link_to '', approve_review_book_rating_path(@current_book, review), method: :post, class: 'icon-ok', title: 'Approve this review', data: {confirm: 'Are you sure?'}} | #{link_to '', book_rating_path(@current_book, review), method: :delete, class: 'icon-remove', title: 'Delete this review', data: {confirm: 'Are you sure?'}}
-              .panel-body
-                %h5
-                  %em== - "#{review.text}"
-              .panel-footer
-                %h5== Rated: <strong>#{review.rating}</strong> point(s)
+    .panel.panel-info.panel-small
+      .panel-heading
+        %h3== "#{@book.title}"
+      .panel-body
+        %h4
+          %br
+          = image_tag "#{@book.cover.url}"
+          .book-info.l
+            == #{t(:full_title)} <strong>#{@book.title}</strong><br>
+            == #{t(:author)} <strong>#{link_to "#{@book.author.full_name}", author_path(@book.author.id), method: :get}</strong><br>
+            == #{t(:category)} <strong>#{link_to "#{@book.category.title}", category_path(@book.category.id), method: :get}</strong><br>
+            == #{t(:description)} <strong>#{@book.description}</strong><br>
+          %br
+          %br
+          == #{t(:ratings)} <strong>#{@book.avg_rating}</strong><br>
+          == #{t(:wished_by)}
+          = link_to "#{@book.wishers.count}", wishers_book_path(@book), title: t(:book_wishers)
+          = t(:customers)
+          %br
+          == #{t(:sell_price)} <strong>#{number_to_currency(@book.price)}</strong><br>
+          == #{t(:in_stock)} <strong>#{@book.in_stock}</strong> 
+        %center
+          - if customer_signed_in? && current_customer.wishes.include?(@book)
+            %br= link_to t(:remove_wish), remove_wish_book_path(@book), method: :post, class:"btn btn-warning"
           - else
-            .panel.panel-info.panel-small
-              .panel-heading 
-                %h5== Review by <strong>#{review.customer.email}</strong> should be approved first
-                - if customer_signed_in? && current_customer.admin
-                  == #{link_to '', approve_review_book_rating_path(@current_book, review), method: :post, class: 'icon-ok', title: 'Approve this review', data: {confirm: 'Are you sure?'}} | #{link_to '', book_rating_path(@current_book, review), method: :delete, class: 'icon-remove', title: 'Delete this review', data: {confirm: 'Are you sure?'}} 
-              - if customer_signed_in? && current_customer.admin 
-                .panel-body
-                  %h5
-                    %em== - "#{review.text}"
-                .panel-footer
-                  %h5== Rated: <strong>#{review.rating}</strong> point(s)
-      - if customer_signed_in?
-        %h3 Please, rate this book and leave your review:
-        = form_for [@book, @rating] do |rating|
-          %h5
-            %label.control-label== Your rating: #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control', style:'width:60px'}
-            %br
-            %label.control-label== Your review: #{rating.text_area :text, placeholder:"Type review here...", class: 'form-control', style:'width:400px'}
-            %br= rating.submit "Rate and review", class:"btn btn-info"
+            %br= link_to t(:add_wish), add_wish_book_path(@book), method: :post, class:"btn btn-info"
+          - if @book.in_stock > 0
+            = form_tag "/add_to_order/#{@book.id}", class: 'form-inline' do
+              %br
+              .form-group
+                = number_field_tag :quantity, 1, min: 1, max: "#{@book.in_stock}", class: 'form-control xs'
+              .form-group
+                = submit_tag t(:add_to_cart), class:"btn btn-success"
+          - else
+            %h3
+              %strong.label.label-warning= t(:no_book)
+          %hr
+          %h3= t(:ratings)
+          - if @current_book.ratings.empty?
+            %h3 
+              %small= t(:no_ratings)
+          - else
+            - @current_book.ratings.load.each do |review|
+              - if review.approved == true
+                .panel.panel-info.panel-little
+                  .panel-heading 
+                    %h5== <strong>#{review.customer.email}</strong> #{t(:wrote)}
+                    %h6== (#{review.created_at.to_formatted_s(:long)})
+                  .panel-body
+                    %h5.justified
+                      %em== - "#{review.text}"
+                  .panel-footer
+                    %h5== #{t(:rating)} <strong>#{review.rating}</strong> 
+          - if can? :new, Rating
+            %h4#rate= t(:rate_this)
+            = form_for [@book, @rating] do |rating|
+              %h5
+                %label.control-label== #{t(:your_rating)} #{rating.number_field :rating, in: 1..10, step: 1, class: 'form-control xs'}
+                %br
+                %label.control-label== #{t(:your_review)} #{rating.text_area :text, rows: 6, cols: 60, class: 'form-control' }
+                %br= rating.submit t(:rate_and_review), class:"btn btn-info"

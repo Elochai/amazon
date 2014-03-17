@@ -1,0 +1,11 @@
+.container
+  %center 
+    %h3== "#{@book.title}" #{t(:wishers)}
+    %table.table.table-hover.table-little
+      %thead
+        %tr.success
+          %th.text-center= t(:customer)
+        %tbody
+          - @wishers.each do |wisher|
+            %tr.text-center
+              %td= wisher.email

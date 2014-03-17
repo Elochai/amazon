@@ -1,0 +1,14 @@
+.container
+  %center 
+    = form_tag "/order/add_delivery" do
+      .panel.panel-info.panel-little
+        .panel-heading
+          %h4= t(:change_delivery)
+        .panel-body
+          %h5
+            - Delivery.all.each do |delivery|
+              = radio_button_tag :delivery_id, delivery.id
+              %label== #{delivery.name} + #{number_to_currency delivery.price}
+              %br
+        .panel-footer
+          = submit_tag t(:change_delivery), class: 'btn btn-primary'

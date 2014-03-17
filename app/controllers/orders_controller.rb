@@ -1,95 +1,75 @@
   class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :shipped, :complete]
-  before_filter :authenticate_customer!, only: [:index, :show, :new, :update]
- 
+  before_filter :if_no_current_order?, except: [:show, :index]
+  load_and_authorize_resource
   # GET /orders
   # GET /orders.json
   def index
-    @orders = current_customer.orders.load
+    @orders = current_customer.orders
   end
  
   # GET /orders/1
   # GET /orders/1.json
   def show
-  end
- 
-  # GET /orders/new
-  def new
-    @order = current_customer.orders.new
-    @order.build_credit_card
-    @order.build_bill_address
-    @order.build_ship_address
-  end
- 
-  # GET /orders/1/edit
-  def edit
-    if current_customer.admin == true
+    if @order.customer_id && @order.customer_id == current_customer.id
+      @order
+    else
+      redirect_to root_path
     end
   end
- 
-  # POST /orders
-  # POST /orders.json
-  def create
-    @order = current_customer.orders.new(order_params)
-    @order.state = 'in_progress'
-    @order.price = current_customer.order_price
-    respond_to do |format|
-      if current_customer.has_anything_in_cart?
-        if @order.save!
-          @order.update_store!(current_customer)
-          format.html { redirect_to @order, notice: 'Order was successfully created.' }
-          format.json { render action: 'show', status: :created, location: @order }
-        else
-          format.html { render action: 'new'}
-          format.json { render json: @order.errors, status: :unprocessable_entity }
-        end
-      else
-        format.html { render action: 'new', alert: 'Please, select some book(s) to buy first'}
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
+
+  def update_with_coupon
+    if @coupon = Coupon.find_by(number: params[:coupon])
+      current_order.update(coupon_id: @coupon.id)
+      redirect_to order_items_path, notice: t(:succ_coupon) 
+    else
+      redirect_to order_items_path, alert: t(:fail_coupon)
     end
   end
- 
-  # PATCH/PUT /orders/1
-  # PATCH/PUT /orders/1.json
-  def update
-    if current_customer.admin == true
-      respond_to do |format|
-        if @order.update(order_params)
-          format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-          format.json { head :no_content }
-        else
-          format.html { render action: 'edit' }
-          format.json { render json: @order.errors, status: :unprocessable_entity }
-        end
-      end
+
+  def remove_coupon
+    current_order.update(coupon_id: nil)
+    redirect_to order_items_path, notice: t(:remove_coupon_notice)
+  end
+
+  def delivery
+    if current_order.checkout_step > 3
+      redirect_to new_credit_card_path
+    elsif current_order.checkout_step < 3
+      redirect_to new_ship_address_path
     end
   end
- 
-  # DELETE /orders/1
-  # DELETE /orders/1.json
+
+  def confirm
+    if current_order.checkout_step < 5
+      redirect_to new_credit_card_address_path
+    elsif current_order.order_items.empty?
+      redirect_to root_path, alert: t(:select_books_to_buy)
+    end
+  end
+
+  def add_delivery
+    if Delivery.where(id: params[:delivery_id]).any?
+      current_order.update(delivery_id: params[:delivery_id])
+      current_order.next_step!
+      redirect_to new_credit_card_path, notice: t(:delivery_suc_create)
+    else
+      redirect_to order_delivery_path, alert: t(:delivery_fail_create)
+    end
+  end
+
+  def edit_delivery
+  end
+
+  def place
+    current_order.to_queue!(current_customer)
+    cookies.delete :current_order
+    redirect_to root_path, notice: t(:order_suc_create)
+  end
+
   def destroy
-    if current_customer.admin == true
-      @order.destroy
-      respond_to do |format|
-        format.html { redirect_to orders_url, notice: 'Order was successfully deleted.' }
-        format.json { head :no_content }
-      end
-    end
-  end
-
-  def shipped
-    if current_customer.admin == true
-      @order.shipped!
-      redirect_to :back
-    end
-  end
-
-  def complete
-    if current_customer.admin == true
-      @order.complete!
-      redirect_to :back
-    end
+    current_order.destroy
+    cookies.delete :current_order
+    redirect_to root_path, notice: t(:order_suc_delete)
   end
 
   private
@@ -100,7 +80,7 @@
  
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(credit_card_attributes: [:id, :number, :cvv, :firstname, :lastname, :expiration_month, :expiration_year], bill_address_attributes: [:id, :city, :address, :phone, :zipcode, :country_id], ship_address_attributes: [:id, :city, :address, :phone, :zipcode, :country_id])
+      params.require(:order).permit(:price, :state, credit_card_attributes: [:id, :number, :cvv, :firstname, :lastname, :expiration_month, :expiration_year], bill_address_attributes: [:id, :city, :address, :phone, :zipcode, :country_id], ship_address_attributes: [:id, :city, :address, :phone, :zipcode, :country_id])
     end
 end
 

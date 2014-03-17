@@ -1,17 +1,29 @@
 .container
   %center 
+    %h4.well.xl
+      == #{t(:order_ba)} - #{t(:order_sa)} - #{t(:order_delivery)} - <u>#{t(:order_payment)}</u> >> #{t(:order_confirm)} - #{t(:order_complete)}
     = form_for @credit_card do |cc|
       = render partial: "errors/errors", locals: {object: cc.object}
       .panel.panel-info.panel-small#cc
         .panel-heading
-          %h3 New credit card info:
+          %h4= t(:new_cc)
         .panel-body
           %h5
-            %label.control-label== Card number: #{cc.text_field :number, class: 'form-control'}
-            %label.control-label== CVV: #{cc.number_field :cvv, step: 1, class: 'form-control s'}
-            %label.control-label== Owner firstname: #{cc.text_field :firstname, size: 8, class: 'form-control'}
-            %label.control-label== Owner lastname: #{cc.text_field :lastname, size: 8, class: 'form-control'}
-            %label.control-label== Exp month: #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
-            %label.control-label== Exp year: #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
+            %label.control-label== #{t(:cc_number)} #{cc.text_field :number, class: 'form-control'}
+            %label.control-label== #{t(:cvv)} #{cc.number_field :cvv, step: 1, class: 'form-control s'}
+            %label.control-label== #{t(:owner_fn)} #{cc.text_field :firstname, size: 8, class: 'form-control'}
+            %label.control-label== #{t(:owner_ln)} #{cc.text_field :lastname, size: 8, class: 'form-control'}
+            %label.control-label== #{t(:exp_m)} #{cc.number_field :expiration_month, in: 1..12, size: 4, class: 'form-control'}
+            %label.control-label== #{t(:exp_y)} #{cc.number_field :expiration_year, min: Time.now.year, max: Time.now.year + 30, class: 'form-control'} 
         .panel-footer
-          = cc.submit "Create credit card", class: 'btn btn-success'
+          %h4
+            = t(:books_price)
+            %strong.label.label-info= number_to_currency current_order.books_price
+          %h4
+            = t(:delivery_price)
+            %strong.label.label-info= number_to_currency current_order.delivery.price
+          %h4
+            = t(:total_price)
+            %strong.label.label-info= number_to_currency current_order.total_price
+          = cc.submit t(:next), class: 'btn btn-primary'
+    = link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

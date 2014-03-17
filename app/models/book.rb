@@ -1,31 +1,28 @@
 class Book < ActiveRecord::Base
+  mount_uploader :cover, CoverUploader
+  paginates_per 6
   has_many :ratings, dependent: :destroy
   belongs_to :author
   belongs_to :category
+  has_and_belongs_to_many :wishers, class_name: 'Customer'
 
   validates :title, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
   validates :in_stock, numericality: { greater_than_or_equal_to: 0 }, presence: true
+  validates :description, length: { maximum: 400 }
 
+  default_scope { order('id DESC') } 
   scope :by_author, ->(author) {where('author_id = ?', author)}
   scope :by_category, ->(category) {where('category_id = ?', category)}
+  scope :top_rated, -> {where("avg_rating > 0").order("avg_rating DESC").limit(5)}
 
-  def add_in_stock!
-    self.in_stock += 1
-    save!
-  end
-
-  def avg_rating
-    sum = 0
-    ratings.where(approved: true).each do |item|
-      unless item.rating.nil?
-        sum += item.rating
-      end
-    end
-    if ratings.where(approved: true).count > 0
-      sum/ratings.where(approved: true).count
+  def recalculate_avg_rating!
+    if ratings.where(approved: true).any?
+      self.avg_rating = self.ratings.where(approved: true).sum(:rating)/ratings.where(approved: true).count
+      self.save
     else
-      0
+      self.avg_rating = 0
+      self.save
     end
   end
 end

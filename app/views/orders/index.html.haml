@@ -1,37 +1,23 @@
 .container
   %center 
-    %h2 Your orders:
+    %h2= t(:your_orders)
     - if customer_signed_in? && current_customer.orders.load.empty?
       %h2
-        %strong.label.label-warning You do not have any orders.
+        %strong.label.label-warning= t(:no_orders)
     - else    
       %table.table.table-hover.table-small
         %thead
           %tr.success
-            %th.text-center Date of update
-            %th.text-center Price
-            %th.text-center State
-            %th.text-center Date of complete
-            - if current_customer.admin
-              %th.text-center Customer
-              %th.text-center Manage
+            %th.text-center= t(:order_number)
+            %th.text-center= t(:create_date)
+            %th.text-center= t(:price)
+            %th.text-center= t(:state)
+            %th.text-center= t(:complete_date)
           %tbody
-            - if current_customer.admin
-              - Order.all.each do |order|
-                %tr.text-center
-                  %td
-                    %strong= link_to "#{order.updated_at}", order_path(order), method: :get, title: 'Show order info'
-                  %td= number_to_currency(order.price)
-                  %td= order.state.humanize
-                  %td= order.completed_at
-                  %td= order.customer.email
-                  %td= link_to '', order_path(order), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this order"
-            - else
-              - @orders.each do |order|
-                %tr.text-center
-                  %td= link_to "#{order.updated_at}", order_path(order), method: :get
-                  %td= number_to_currency(order.price)
-                  %td= order.state.humanize
-                  %td= order.completed_at
-    %center
-      =link_to 'New order', new_order_path, class: 'btn btn-primary'
+            - @orders.each do |order|
+              %tr.text-center
+                %td= link_to "#{order.customer.id}"+"#{order.created_at.to_formatted_s(:number)}", order_path(order), method: :get
+                %td= order.created_at.to_formatted_s(:long)
+                %td= number_to_currency(order.price)
+                %td= order.state.humanize
+                %td= order.completed_at

@@ -20,4 +20,207 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  welcome: 'Welcome to AMAZON!'
+  our_books: 'Our books:'
+  sign_up_first: You need to sign in or sign up before continuing.
+  already_have_bill_address: You already have bill address. Edit it if you want.
+  bill_address_suc_create: Bill address was successfully created.
+  bill_address_suc_update: Bill address was successfully updated.
+  bill_address_suc_delete: Bill address was successfully deleted.
+  already_have_ship_address: You already have ship address. Edit it if you want.
+  ship_address_suc_create: Ship address was successfully created.
+  ship_address_suc_update: Ship address was successfully updated.
+  ship_address_suc_delete: Ship address was successfully deleted.
+  book_suc_add_wish: Book was successfully added to wish list.
+  book_suc_delete_wish: Book was successfully deleted from wish list.
+  already_have_cc: You already have credit card. Edit it if you want.
+  cc_suc_create: Credit card was successfully added to order.
+  cc_suc_update: Credit card was successfully updated.
+  cc_suc_delete: Credit card was successfully deleted.
+  quantity_suc_updated: Quantity was successfully changed.
+  quantity_fails_update: We do not have so many in stock.
+  order_suc_create: Order was successfully created.
+  select_books_to_buy: Select some book(s) to buy first.
+  rating_suc_create: Rating was successfully added.
+  rating_fails_create: An error has occured while adding your rating.
+  rated_already: You have already rated this book!
+  update_ba: Update bill address
+  add_to_cart: Add to cart
+  unavaliable: Unavaliable
+  edit_ba: 'Edit bill address:'
+  address: 'Address:'
+  zipcode: 'Zip code:'
+  phone: 'Phone:'
+  city: 'City:'
+  new_ba: 'Add bill address:'
+  new_addr: 'Add address:'
+  create_ba: Create bill address
+  create_addr: Create address
+  authors: 'Authors:'
+  author_name: Author name
+  number_of_books: Number of books
+  no_books: 'Sorry, no books right now...'
+  author: 'Author:'
+  category: 'Category:'
+  description: 'Description:'
+  full_title: 'Full title:'
+  ratings: 'Customers rating:'
+  wished_by: 'Wished by'
+  customers: 'customer(s)'
+  sell_price: 'We can sell it for:'
+  in_stock: 'In stock:'
+  remove_wish: Remove from wish list
+  add_wish: Add to wish list
+  no_book: 'Sorry, we dont have this book right now'
+  no_ratings: 'No reviews for this book right now...You can be first!'
+  ratings: "Customer's reviews:"
+  wrote: 'wrote:'
+  rating: 'Rating:'
+  rate_this: 'Please, rate this book and leave your review:'
+  your_rating: 'Your rating:'
+  your_review: 'Your review:'
+  rate_and_review: 'Rate and review'
+  customer: 'Customer'
+  wishers: 'wishers:'
+  categories: 'Categories of books:'
+  category_name: 'Category name'
+  book_in_cat: 'Books in this category:'
+  edit_sa: 'Edit ship address:'
+  edit_addr: 'Edit address:'
+  update_addr: Update address
+  update_sa: Update ship address
+  create_sa: Create ship address
+  new_sa: 'Add ship address:'
+  edit_cc: 'Edit credit card:'
+  edit_credit_card: 'Edit credit card'
+  delete_credit_card: 'Delete credit card'
+  edit_bill_address: 'Edit bill address'
+  edit_ship_address: 'Edit ship address'
+  delete_bill_address: 'Delete bill address'
+  delete_ship_address: 'Delete ship address'
+  update_cc: Update credit card
+  create_cc: Create credit card 
+  new_cc: 'Add credit card:'
+  cc_number: 'Card number:'
+  cvv: 'CVV:'
+  owner_fn: 'Owner firstname:'
+  owner_ln: 'Owner lastname:'
+  exp_m: 'Exp month:'
+  exp_y: 'Exp year:'
+  fn: 'Firstname:'
+  ln: 'Lastname:'
+  email: 'Email:'
+  pass: 'Password:'
+  current_pass: 'Current password:'
+  pass_confirm: 'Password confirmation:'
+  update: Update
+  curr_pass_info: (we need your current password to confirm your changes)
+  pass_confirm_info: (leave it blank if you do not want to change it)
+  delete_account: Delete my account
+  confirm: Are you sure?
+  back: Back
+  add_cc: 'Add credit card'
+  add_ba: 'Add bill address'
+  add_sa: 'Add ship address'
+  owner: 'Owner:'
+  your_cc: 'Your credit card:'
+  your_ba: 'Your bill address:'
+  your_sa: 'Your ship address:'
+  your_wishes: 'Your wished books:'
+  sign_up: 'Sign up'
+  sign_in: 'Sign in'
+  remember_me: 'Remember me:'
+  forgot_pass: Forgot your password?
+  sign_in_with: Sign in with
+  books: Books
+  top_rated: Top rated
+  categories: Categories
+  authors: Authors
+  admin_panel: Admin panel
+  orders: Orders
+  cart: Cart
+  profile: Profile
+  sign_out: Sign out
+  sign_in_facebook: Sign in with Facebook
+  site_title: Amazon - web book store
+  change_quantity: Change quantity of
+  new_quantity: 'New quantity:'
+  save: Save
+  your_orders: 'Your orders:'
+  no_orders: You do not have any orders.
+  create_date: Date of create
+  order_number: Order number
+  price: Price
+  state: State
+  complete_date: Date of complete
+  new_order: 'New order:'
+  empty_cart: Your cart is empty...
+  book_title: Book title
+  quantity: Quantity
+  manage: Manage
+  total_price: 'Total price:'
+  order_info: 'Please provide us with next infomation:'
+  cc_info: 'Credit card info'
+  ba_info: 'Bill address info'
+  sa_info: 'Ship address info'
+  buy: 'Let me buy already!'
+  books_in_order: 'Books in order:'
+  order_from: Order №
+  total: 'total:'
+  status: 'Order status:'
+  author_full_name: 'Full name of author:'
+  bio: 'Biography:'
+  author_books: 'Books of this author:'
+  no_rated_books: 'No rated books right now'
+  our_top_rated: 'Our top rated books:'
+  book_wishers: 'Book wishers'
+  rate_book: 'Rate this book'
+  clear_cart: 'Clear shopping cart'
+  remove_from_cart: 'Remove from cart'
+  change_oi_quantity: 'Change quantity'
+  are_you_sure: 'Are you sure?'
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Prev"
+      next: "Next &rsaquo;"
+      truncate: "..."
+  auth_error: authentication error
+  oi_succ_create: 'Book was successfully added to cart.'
+  oi_fail_create: 'An error has occured while adding book to cart.'
+  next: Save and continue
+  enter_coupon_number: Enter coupon number...
+  fail_coupon: Invalid coupon number
+  succ_coupon: Coupon was successfully added to order.
+  remove_coupon_notice: Coupon was successfully deleted from order.
+  remove_coupon: Remove coupon
+  current_discount: 'Current discount:'
+  coupon_number: 'coupon number:'
+  add_addresses: Add addresses
+  address_suc_create: Address was successfully added.
+  address_suc_update: Address was successfully updated.
+  address_suc_delete: Address was successfully deleted.
+  address_fail_create: An error has occured while adding your address.
+  use_ba: Use bill address
+  choose_delivery: Choose delivery
+  delivery: 'Delivery:'
+  delivery_suc_create: "Delivery was successfully added to order."
+  delivery_fail_create: "Please, select delivery."
+  place_order: Place order
+  order_info: 'Order info:'
+  delivery_info: Delivery info
+  coupon: Coupon
+  change_delivery: Change delivery
+  order_suc_create: "Order was successfully created, wait for call from our shipping department, thanks!"
+  oder_discount: 'Order discount:'
+  order_suc_delete: Order was successfully deleted.
+  delete_order: Delete order
+  books_price: 'Books total:'
+  delivery_price: 'Delivery price:'
+  order_ba: Bill address
+  order_sa: Ship address
+  order_payment: Payment
+  order_delivery: Delivery
+  order_confirm: Confirm
+  order_complete: Complete

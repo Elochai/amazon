@@ -1,43 +1,21 @@
 class OrderItemsController < ApplicationController
-  before_action :set_order_item, only: [:show, :edit, :update, :destroy, :increase, :decrease, :set_quantity]
-  before_filter :authenticate_customer!
-  # GET /order_items
-  # GET /order_items.json
-  def index
-    @order_items = OrderItem.all
-  end
+  load_and_authorize_resource
+  before_filter :if_no_current_order?, except: :create
 
-  def cart_items
-    @order_items = OrderItem.in_cart
-  end
- 
-  # GET /order_items/1
-  # GET /order_items/1.json
-  def show
-  end
- 
-  # GET /order_items/new
-  def new
-    @order_item = OrderItem.new
+  def index 
+    if current_order.checkout_step == 1
+      @order_items = current_order.order_items
+    elsif current_order.checkout_step > 1
+      redirect_to new_bill_address_path
+    end
   end
  
   # GET /order_items/1/edit
   def edit
-  end
- 
-  # POST /order_items
-  # POST /order_items.json
-  def create
-    @order_item = OrderItem.new(order_item_params)
- 
-    respond_to do |format|
-      if @order_item.save
-        format.html { redirect_to @order_item, notice: 'Order item was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @order_item }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @order_item.errors, status: :unprocessable_entity }
-      end
+    if @order_item.order_id == current_order.id
+      @order_item
+    else
+      redirect_to root_path
     end
   end
  
@@ -46,10 +24,10 @@ class OrderItemsController < ApplicationController
   def update
     respond_to do |format|
       if @order_item.update(order_item_params)
-        format.html { redirect_to new_order_path, notice: 'Quantity was successfully changed.' }
+        format.html { redirect_to order_items_path, notice: t(:quantity_suc_updated) }
         format.json { head :no_content }
       else
-        format.html { redirect_to :back, alert: "Sorry, we don't have so many in stock." }
+        format.html { render action: 'edit', alert: t(:quantity_fail_update) }
         format.json { render json: @order_item.errors, status: :unprocessable_entity }
       end
     end
@@ -58,18 +36,42 @@ class OrderItemsController < ApplicationController
   # DELETE /order_items/1
   # DELETE /order_items/1.json
   def destroy
-    @order_item.destroy
-    respond_to do |format|
-      format.html { redirect_to :back }
-      format.json { head :no_content }
+    if @order_item.order_id == current_order.id
+      @order_item.destroy
+      respond_to do |format|
+        format.html { redirect_to order_items_path }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to root_path
     end
   end
 
   def clear_cart
-    current_customer.order_items.destroy_all
-    redirect_to :back
+    current_order.order_items.destroy_all
+    redirect_to order_items_path
   end
- 
+
+  def create
+    if cookies[:current_order]
+      if Order.where(id: cookies[:current_order]).empty?
+        cookies[:current_order] = Order.create(state: 'in_progress', price: 0.01).id
+      end
+    else
+      cookies[:current_order] ||= Order.create(state: 'in_progress', price: 0.01).id
+      @order_item = OrderItem.new
+    end
+    respond_to do |format|
+      if @order_item.add_to_order!(params[:book_id], params[:quantity], cookies[:current_order])
+        format.html { redirect_to order_items_path, notice: t(:oi_succ_create) }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to root_path, alert: t(:oi_fail_create) }
+        format.json { render json: @order_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order_item

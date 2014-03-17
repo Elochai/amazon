@@ -13,4 +13,8 @@ FactoryGirl.define do
   end
   factory :ship_address, :parent => :address, :class => 'ShipAddress' do
   end
+  factory :customer_bill_address, :parent => :address, :class => 'CustomerBillAddress' do
+  end
+  factory :customer_ship_address, :parent => :address, :class => 'CustomerShipAddress' do
+  end
 end

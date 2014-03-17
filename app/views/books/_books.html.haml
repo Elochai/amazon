@@ -1,14 +1,14 @@
 .row
-  .btn-group
-    %button.btn.btn-info.dropdown-toggle#dropdownMenu1{'type' => 'button', 'data-toggle' => 'dropdown'}
+  .btn-group#category_filter
+    %button.btn.btn-info.dropdown-toggle#categories{'type' => 'button', 'data-toggle' => 'dropdown'}
       Filter by category
       %span.caret
     %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
       - Category.all.each do |cat|
         %li{'role' => 'presentation'}
           = link_to "#{cat.title}", category_filter_books_path(cat), 'role' => 'menuitem', 'tabindex' => '-1'
-  .btn-group 
-    %button.btn.btn-info.dropdown-toggle#dropdownMenu1{'type' => 'button', 'data-toggle' => 'dropdown'}
+  .btn-group#author_filter 
+    %button.btn.btn-info.dropdown-toggle#authors{'type' => 'button', 'data-toggle' => 'dropdown'}
       Filter by author
       %span.caret
     %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
@@ -18,37 +18,47 @@
 %br
 - if @books.empty?
   %h3 
-    %strong.label.label-warning Sorry, no books right now...
+    %strong.label.label-warning= t(:no_books)
 - else
-  %table.table.table-hover.table-small
-    %thead
-      %tr.success
-        %th.text-center Rating
-        %th.text-center Title
-        %th.text-center Author
-        %th.text-center Category
-        %th.text-center Price
-        %th.text-center In stock
-        %th.text-center Buy
-        - if customer_signed_in? && current_customer.admin
-          %th.text-center Manage
-      %tbody
-        - @books.each do |book|
-          %tr.text-center
-            %td
-              %label.label.label-success= book.avg_rating
-            %td
-              %strong= link_to "#{book.title}", book_path(book), method: :get
-            %td= book.author.full_name
-            %td= book.category.title
-            %td= number_to_currency(book.price)
-            %td= book.in_stock
+  - @books.each do |book|
+    .inline
+      .panel.panel-info.carousel-panel
+        .panel-heading.header-book
+          %h4
+            .pull-left
+              .label.label-success
+                = book.avg_rating
+                - klass = book.avg_rating > 0 ? 'icon-star' : 'icon-star-empty'
+                = link_to "", book_path(book) + '#rate', title: t(:rate_book), class:klass
+            .pull-right
+              .label.label-primary
+                = link_to "#{book.wishers.count}", wishers_book_path(book), title: t(:book_wishers), class:'wishers-link' 
+                - if customer_signed_in? && current_customer.wishes.include?(book)
+                  %i.icon-user
+                  = link_to '', remove_wish_book_path(book), method: :post, class:"icon-remove", title: t(:remove_wish)
+                - else
+                  %i.icon-user
+                  = link_to '', add_wish_book_path(book), method: :post, class:"icon-plus", title: t(:add_wish)
+            %strong= link_to "#{book.title}", book_path(book)
+        .panel-body.book-body
+          = link_to image_tag("#{book.cover.thumb.url}"), book_path(book)
+          .book-info
+            %strong= t(:author) 
+            = link_to "#{book.author.full_name}", author_path(book.author.id), method: :get
+            %br
+            %strong= t(:category)
+            = link_to "#{book.category.title}", category_path(book.category.id), method: :get
+            %br
+            %strong= t(:description) 
+            = book.description
+            %br
+        .panel-footer
+          = form_tag "/add_to_order/#{book.id}", class: 'form-inline' do
+            %strong.label.label-primary.big= number_to_currency book.price
             - if book.in_stock > 0
-              %td== #{link_to "", add_to_order_book_path(book), method: :post, class:"icon-shopping-cart", title:"Add to cart"}
+              .form-group
+                = number_field_tag :quantity, 1, min: 1, max: "#{book.in_stock}", class: 'input-small form-control xs'
+              .form-group
+                = submit_tag t(:add_to_cart), class:"btn btn-sm btn-success"
             - else
-              %td
-            - if customer_signed_in? && current_customer.admin
-              %td== #{link_to '', add_in_stock_book_path(book), method: :post, class: "icon-plus-sign", title:"Add 1 to stock"} | #{link_to '', edit_book_path(book), class: 'icon-pencil', title:"Edit this book"} | #{link_to '', book_path(book), method: :delete, class: 'icon-trash', data: {confirm: 'Are you sure?'}, title:"Delete this book"}
-%center
-- if customer_signed_in? && current_customer.admin
-  = link_to 'New book', new_book_path, class: 'btn btn-primary'
+              = submit_tag t(:unavaliable),class:"btn btn-sm btn-warning", disabled: true

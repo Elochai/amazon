@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Amazon - web book store</title>
+  <title><%= t(:site_title)%></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -9,24 +9,32 @@
 <body>
 <nav class="navbar navbar-inverse navbar-static-top">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="/books/">AMAZON</a>
+		<%= link_to raw("<i class='icon-home icon-white'></i> AMAZON"), root_path, class:'navbar-brand' %>
   </div>
     <ul class="nav navbar-nav navbar-left">
-        <li><%= link_to "Books", books_path %></li>
-        <li><%= link_to "Categories", categories_path %></li>
-        <li><%= link_to "Authors", authors_path %></li>
+        <li><%= link_to t(:books), books_path %></li>
+        <li><%= link_to t(:top_rated), top_rated_books_path %></li>
+        <li><%= link_to t(:categories), categories_path %></li>
+        <li><%= link_to t(:authors), authors_path %></li>
         <% if customer_signed_in? %>
-          <li><%= link_to "Orders", orders_path %></li>
+          <li><%= link_to t(:orders), orders_path %></li>
         <% end %>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <% klass = !current_order.nil? && current_order.order_items.any? ? 'active' : '' %>
+      <% items = !current_order.nil? && current_order.order_items.any? ? "#{current_order.order_items.count}" : 'Empty' %>
+      <% price = !current_order.nil? && current_order.order_items.any? ? "(#{number_to_currency current_order.total_price})" : '' %>
+          <li class="<%= klass %>"><%= link_to raw("<i class='icon-shopping-cart icon-white'></i> #{t(:cart)}: #{items} #{price}"), order_items_path %></li>
   		<% if customer_signed_in? %>
-        <li class='active'><%= link_to raw("My shopping cart <span class='badge'>#{current_customer.order_items.in_cart.count}</span>"), new_order_path %></li>
-  			<li><%= link_to "Profile (#{current_customer.email})", edit_customer_registration_path %></li>
-  			<li><%= link_to "Sign out", destroy_customer_session_path, :method => :delete %></li>
+        <% if can? :manage, rails_admin %>
+          <li class='active'><%= link_to raw("<i class='icon-cog icon-white'></i> #{t(:admin_panel)}"), rails_admin_path %></li>
+        <% end %>
+  			<li><%= link_to raw("<i class='icon-user icon-white'></i> #{t(:profile)} (#{current_customer.email})"), edit_customer_registration_path %></li>
+  			<li><%= link_to raw("<i class='icon-off icon-white'></i> #{t(:sign_out)}"), destroy_customer_session_path, :method => :delete %></li>
   		<% else %>
-  			 <li><%= link_to "Sign up", new_customer_registration_path %></li>
-         <li><%= link_to "Sign in", new_customer_session_path %></li>
+  			 <li><%= link_to raw("<i class='icon-plus icon-white'></i> #{t(:sign_up)}"), new_customer_registration_path %></li>
+         <li><%= link_to raw("<i class='icon-ok icon-white'></i> #{t(:sign_in)}"), new_customer_session_path %></li>
+         <li><%= link_to raw("<i class='icon-magnet icon-white'></i> #{t(:sign_in_facebook)}"), customer_omniauth_authorize_path(:facebook)%></li>
   		<% end %>
     </ul>
 </nav>

@@ -1,17 +1,13 @@
 .container
   %center 
-    %h2== "#{@category.title}" category info: 
-    %h4
-      %br
-      == Category title: <strong>#{@category.title}</strong>
-      %br
-      %br
-      == We have <strong>#{@category.number_of_books}</strong> books of this category, they are below:
-      - @category.books.each do |book|
-        %br
-        = link_to "#{book.title}", book_path(book), method: :get
-    %center
-      %br
-      - if customer_signed_in? && current_customer.admin 
-        =link_to 'Edit category info', edit_category_path, class: 'btn btn-primary'
-        =link_to 'Delete category', category_path, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure?'}
+    .panel.panel-info.panel-small
+      .panel-heading
+        %h3== "#{@category.title}": 
+      .panel-body
+        %h4
+          == #{t(:category_name)} <strong>#{@category.title}</strong>
+          %hr
+          = t(:book_in_cat)
+          - @category.books.each do |book|
+            %br
+            = link_to "#{book.title}", book_path(book), method: :get

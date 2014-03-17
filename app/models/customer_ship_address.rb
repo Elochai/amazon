@@ -1,0 +1,2 @@
+class CustomerShipAddress < Address
+end

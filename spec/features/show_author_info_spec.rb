@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Show author info" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:book) {FactoryGirl.create(:book, title: "LOTR", price: 10.00, in_stock: 1, author: author)}
@@ -13,9 +13,6 @@ feature "Show author info" do
   end
   scenario "A customer can see author biography in show view" do
     expect(page).to have_content author.biography
-  end
-  scenario "A customer can see author number of books in show view" do
-    expect(page).to have_content author.number_of_books
   end
   scenario "A customer can see author books in show view" do
     expect(page).to have_content book.title

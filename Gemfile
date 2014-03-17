@@ -30,6 +30,17 @@ gem 'haml'
 gem 'country_select'
 gem 'travis-lint'
 gem 'rails-i18n'
+gem 'rails_admin'
+gem 'cancan'
+gem 'state_machine'
+gem 'rails_admin_state'
+gem 'carrierwave'
+gem "mini_magick"
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'whenever', :require => false
+gem 'fog'
+gem 'figaro'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

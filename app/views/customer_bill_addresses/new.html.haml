@@ -1,0 +1,24 @@
+.container
+  %center 
+    = form_for @customer_bill_address do |ba|
+      = render partial: "errors/errors", locals: {object: ba.object}
+      .panel.panel-info.panel-little#ba
+        .panel-heading
+          %h4= t(:new_ba)
+        .panel-body
+          %h5
+            %label.control-label== #{t(:country)} <br>#{ba.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+            %br
+            %br
+            %label.control-label== #{t(:city)} #{ba.text_field :city, size: 15, class: 'form-control'}
+            %br
+            %br
+            %label.control-label== #{t(:address)} #{ba.text_area :address, class: 'form-control'}
+            %br
+            %br
+            %label.control-label== #{t(:zipcode)} #{ba.number_field :zipcode, class: 'form-control s'}
+            %br
+            %br
+            %label.control-label== #{t(:phone)} #{ba.telephone_field :phone, class: 'form-control'}
+        .panel-footer
+          = ba.submit t(:create_ba), class: 'btn btn-success'

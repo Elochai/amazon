@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'features_spec_helper'
 feature "Show all books" do
   given!(:author) {FactoryGirl.create(:author)}
   given!(:category) {FactoryGirl.create(:category)}
