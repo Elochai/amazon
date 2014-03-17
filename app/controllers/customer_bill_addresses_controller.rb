@@ -12,6 +12,11 @@ class CustomerBillAddressesController < ApplicationController
  
   # GET /addresses/1/edit
   def edit
+    if @customer_bill_address.customer_id == current_customer.id
+      @customer_bill_address
+    else
+      redirect_to root_path
+    end
   end
  
   # POST /addresses
@@ -44,8 +49,12 @@ class CustomerBillAddressesController < ApplicationController
   end
 
   def destroy
-    @customer_bill_address.destroy
-    redirect_to edit_customer_registration_path, notice: t(:bill_address_suc_delete)
+    if @customer_bill_address.customer_id == current_customer.id
+      @customer_bill_address.destroy
+      redirect_to edit_customer_registration_path, notice: t(:bill_address_suc_delete)
+    else
+      redirect_to root_path
+    end
   end
  
   private

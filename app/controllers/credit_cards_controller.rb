@@ -15,6 +15,11 @@ class CreditCardsController < ApplicationController
  
   # GET /credit_cards/1/edit
   def edit
+    if @credit_card.order_id == current_order.id
+      @credit_card
+    else
+      redirect_to root_path
+    end
   end
  
   # POST /credit_cards

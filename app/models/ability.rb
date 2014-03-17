@@ -40,7 +40,7 @@ class Ability
         can [:new, :update_with_coupon, :remove_coupon, :confirm, :place, :delivery, :add_delivery, :edit_delivery, :destroy], Order
         can :manage, OrderItem
         can :manage, [CreditCard, Customer, Address]
-        can :read, :all
+        can :read, [Book, Rating, Category, Author, Order]
         can [:new, :create], Rating
       end
     else

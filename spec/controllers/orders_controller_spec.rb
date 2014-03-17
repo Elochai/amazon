@@ -38,19 +38,28 @@ describe OrdersController do
     context "with read ability" do
       before do
         @ability.can :read, Order
-        Order.stub(:find).and_return @order
+        Order.stub(:find).and_return @order_with_customer
       end
-      it "receives find and return order" do
-        expect(Order).to receive(:find).with(@order.id.to_s).and_return @order
-        get :show, id: @order.id
+      context 'if order within current customer' do
+        it "receives find and return order" do
+          expect(Order).to receive(:find).with(@order_with_customer.id.to_s).and_return @order_with_customer
+          get :show, id: @order_with_customer.id
+        end
+        it "assigns order" do
+          get :show, id: @order_with_customer.id
+          expect(assigns(:order)).to eq @order_with_customer
+        end
+        it "renders template show" do
+          get :show, id: @order_with_customer.id
+          expect(response).to render_template("show")
+        end
       end
-      it "assigns order" do
-        get :show, id: @order.id
-        expect(assigns(:order)).to eq @order
-      end
-      it "renders template show" do
-        get :show, id: @order.id
-        expect(response).to render_template("show")
+      context "if order not within current customer" do
+        it "redirects to root_path" do
+          @order_with_customer.update(customer_id: nil)
+          get :show, id: @order_with_customer.id
+          expect(response).to redirect_to root_path
+        end
       end
     end
     context "without read ability" do
@@ -58,7 +67,7 @@ describe OrdersController do
         @ability.cannot :read, Order
       end
       it "redirects_to customer_session_path" do
-        get :show, id: @order.id
+        get :show, id: @order_with_customer.id
         expect(response).to redirect_to customer_session_path
       end
     end

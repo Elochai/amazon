@@ -12,6 +12,11 @@ class OrderItemsController < ApplicationController
  
   # GET /order_items/1/edit
   def edit
+    if @order_item.order_id == current_order.id
+      @order_item
+    else
+      redirect_to root_path
+    end
   end
  
   # PATCH/PUT /order_items/1
@@ -31,10 +36,14 @@ class OrderItemsController < ApplicationController
   # DELETE /order_items/1
   # DELETE /order_items/1.json
   def destroy
-    @order_item.destroy
-    respond_to do |format|
-      format.html { redirect_to order_items_path }
-      format.json { head :no_content }
+    if @order_item.order_id == current_order.id
+      @order_item.destroy
+      respond_to do |format|
+        format.html { redirect_to order_items_path }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to root_path
     end
   end
 

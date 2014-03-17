@@ -39,20 +39,30 @@ describe ShipAddressesController do
   describe "GET #edit" do
     context "with manage ability" do
       before do
+        @ship_address.update(order_id: @order.id)
         @ability.can :manage, ShipAddress
         ShipAddress.stub(:find).and_return @ship_address
       end
-      it "receives find and return ship_address" do
-        expect(ShipAddress).to receive(:find).with(@ship_address.id.to_s).and_return @ship_address
-        get :edit, id: @ship_address.id
+      context 'if ship address within current order' do
+        it "receives find and return ship_address" do
+          expect(ShipAddress).to receive(:find).with(@ship_address.id.to_s).and_return @ship_address
+          get :edit, id: @ship_address.id
+        end
+        it "assigns ship_address" do
+          get :edit, id: @ship_address.id
+          expect(assigns(:ship_address)).to eq @ship_address
+        end
+        it "renders template edit" do
+          get :edit, id: @ship_address.id
+          expect(response).to render_template("edit")
+        end
       end
-      it "assigns ship_address" do
-        get :edit, id: @ship_address.id
-        expect(assigns(:ship_address)).to eq @ship_address
-      end
-      it "renders template edit" do
-        get :edit, id: @ship_address.id
-        expect(response).to render_template("edit")
+      context "if ship address not within current order" do
+        it "redirects to root_path" do
+          @ship_address.update(order_id: nil)
+          get :edit, id: @ship_address.id
+          expect(response).to redirect_to root_path
+        end
       end
     end
     context "without manage ability" do

@@ -42,20 +42,30 @@ describe CustomerBillAddressesController do
   describe "GET #edit" do
     context "with manage ability" do
       before do
+        @customer_bill_address.update(customer_id: @customer.id)
         @ability.can :manage, CustomerBillAddress
         CustomerBillAddress.stub(:find).and_return @customer_bill_address
       end
-      it "receives find and return customer_bill_address" do
-        expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
-        get :edit, id: @customer_bill_address.id
+      context 'if customer bill address within current customer' do
+        it "receives find and return customer_bill_address" do
+          expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
+          get :edit, id: @customer_bill_address.id
+        end
+        it "assigns customer_bill_address" do
+          get :edit, id: @customer_bill_address.id
+          expect(assigns(:customer_bill_address)).to eq @customer_bill_address
+        end
+        it "renders template edit" do
+          get :edit, id: @customer_bill_address.id
+          expect(response).to render_template("edit")
+        end
       end
-      it "assigns customer_bill_address" do
-        get :edit, id: @customer_bill_address.id
-        expect(assigns(:customer_bill_address)).to eq @customer_bill_address
-      end
-      it "renders template edit" do
-        get :edit, id: @customer_bill_address.id
-        expect(response).to render_template("edit")
+      context "if customer bill address not within current customer" do
+        it "redirects to root_path" do
+          @customer_bill_address.update(customer_id: nil)
+          get :edit, id: @customer_bill_address.id
+          expect(response).to redirect_to root_path
+        end
       end
     end
     context "without manage ability" do
@@ -185,20 +195,30 @@ describe CustomerBillAddressesController do
   describe 'DELETE destroy' do
     context "with manage ability" do
       before do
+        @customer_bill_address.update(customer_id: @customer.id)
         @ability.can :manage, CustomerBillAddress
         CustomerBillAddress.stub(:find).and_return @customer_bill_address
       end
-      it "receives find and return customer_bill_address" do
-        expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
-        delete :destroy, id: @customer_bill_address.id
+      context "if customer bill address within current customer" do
+        it "receives find and return customer_bill_address" do
+          expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
+          delete :destroy, id: @customer_bill_address.id
+        end
+        it "deletes customer_bill_address" do
+          expect{delete :destroy, id: @customer_bill_address.id}.to change(CustomerBillAddress, :count).by(-1)
+          delete :destroy, id: @customer_bill_address.id
+        end
+        it "redirects to edit_customer_registration_path" do
+          delete :destroy, id: @customer_bill_address.id
+          expect(response).to redirect_to edit_customer_registration_path
+        end
       end
-      it "deletes customer_bill_address" do
-        expect{delete :destroy, id: @customer_bill_address.id}.to change(CustomerBillAddress, :count).by(-1)
-        delete :destroy, id: @customer_bill_address.id
-      end
-      it "redirects to edit_customer_registration_path if customer already have customer_bill_address" do
-        delete :destroy, id: @customer_bill_address.id
-        expect(response).to redirect_to edit_customer_registration_path
+      context "if customer bill address not within current customer" do
+        it "redirects to root_path" do
+          @customer_bill_address.update(customer_id: nil)
+          delete :destroy, id: @customer_bill_address.id
+          expect(response).to redirect_to root_path
+        end
       end
     end
     context "without manage ability" do

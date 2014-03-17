@@ -10,6 +10,11 @@
   # GET /orders/1
   # GET /orders/1.json
   def show
+    if @order.customer_id && @order.customer_id == current_customer.id
+      @order
+    else
+      redirect_to root_path
+    end
   end
 
   def update_with_coupon

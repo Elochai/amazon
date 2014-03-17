@@ -22,7 +22,12 @@ describe "Customer" do
       it{ should be_able_to(:category_filter, Book.new) }
       it{ should be_able_to(:top_rated, Book.new) }
       it{ should be_able_to(:manage, OrderItem.new) }
-      it{ should be_able_to(:read, :all) }
+      it{ should be_able_to(:read, Address.new) }
+      it{ should be_able_to(:read, Book.new) }
+      it{ should be_able_to(:read, Order.new) }
+      it{ should be_able_to(:read, Rating.new) }
+      it{ should be_able_to(:read, Category.new) }
+      it{ should be_able_to(:read, Author.new) }
       it{ should be_able_to(:manage, Address.new) }
       it{ should be_able_to(:manage, CreditCard.new) }
       it{ should be_able_to(:manage, Customer.new) }

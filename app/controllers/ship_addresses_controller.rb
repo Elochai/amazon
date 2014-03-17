@@ -15,6 +15,11 @@ class ShipAddressesController < ApplicationController
  
   # GET /addresses/1/edit
   def edit
+    if @ship_address.order_id == current_order.id
+      @ship_address
+    else
+      redirect_to root_path
+    end
   end
  
   # POST /addresses
