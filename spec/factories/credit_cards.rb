@@ -5,7 +5,7 @@ FactoryGirl.define do
     number '1234567890111'
     cvv '2144'
     expiration_month 12
-    expiration_year 12
+    expiration_year Time.now.year
     firstname "Vasya"
     lastname "Pupkin"
     customer nil

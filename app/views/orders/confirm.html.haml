@@ -1,7 +1,7 @@
 .container
   %center 
     %h4.well.xl
-      == #{t(:order_ba)} - #{t(:order_sa)} - #{t(:order_delivery)} - #{t(:order_payment)} - <u>#{t(:order_confirm)}</u> >> #{t(:order_complete)}
+      = render partial: 'navigation', locals: {current_step: 4}
     %h3= t(:books_in_order)
     %table.table.table-hover.table-order
       %thead
@@ -11,7 +11,6 @@
           %th.text-center= t(:category_name)
           %th.text-center= t(:quantity)
           %th.text-center= t(:price)
-          %th.text-center= t(:manage)
         %tbody
           - current_order.order_items.each do |oi|
             %tr.text-center
@@ -20,7 +19,6 @@
               %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
               %td= oi.quantity
               %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
-              %td== #{link_to '', edit_order_item_path(oi), class: 'icon-pencil', title: t(:change_oi_quantity)} | #{link_to "", order_item_path(oi), method: :delete, data: {confirm: t(:are_you_sure)}, class:'icon-trash', title: t(:remove_from_cart)}
     %h3= t(:order_info)
     %table.table.table-order
       %thead
@@ -35,17 +33,11 @@
             %td== #{current_order.ship_address.country.name}<br>#{current_order.ship_address.zipcode}, #{current_order.ship_address.city}<br>#{current_order.ship_address.address}<br>Phone: #{current_order.ship_address.phone}
             %td== #{current_order.delivery.name} (+#{number_to_currency current_order.delivery.price})
             %td== ** ** ** #{current_order.credit_card.number.last(4)}<br>#{current_order.credit_card.expiration_month}/ #{current_order.credit_card.expiration_year}
-    - if current_order.coupon.nil?
-      = form_tag "/update_with_coupon", class: 'form-inline' do
-        %h4.form-group
-          = text_field_tag :coupon, nil, placeholder: t(:enter_coupon_number), class: 'form-control xlg'
-          = submit_tag t(:update), class:'btn btn-info'
-    - else
+    - if !current_order.coupon.nil?
       %h4
         =t(:current_discount)
         %strong.label.label-danger== #{current_order.coupon.discount*100}%
         == (#{t(:coupon_number)} "#{current_order.coupon.number}")
-      = link_to t(:remove_coupon), remove_coupon_path, method: :post, class:'btn btn-warning'
     %h4
       = t(:books_price)
       = number_to_currency current_order.books_price
@@ -55,6 +47,4 @@
     %h3
       = t(:total_price)
       %strong.label.label-primary= number_to_currency current_order.total_price
-    = link_to t(:place_order), order_complete_path, method: :post, class:'btn btn-lg btn-success'
-    %br
-    %br= link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'
+    = link_to t(:place_order), order_complete_path, class:'btn btn-lg btn-success'

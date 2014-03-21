@@ -16,9 +16,6 @@
         <li><%= link_to t(:top_rated), top_rated_books_path %></li>
         <li><%= link_to t(:categories), categories_path %></li>
         <li><%= link_to t(:authors), authors_path %></li>
-        <% if customer_signed_in? %>
-          <li><%= link_to t(:orders), orders_path %></li>
-        <% end %>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <% klass = !current_order.nil? && current_order.order_items.any? ? 'active' : '' %>
@@ -28,7 +25,8 @@
   		<% if customer_signed_in? %>
         <% if can? :manage, rails_admin %>
           <li class='active'><%= link_to raw("<i class='icon-cog icon-white'></i> #{t(:admin_panel)}"), rails_admin_path %></li>
-        <% end %>
+          <% end %>
+        <li><%= link_to raw("<i class='icon-list-alt icon-white'></i> #{t(:orders)}"), orders_path %></li>
   			<li><%= link_to raw("<i class='icon-user icon-white'></i> #{t(:profile)} (#{current_customer.email})"), edit_customer_registration_path %></li>
   			<li><%= link_to raw("<i class='icon-off icon-white'></i> #{t(:sign_out)}"), destroy_customer_session_path, :method => :delete %></li>
   		<% else %>

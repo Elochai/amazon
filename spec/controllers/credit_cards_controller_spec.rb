@@ -79,15 +79,16 @@ describe CreditCardsController do
   describe "POST #create" do
     context "with manage ability" do
       before do
+        @order.update(checkout_step: 4)
         @ability.can :manage, CreditCard
       end
       context "with valid attributes" do
         it "creates new credit_card" do
           expect{post :create, credit_card: FactoryGirl.attributes_for(:credit_card)}.to change(CreditCard, :count).by(1)
         end
-        it "redirects to order_confirm_path" do  
+        it "redirects to next step" do  
           post :create, credit_card: FactoryGirl.attributes_for(:credit_card)
-          expect(response).to redirect_to order_confirm_path
+          expect(response).to redirect_to step_path('5')
         end
       end
       context "with invalid attributes" do
@@ -102,15 +103,16 @@ describe CreditCardsController do
     end
     context "without manage ability" do
       before do
+        @order.update(checkout_step: 4)
         @ability.cannot :manage, CreditCard
       end
       context "with valid attributes" do
         it "do not creates new credit_card" do
           expect{post :create, credit_card: FactoryGirl.attributes_for(:credit_card)}.to_not change(CreditCard, :count)
         end
-        it "do not redirects to order_confirm_path" do  
+        it "do not redirects to next step" do  
           post :create, credit_card: FactoryGirl.attributes_for(:credit_card)
-          expect(response).to_not redirect_to order_confirm_path
+          expect(response).to_not redirect_to step_path('5')
         end
       end
       context "with invalid attributes" do

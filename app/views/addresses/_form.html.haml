@@ -1,0 +1,13 @@
+%label.control-label== #{t(:country)} <br>#{addr.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
+%br
+%br
+%label.control-label== #{t(:city)} #{addr.text_field :city, size: 15, class: 'form-control'}
+%br
+%br
+%label.control-label== #{t(:address)} #{addr.text_area :address, class: 'form-control'}
+%br
+%br
+%label.control-label== #{t(:zipcode)} #{addr.number_field :zipcode, class: 'form-control s'}
+%br
+%br
+%label.control-label== #{t(:phone)} #{addr.telephone_field :phone, class: 'form-control'}

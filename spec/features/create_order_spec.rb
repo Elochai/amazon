@@ -15,13 +15,9 @@ feature "Create order" do
   scenario "A customer add book to cart first" do
     expect(page).to have_content 'Book was successfully added to cart.'
   end
-  scenario "A customer adds bill address info then" do
-    fill_bill_address
-    expect(page).to have_content 'Bill address was successfully created.'
-  end
-  scenario "A customer adds ship address info then" do
-    fill_ship_address
-    expect(page).to have_content 'Ship address was successfully created.'
+  scenario "A customer adds addresses info then" do
+    fill_addresses
+    expect(page).to have_content 'Addresses was successfully added.'
   end
   scenario "A customer chooses delivery then" do
     choose_delivery

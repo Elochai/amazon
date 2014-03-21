@@ -14,6 +14,8 @@ describe CreditCard do
     it { expect(credit_card).to validate_presence_of(:expiration_year) }
     it { expect(credit_card).to validate_presence_of(:firstname) }
     it { expect(credit_card).to validate_presence_of(:lastname) }
+    it { expect(credit_card).to ensure_inclusion_of(:expiration_month).in_range(1..12) }
+    it { expect(credit_card).to ensure_inclusion_of(:expiration_year).in_range(Time.now.year..Time.now.year + 30) }
     it { expect(credit_card).to allow_value('1234567890123456').for(:number).with_message("should contain 12-16 digits")}
     it { expect(credit_card).to_not allow_value('12345').for(:number).with_message("should contain 12-16 digits")}
     it { expect(credit_card).to allow_value('1234').for(:cvv).with_message("should 3-4 digits")}

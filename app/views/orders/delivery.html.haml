@@ -1,7 +1,7 @@
 .container
   %center 
     %h4.well.xl
-      == #{t(:order_ba)} - #{t(:order_sa)} - <u>#{t(:order_delivery)}</u> >> #{t(:order_payment)} - #{t(:order_confirm)} - #{t(:order_complete)}
+      = render partial: 'navigation', locals: {current_step: 2}
     = form_tag "/order/add_delivery" do
       .panel.panel-info.panel-little
         .panel-heading
@@ -9,8 +9,14 @@
         .panel-body
           %h5
             - Delivery.all.each do |delivery|
-              = radio_button_tag :delivery_id, delivery.id
-              %label== #{delivery.name} + #{number_to_currency delivery.price}
+              - if current_order.delivery == delivery
+                %label
+                  = radio_button_tag :delivery_id, delivery.id, true
+                  == #{delivery.name} + #{number_to_currency delivery.price}
+              - else
+                %label
+                  = radio_button_tag :delivery_id, delivery.id
+                  == #{delivery.name} + #{number_to_currency delivery.price}
               %br
         .panel-footer
           %h4
@@ -20,4 +26,3 @@
             = t(:total_price)
             %strong.label.label-info= number_to_currency current_order.total_price
           = submit_tag t(:next), class: 'btn btn-primary'
-    = link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

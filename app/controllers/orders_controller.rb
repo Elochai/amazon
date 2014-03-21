@@ -17,59 +17,99 @@
     end
   end
 
+  def checkout
+    current_order.next_step!
+    redirect_to new_address_path
+  end
+
+  def next_step
+    if params[:step] == '2'
+      redirect_to new_address_path
+    elsif params[:step] == '3'
+      redirect_to order_delivery_path
+    elsif params[:step] == '4'
+      redirect_to new_credit_card_path
+    elsif params[:step] == '5'
+      redirect_to order_confirm_path
+    end
+  end
+
   def update_with_coupon
-    if @coupon = Coupon.find_by(number: params[:coupon])
-      current_order.update(coupon_id: @coupon.id)
-      redirect_to order_items_path, notice: t(:succ_coupon) 
+    if current_order.checkout_step == 1
+      if @coupon = Coupon.find_by(number: params[:coupon])
+        current_order.update(coupon_id: @coupon.id)
+        redirect_to order_items_path, notice: t(:succ_coupon) 
+      else
+        redirect_to order_items_path, alert: t(:fail_coupon)
+      end
     else
-      redirect_to order_items_path, alert: t(:fail_coupon)
+      redirect_to order_confirm_path, alert: t(:already_checked_out)
     end
   end
 
   def remove_coupon
-    current_order.update(coupon_id: nil)
-    redirect_to order_items_path, notice: t(:remove_coupon_notice)
+    if current_order.checkout_step == 1
+      current_order.update(coupon_id: nil)
+      redirect_to order_items_path, notice: t(:remove_coupon_notice)
+    else
+      redirect_to order_confirm_path, alert: t(:already_checked_out)
+    end
   end
 
   def delivery
-    if current_order.checkout_step > 3
-      redirect_to new_credit_card_path
-    elsif current_order.checkout_step < 3
-      redirect_to new_ship_address_path
+    if current_order.delivery.nil?
+      if current_order.checkout_step == 3
+        current_order.set_step! 3
+      elsif current_order.checkout_step > 3
+        redirect_to new_credit_card_path
+      elsif current_order.checkout_step < 3
+        redirect_to new_address_path
+      end
+    else
+      @order = current_order
     end
   end
 
   def confirm
-    if current_order.checkout_step < 5
-      redirect_to new_credit_card_address_path
+    if current_order.checkout_step == 5
+      current_order.set_step! 5
+    elsif current_order.checkout_step < 5
+      redirect_to new_credit_card_path
     elsif current_order.order_items.empty?
       redirect_to root_path, alert: t(:select_books_to_buy)
     end
   end
 
   def add_delivery
+    @order = current_order
+    if current_order.delivery 
+      has = true
+    end
     if Delivery.where(id: params[:delivery_id]).any?
-      current_order.update(delivery_id: params[:delivery_id])
+      @order.update(delivery_id: params[:delivery_id])
+      if has == true
+        current_order.set_step! current_order.checkout_step - 1
+      end
       current_order.next_step!
-      redirect_to new_credit_card_path, notice: t(:delivery_suc_create)
+      redirect_to step_path(current_order.checkout_step), notice: t(:delivery_suc_create)
     else
       redirect_to order_delivery_path, alert: t(:delivery_fail_create)
     end
   end
 
   def edit_delivery
+    @order = current_order
   end
 
   def place
-    current_order.to_queue!(current_customer)
-    cookies.delete :current_order
-    redirect_to root_path, notice: t(:order_suc_create)
-  end
-
-  def destroy
-    current_order.destroy
-    cookies.delete :current_order
-    redirect_to root_path, notice: t(:order_suc_delete)
+    if current_order.checkout_step == 5
+      current_order.to_queue!(current_customer)
+      id = current_order.id
+      cookies.delete :current_order
+      redirect_to order_path(id), notice: t(:order_suc_create)
+    else 
+      redirect_to order_items_path
+    end
   end
 
   private

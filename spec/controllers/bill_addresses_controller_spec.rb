@@ -10,31 +10,6 @@ describe BillAddressesController do
     sign_in @customer
   end
 
-  describe "GET #new" do
-    context "with manage ability" do
-      before do
-        @ability.can :manage, BillAddress
-      end
-      it "builds bill_address if customer do not have it already" do
-        get :new
-        expect(assigns(:bill_address)).to be_a_new BillAddress
-      end
-      it "renders template new if have manage ability" do
-        get :new
-        expect(response).to render_template 'new'
-      end
-    end
-    context "without manage ability" do
-      before do
-        @ability.cannot :manage, BillAddress
-      end
-      it "redirects to customer_session_path" do
-        get :new
-        expect(response).to redirect_to customer_session_path
-      end
-    end
-  end
-
   describe "GET #edit" do
     context "with manage ability" do
       before do
@@ -72,55 +47,6 @@ describe BillAddressesController do
       it "redirects to customer_session_path" do
         get :edit, id: @bill_address.id
         expect(response).to redirect_to customer_session_path
-      end
-    end
-  end
-
-  describe "POST #create" do
-    context "with manage ability" do
-      before do
-        @ability.can :manage, BillAddress
-      end
-      context "with valid attributes" do
-        it "creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)}.to change(BillAddress, :count).by(1)
-        end
-        it "redirects to new_ship_address_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, order: @order)
-          expect(response).to redirect_to new_ship_address_path
-        end
-      end
-      context "with invalid attributes" do
-        it "do not creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(BillAddress, :count)      
-        end
-        it "renders template new" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to render_template "new"
-        end
-      end
-    end
-    context "without manage ability" do
-      before do
-        @ability.cannot :manage, BillAddress
-      end
-      context "with valid attributes" do
-        it "do not creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)}.to_not change(BillAddress, :count)
-        end
-        it "do not redirects to new_ship_address_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id)
-          expect(response).to_not redirect_to new_ship_address_path
-        end
-      end
-      context "with invalid attributes" do
-        it "do not creates new bill_address" do
-          expect{post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(BillAddress, :count)      
-        end
-        it "redirects to customer_session_path" do  
-          post :create, bill_address: FactoryGirl.attributes_for(:bill_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
-        end
       end
     end
   end

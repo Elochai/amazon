@@ -1,6 +1,6 @@
 class CustomerShipAddressesController < ApplicationController
   load_and_authorize_resource
- 
+  before_filter :authenticate_customer!
   # GET /addresses/new
   def new
     if current_customer.customer_ship_address.nil?

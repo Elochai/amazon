@@ -2,17 +2,6 @@ class ShipAddressesController < ApplicationController
   before_filter :if_no_current_order?
   load_and_authorize_resource
  
-  # GET /addresses/new
-  def new
-    if current_order.checkout_step == 2
-      @ship_address = current_order.build_ship_address
-    elsif current_order.checkout_step > 2
-      redirect_to order_delivery_path
-    elsif current_order.checkout_step < 2
-      redirect_to new_bill_address_path
-    end
-  end
- 
   # GET /addresses/1/edit
   def edit
     if @ship_address.order_id == current_order.id
@@ -22,31 +11,16 @@ class ShipAddressesController < ApplicationController
     end
   end
  
-  # POST /addresses
-  # POST /addresses.json
-  def create
-    if params[:use_ba]
-      @ship_address = current_order.build_ship_address(address: current_order.bill_address.address, city: current_order.bill_address.city, phone: current_order.bill_address.phone, zipcode: current_order.bill_address.zipcode, country_id: current_order.bill_address.country.id)
-    else
-      @ship_address = current_order.build_ship_address(ship_address_params)
-    end
-    respond_to do |format|
-      if @ship_address.save
-        current_order.next_step!
-        format.html { redirect_to order_delivery_path, notice: t(:ship_address_suc_create) }
-        format.json { redirect_to order_delivery_path, status: :created, location: @ship_address}
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @ship_address.errors, status: :unprocessable_entity }
-      end
-    end
-  end
- 
   # PATCH/PUT /addresses/1
   # PATCH/PUT /addresses/1.json
   def update
+    if params[:use_ba]
+      attrs = {address: current_order.bill_address.address, city: current_order.bill_address.city, phone: current_order.bill_address.phone, zipcode: current_order.bill_address.zipcode, country_id: current_order.bill_address.country.id}
+    else
+      attrs = ship_address_params
+    end
     respond_to do |format|
-      if @ship_address.update(ship_address_params)
+      if @ship_address.update_attributes(attrs)
         format.html { redirect_to order_confirm_path, notice: t(:ship_address_suc_update) }
         format.json { head :no_content }
       else

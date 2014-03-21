@@ -6,6 +6,8 @@ class Order < ActiveRecord::Base
   has_one :bill_address, class_name: 'BillAddress', dependent: :destroy
   has_one :ship_address, class_name: 'ShipAddress', dependent: :destroy
   has_many :order_items, dependent: :destroy
+  accepts_nested_attributes_for :bill_address
+  accepts_nested_attributes_for :ship_address
 
   validates :state, inclusion: { in: %w(in_progress in_queue in_delivery delivered) }
   validates :checkout_step, inclusion: { in: 1..5 }
@@ -74,6 +76,11 @@ class Order < ActiveRecord::Base
   def next_step!
     self.checkout_step += 1
     save
+  end
+
+  def set_step!(value)
+    self.checkout_step = value
+    self.save
   end
 
   def self.delete_abandoned!

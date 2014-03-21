@@ -14,3 +14,15 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+$(document).on('page:load', function() {
+	$('#use_ba').attr('checked', false);
+  	$('#use_ba').click(function() {
+	 	return $('#sa_info').toggle('#use_ba'.checked);
+	});
+});
+$(window).load(function() {
+	$('#use_ba').attr('checked', false);
+  	$('#use_ba').click(function() {
+	 	return $('#sa_info').toggle('#use_ba'.checked);
+	});
+});

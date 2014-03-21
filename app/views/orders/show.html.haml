@@ -1,6 +1,6 @@
 .container
   %center 
-    %h2== #{t(:order_from)} #{@order.customer.id}#{@order.created_at.to_formatted_s(:number)} (#{@order.created_at.to_formatted_s(:long)})
+    %h2== #{t(:order_from)} #{@order.id} (#{@order.created_at.to_formatted_s(:long)})
     %h3= t(:books_in_order)
     %table.table.table-hover.table-order
       %thead

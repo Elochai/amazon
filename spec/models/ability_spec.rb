@@ -37,11 +37,12 @@ describe "Customer" do
       it{ should be_able_to(:update_with_coupon, Order.new) }
       it{ should be_able_to(:remove_coupon, Order.new) }
       it{ should be_able_to(:confirm, Order.new) }
+      it{ should be_able_to(:checkout, Order.new) }
+      it{ should be_able_to(:next_step, Order.new) } 
       it{ should be_able_to(:place, Order.new) }
       it{ should be_able_to(:delivery, Order.new) }
       it{ should be_able_to(:add_delivery, Order.new) }
-      it{ should be_able_to(:edit_delivery, Order.new) }
-      it{ should be_able_to(:destroy, Order.new) }  
+      it{ should be_able_to(:edit_delivery, Order.new) } 
       it{ should_not be_able_to(:manage, :all) }
       it{ should_not be_able_to(:access, :rails_admin) }
     end
@@ -65,7 +66,8 @@ describe "Customer" do
       it{ should be_able_to(:delivery, Order.new) }
       it{ should be_able_to(:add_delivery, Order.new) }
       it{ should be_able_to(:edit_delivery, Order.new) }
-      it{ should be_able_to(:destroy, Order.new) }  
+      it{ should be_able_to(:checkout, Order.new) }
+      it{ should be_able_to(:next_step, Order.new) } 
       it{ should_not be_able_to(:manage, :all) }
       it{ should_not be_able_to(:access, :rails_admin) }
     end        

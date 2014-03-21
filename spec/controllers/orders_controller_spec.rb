@@ -172,7 +172,7 @@ describe OrdersController do
     end
   end
 
-  describe "GET #delivery" do
+  describe "GET #edit_delivery" do
     context "with edit_delivery ability" do
       before do
         @ability.can :edit_delivery, Order
@@ -199,6 +199,7 @@ describe OrdersController do
 
   describe "POST #add_delivery" do
     before do
+      @order.update(checkout_step: 3)
       @delivery = FactoryGirl.create :delivery
     end
     context "with add_delivery ability" do
@@ -210,9 +211,9 @@ describe OrdersController do
           post :add_delivery, delivery_id: @delivery.id
           expect(@order.reload.delivery_id).to eq(@delivery.id)
         end
-        it "redirects to new_credit_card_path" do
+        it "redirects to next step" do
           post :add_delivery, delivery_id: @delivery.id
-          expect(response).to redirect_to new_credit_card_path
+          expect(response).to redirect_to step_path(4)
         end
       end
       context "with invalid delivery" do
@@ -239,58 +240,65 @@ describe OrdersController do
     end
   end
 
-  describe "POST #place" do
+  describe "GET #place" do
     context "with place ability" do
       before do
+        @order.update(checkout_step: 5)
         @ability.can :place, Order
       end
-      it "calls to_queue! method on curren_order record" do
+      it "calls to_queue! method on current_order record" do
         expect_any_instance_of(Order).to receive(:to_queue!).with(@customer)
-        post :place
+        get :place
       end
       it "deletes cookie with current_order" do
-        post :place
+        get :place
         expect(cookies).to_not include :current_order
       end
-      it "redirects to root_path" do
-        post :place
-        expect(response).to redirect_to root_path
+      it "redirects to newly created order" do
+        get :place
+        expect(response).to redirect_to order_path(@order)
       end
     end
     context "without place ability" do
       before do
+        @order.update(checkout_step: 5)
         @ability.cannot :place, Order
       end
       it "redirects to customer_session_path" do
-        post :place
+        get :place
         expect(response).to redirect_to customer_session_path
       end
     end
   end
 
-  describe "DELETE #destroy" do
-    context "with destroy ability" do
+  describe "GET #next_step" do
+    context "with next_step ability" do
       before do
-        @ability.can :destroy, Order
+        @ability.can :next_step, Order
       end
-      it "destroyes current order" do
-        expect{delete :destroy, id: @order.id}.to change(Order, :count).by(-1)
+      it "redirects to new_address_path if params = 2" do
+        get :next_step, step: '2'
+        expect(response).to redirect_to new_address_path
       end
-      it "deletes cookie with current_order" do
-        delete :destroy, id: @order.id
-        expect(cookies).to_not include :current_order
+      it "redirects to order_delivery_path if params = 3" do
+        get :next_step, step: '3'
+        expect(response).to redirect_to order_delivery_path
       end
-      it "redirects to root_path" do
-        delete :destroy, id: @order.id
-        expect(response).to redirect_to root_path
+      it "redirects to new_credit_card_path if params = 4" do
+        get :next_step, step: '4'
+        expect(response).to redirect_to new_credit_card_path
+      end
+      it "redirects to order_confirm_path if params = 5" do
+        get :next_step, step: '5'
+        expect(response).to redirect_to order_confirm_path
       end
     end
     context "without place ability" do
       before do
-        @ability.cannot :destroy, Order
+        @ability.cannot :next_step, Order
       end
       it "redirects to customer_session_path" do
-        delete :destroy, id: @order.id
+        get :next_step, step: '4'
         expect(response).to redirect_to customer_session_path
       end
     end

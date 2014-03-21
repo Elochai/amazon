@@ -1,0 +1,12 @@
+- refs = [t(:order_addr), t(:order_delivery), t(:order_payment), t(:order_confirm)]
+- refs.each_with_index do |ref, i|
+  - if i == current_step - 1
+    %u= ref
+    == >>
+  - elsif i > current_step - 1 && i + 2 <= current_order.checkout_step
+    == #{link_to "#{ref}", step_path(i + 2)} -
+  - elsif i < current_step - 1
+    == #{link_to "#{ref}", step_path(i + 2)} -
+  - elsif i >= current_step
+    == #{ref} -
+= t(:order_complete)

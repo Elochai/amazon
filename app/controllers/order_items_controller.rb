@@ -6,16 +6,20 @@ class OrderItemsController < ApplicationController
     if current_order.checkout_step == 1
       @order_items = current_order.order_items
     elsif current_order.checkout_step > 1
-      redirect_to new_bill_address_path
+      redirect_to order_confirm_path
     end
   end
  
   # GET /order_items/1/edit
   def edit
-    if @order_item.order_id == current_order.id
-      @order_item
+    if current_order.checkout_step == 1
+      if @order_item.order_id == current_order.id
+        @order_item
+      else
+        redirect_to root_path
+      end
     else
-      redirect_to root_path
+      redirect_to order_confirm_path, alert: t(:already_checked_out)
     end
   end
  
@@ -36,20 +40,28 @@ class OrderItemsController < ApplicationController
   # DELETE /order_items/1
   # DELETE /order_items/1.json
   def destroy
-    if @order_item.order_id == current_order.id
-      @order_item.destroy
-      respond_to do |format|
-        format.html { redirect_to order_items_path }
-        format.json { head :no_content }
+    if current_order.checkout_step == 1
+      if @order_item.order_id == current_order.id
+        @order_item.destroy
+        respond_to do |format|
+          format.html { redirect_to order_items_path }
+          format.json { head :no_content }
+        end
+      else
+        redirect_to root_path
       end
     else
-      redirect_to root_path
+      redirect_to order_confirm_path, alert: t(:already_checked_out)
     end
   end
 
   def clear_cart
-    current_order.order_items.destroy_all
-    redirect_to order_items_path
+    if current_order.checkout_step == 1
+      current_order.order_items.destroy_all
+      redirect_to order_items_path
+    else
+      redirect_to order_confirm_path, alert: t(:already_checked_out)
+    end
   end
 
   def create
@@ -61,14 +73,18 @@ class OrderItemsController < ApplicationController
       cookies[:current_order] ||= Order.create(state: 'in_progress', price: 0.01).id
       @order_item = OrderItem.new
     end
-    respond_to do |format|
-      if @order_item.add_to_order!(params[:book_id], params[:quantity], cookies[:current_order])
-        format.html { redirect_to order_items_path, notice: t(:oi_succ_create) }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to root_path, alert: t(:oi_fail_create) }
-        format.json { render json: @order_item.errors, status: :unprocessable_entity }
+    if current_order.checkout_step == 1
+      respond_to do |format|
+        if @order_item.add_to_order!(params[:book_id], params[:quantity], cookies[:current_order])
+          format.html { redirect_to order_items_path, notice: t(:oi_succ_create) }
+          format.json { head :no_content }
+        else
+          format.html { redirect_to root_path, alert: t(:oi_fail_create) }
+          format.json { render json: @order_item.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to order_confirm_path, alert: t(:already_checked_out)
     end
   end
 

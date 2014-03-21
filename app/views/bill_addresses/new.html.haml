@@ -25,4 +25,3 @@
             = t(:total_price)
             %strong.label.label-info= number_to_currency current_order.total_price
           = ba.submit t(:next), class: 'btn btn-primary'
-    = link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

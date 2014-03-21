@@ -6,7 +6,7 @@
         .panel-heading
           %h4= t(:edit_sa)
           = check_box_tag :use_ba, checked = false
-          = t(:use_ba)
+          = t(:use_bill)
         .panel-body
           %h5
             %label.control-label== #{t(:country)} <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}

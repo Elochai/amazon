@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_filter :set_want_complete
   before_filter do
     resource = controller_path.singularize.gsub('/', '_').to_sym
     method = "#{resource}_params"
@@ -33,6 +34,23 @@ class ApplicationController < ActionController::Base
         redirect_to root_path, alert: t(:select_books_to_buy)
       end
     end
+  end
+
+  def after_sign_in_path_for(resource)
+    session.delete(:return_to) || super
+  end
+
+  def after_sign_up_path_for(resource)
+    session.delete(:return_to) || super
+  end
+
+  def set_want_complete
+    session[:return_to] = request.fullpath unless request.fullpath =~ /\/customer/
+  end
+
+  def redirect_to_previous
+    session[:return_to] ||= request.referer 
+    redirect_to session.delete(:return_to)
   end
 
   def configure_permitted_parameters

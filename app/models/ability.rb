@@ -37,7 +37,7 @@ class Ability
         can :state, Order
       else
         can [:add_wish, :remove_wish, :author_filter, :category_filter, :wishers, :top_rated], Book
-        can [:new, :update_with_coupon, :remove_coupon, :confirm, :place, :delivery, :add_delivery, :edit_delivery, :destroy], Order
+        can [:new, :update_with_coupon, :remove_coupon, :confirm, :place, :delivery, :add_delivery, :edit_delivery, :checkout, :next_step], Order
         can :manage, OrderItem
         can :manage, [CreditCard, Customer, Address]
         can :read, [Book, Rating, Category, Author, Order]
@@ -50,10 +50,9 @@ class Ability
       can [:top_rated], Book
       can [:author_filter, :category_filter, :wishers], Book
       can :manage, OrderItem
-      can :manage, ShipAddress
-      can :manage, BillAddress
+      can :manage, Address
       can :manage, CreditCard
-      can [:new, :update_with_coupon, :remove_coupon, :confirm, :delivery, :add_delivery, :edit_delivery, :destroy], Order
+      can [:checkout, :new, :update_with_coupon, :remove_coupon, :confirm, :delivery, :add_delivery, :edit_delivery, :next_step], Order
     end
   end
 end

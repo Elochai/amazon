@@ -4,20 +4,79 @@
     - if customer_signed_in? && current_customer.orders.load.empty?
       %h2
         %strong.label.label-warning= t(:no_orders)
-    - else    
-      %table.table.table-hover.table-small
-        %thead
-          %tr.success
-            %th.text-center= t(:order_number)
-            %th.text-center= t(:create_date)
-            %th.text-center= t(:price)
-            %th.text-center= t(:state)
-            %th.text-center= t(:complete_date)
-          %tbody
-            - @orders.each do |order|
-              %tr.text-center
-                %td= link_to "#{order.customer.id}"+"#{order.created_at.to_formatted_s(:number)}", order_path(order), method: :get
-                %td= order.created_at.to_formatted_s(:long)
-                %td= number_to_currency(order.price)
-                %td= order.state.humanize
-                %td= order.completed_at
+    - else  
+      %h3= t(:in_progress)  
+      - if !current_order.nil?
+        %table.table.table-hover.table-small
+          %thead
+            %tr.success
+              %th.text-center= t(:book_title)
+              %th.text-center= t(:author_name)
+              %th.text-center= t(:category_name)
+              %th.text-center= t(:quantity)
+              %th.text-center= t(:price)
+            %tbody
+              - current_order.order_items.each do |oi|
+                %tr.text-center
+                  %td= link_to "#{oi.book.title}", book_path(oi.book.id), method: :get
+                  %td= link_to "#{oi.book.author.full_name}", author_path(oi.book.author.id), method: :get
+                  %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
+                  %td= oi.quantity
+                  %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
+        = link_to t(:to_cart), order_items_path, class: 'btn btn-info'
+      - else
+        %h2
+          %strong.label.label-warning= t(:empty_cart)
+      %h3= t(:in_queue)  
+      - if @orders.where(state: 'in_queue').any?
+        %table.table.table-hover.table-small
+          %thead
+            %tr.success
+              %th.text-center= t(:order_number)
+              %th.text-center= t(:create_date)
+              %th.text-center= t(:price)
+            %tbody
+              - @orders.where(state: 'in_queue').each do |order|
+                %tr.text-center
+                  %td= link_to "#{order.id}", order_path(order), method: :get
+                  %td= order.created_at.to_formatted_s(:long)
+                  %td= number_to_currency(order.price)
+      - else
+        %h2
+          %strong.label.label-warning= t(:none)
+      %h3= t(:in_delivery)  
+      - if @orders.where(state: 'in_delivery').any?
+        %table.table.table-hover.table-small
+          %thead
+            %tr.success
+              %th.text-center= t(:order_number)
+              %th.text-center= t(:create_date)
+              %th.text-center= t(:price)
+            %tbody
+              - @orders.where(state: 'in_delivery').each do |order|
+                %tr.text-center
+                  %td= link_to "#{order.id}", order_path(order), method: :get
+                  %td= order.created_at.to_formatted_s(:long)
+                  %td= number_to_currency(order.price)
+      - else
+        %h2
+          %strong.label.label-warning= t(:none)
+      %h3= t(:delivered)  
+      - if @orders.where(state: 'delivered').any?
+        %table.table.table-hover.table-small
+          %thead
+            %tr.success
+              %th.text-center= t(:order_number)
+              %th.text-center= t(:create_date)
+              %th.text-center= t(:price)
+              %th.text-center= t(:complete_date)
+            %tbody
+              - @orders.where(state: 'delivered').each do |order|
+                %tr.text-center
+                  %td= link_to "#{order.id}", order_path(order), method: :get
+                  %td= order.created_at.to_formatted_s(:long)
+                  %td= number_to_currency(order.price)
+                  %td= order.completed_at
+      - else
+        %h2
+          %strong.label.label-warning= t(:none)

@@ -43,6 +43,10 @@ html {
       -ms-text-size-adjust: 100%;
 }
 
+.checkout-form-left {
+  padding-right: 20px;
+}
+
 body {
   margin: 0;
 }
@@ -1691,7 +1695,7 @@ th {
 
 .xl
 {
-  width: 700px;
+  width: 490px;
 }
 .large
 {
@@ -5488,6 +5492,10 @@ a.list-group-item.active:focus .list-group-item-text {
   display:inline-block;
 }
 
+.inline.disabled {
+  display:none;
+}
+
 .inline-table {
   display:inline-table;
   margin-top: 5px;
@@ -5516,6 +5524,10 @@ a.list-group-item.active:focus .list-group-item-text {
 
 .panel-order-info-header {
   height: 100px;
+}
+
+.panel-addr-head {
+  height: 80px;
 }
 
 .panel-order-info {

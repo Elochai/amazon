@@ -137,7 +137,7 @@ en:
   categories: Categories
   authors: Authors
   admin_panel: Admin panel
-  orders: Orders
+  orders: My orders
   cart: Cart
   profile: Profile
   sign_out: Sign out
@@ -198,11 +198,11 @@ en:
   current_discount: 'Current discount:'
   coupon_number: 'coupon number:'
   add_addresses: Add addresses
-  address_suc_create: Address was successfully added.
+  address_suc_create: Addresses was successfully added.
   address_suc_update: Address was successfully updated.
   address_suc_delete: Address was successfully deleted.
   address_fail_create: An error has occured while adding your address.
-  use_ba: Use bill address
+  use_ba: As ship address too
   choose_delivery: Choose delivery
   delivery: 'Delivery:'
   delivery_suc_create: "Delivery was successfully added to order."
@@ -224,3 +224,13 @@ en:
   order_delivery: Delivery
   order_confirm: Confirm
   order_complete: Complete
+  in_queue: Waiting for processing
+  delivered: Delivered
+  in_delivery: In delivery
+  in_progress: In progress
+  to_cart: Go to cart
+  none: None
+  order_addr: Addresses
+  already_checked_out: You have already checked out
+  use_bill: Use bill address
+  to_shop: Continue shopping

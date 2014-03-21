@@ -8,7 +8,7 @@
         .panel-heading
           %h4= t(:new_sa)
           = check_box_tag :use_ba, checked = false
-          = t(:use_ba)
+          = t(:use_bill)
         .panel-body
           %h5
           - if customer_signed_in? 
@@ -26,4 +26,3 @@
             = t(:total_price)
             %strong.label.label-info= number_to_currency current_order.total_price
           = sa.submit t(:next), class: 'btn btn-primary'
-    = link_to t(:delete_order), order_path(current_order), method: :delete, data: {confirm: t(:are_you_sure)}, class:'btn btn-danger'

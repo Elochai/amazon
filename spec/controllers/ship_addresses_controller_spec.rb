@@ -10,32 +10,6 @@ describe ShipAddressesController do
     sign_in @customer
   end
 
-  describe "GET #new" do
-    context "with manage ability" do
-      before do
-        @ability.can :manage, ShipAddress
-      end
-      it "builds ship_address if customer do not have it already" do
-        get :new
-        expect(assigns(:ship_address)).to be_a_new ShipAddress
-      end
-      it "renders template new if have manage ability" do
-        @order.update(checkout_step: 2)
-        get :new
-        expect(response).to render_template 'new'
-      end
-    end
-    context "without manage ability" do
-      before do
-        @ability.cannot :manage, ShipAddress
-      end
-      it "redirects to customer_session_path" do
-        get :new
-        expect(response).to redirect_to customer_session_path
-      end
-    end
-  end
-
   describe "GET #edit" do
     context "with manage ability" do
       before do
@@ -73,55 +47,6 @@ describe ShipAddressesController do
       it "redirects to customer_session_path" do
         get :edit, id: @ship_address.id
         expect(response).to redirect_to customer_session_path
-      end
-    end
-  end
-
-  describe "POST #create" do
-    context "with manage ability" do
-      before do
-        @ability.can :manage, ShipAddress
-      end
-      context "with valid attributes" do
-        it "creates new ship_address" do
-          expect{post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id)}.to change(ShipAddress, :count).by(1)
-        end
-        it "redirects to order_delivery_path" do  
-          post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id, order: @order)
-          expect(response).to redirect_to order_delivery_path
-        end
-      end
-      context "with invalid attributes" do
-        it "do not creates new ship_address" do
-          expect{post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(ShipAddress, :count)      
-        end
-        it "renders template new" do  
-          post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to render_template "new"
-        end
-      end
-    end
-    context "without manage ability" do
-      before do
-        @ability.cannot :manage, ShipAddress
-      end
-      context "with valid attributes" do
-        it "do not creates new ship_address" do
-          expect{post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id)}.to_not change(ShipAddress, :count)
-        end
-        it "do not redirects to order_delivery_path " do  
-          post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id)
-          expect(response).to_not redirect_to order_delivery_path
-        end
-      end
-      context "with invalid attributes" do
-        it "do not creates new ship_address" do
-          expect{post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(ShipAddress, :count)      
-        end
-        it "redirects to customer_session_path" do  
-          post :create, ship_address: FactoryGirl.attributes_for(:ship_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
-        end
       end
     end
   end

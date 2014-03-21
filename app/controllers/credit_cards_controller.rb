@@ -4,12 +4,17 @@ class CreditCardsController < ApplicationController
  
   # GET /credit_cards/new
   def new
-    if current_order.checkout_step == 4
-      @credit_card = current_order.build_credit_card
-    elsif current_order.checkout_step < 4
-      redirect_to order_delivery_path
-    elsif current_order.checkout_step > 4
-      redirect_to order_confirm_path
+    if current_order.credit_card.nil?
+      if current_order.checkout_step == 4
+        current_order.set_step! 4
+        @credit_card = current_order.build_credit_card
+      elsif current_order.checkout_step < 4
+        redirect_to order_delivery_path
+      elsif current_order.checkout_step > 4
+        redirect_to order_confirm_path
+      end
+    else
+      @credit_card = current_order.credit_card
     end
   end
  
@@ -26,12 +31,17 @@ class CreditCardsController < ApplicationController
   # POST /credit_cards.json
   def create
     @credit_card = current_order.build_credit_card(credit_card_params)
- 
+    if current_order.credit_card 
+      has = true
+    end
     respond_to do |format|
       if @credit_card.save
+        if has == true
+          current_order.set_step! current_order.checkout_step - 1
+        end
         current_order.next_step!
-        format.html { redirect_to order_confirm_path, notice: t(:cc_suc_create) }
-        format.json { redirect_to order_confirm_path, status: :created }
+        format.html { redirect_to step_path(current_order.checkout_step), notice: t(:cc_suc_create) }
+        format.json { redirect_to step_path(current_order.checkout_step), status: :created }
       else
         format.html { render action: 'new' }
         format.json { render json: @credit_card.errors, status: :unprocessable_entity }

@@ -19,6 +19,7 @@ Amazon::Application.routes.draw do
   end
   
   resources :authors 
+  resources :addresses
   resources :categories 
   resources :order_items, except: [:create, :new, :index, :show] 
   resources :bill_addresses
@@ -33,11 +34,14 @@ Amazon::Application.routes.draw do
   get 'cart', to: 'order_items#index', as: 'order_items'
   post 'update_with_coupon', to: 'orders#update_with_coupon', as: 'update_with_coupon'
   post 'remove_coupon', to: 'orders#remove_coupon', as: 'remove_coupon'
+  get 'order/checkout', to: 'orders#checkout'
+  get 'step/:step', to: 'orders#next_step', as: 'step'
   get 'order/delivery', to: 'orders#delivery'
   get 'order/edit_delivery', to: 'orders#edit_delivery'
+  patch 'order/update_delivery', to: 'orders#update_delivery'
   post 'order/add_delivery', to: 'orders#add_delivery'
   get 'order/confirm', to: 'orders#confirm'
-  post 'order/complete', to: 'orders#place'
+  get 'order/complete', to: 'orders#place'
 
   root :to => "books#index"
   # The priority is based upon order of creation: first created -> highest priority.
