@@ -23,13 +23,17 @@
                   %td= link_to "#{oi.book.category.title}", category_path(oi.book.category.id), method: :get
                   %td= oi.quantity
                   %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
+        %h3
+          = t(:total_price)
+          %strong.label.label-primary= number_to_currency current_order.total_price
         = link_to t(:to_cart), order_items_path, class: 'btn btn-info'
       - else
         %h2
           %strong.label.label-warning= t(:empty_cart)
+      %hr
       %h3= t(:in_queue)  
       - if @orders.where(state: 'in_queue').any?
-        %table.table.table-hover.table-small
+        %table.table.table-hover.table-little
           %thead
             %tr.success
               %th.text-center= t(:order_number)
@@ -44,9 +48,10 @@
       - else
         %h2
           %strong.label.label-warning= t(:none)
+      %hr
       %h3= t(:in_delivery)  
       - if @orders.where(state: 'in_delivery').any?
-        %table.table.table-hover.table-small
+        %table.table.table-hover.table-little
           %thead
             %tr.success
               %th.text-center= t(:order_number)
@@ -61,9 +66,10 @@
       - else
         %h2
           %strong.label.label-warning= t(:none)
+      %hr
       %h3= t(:delivered)  
       - if @orders.where(state: 'delivered').any?
-        %table.table.table-hover.table-small
+        %table.table.table-hover.table-little
           %thead
             %tr.success
               %th.text-center= t(:order_number)

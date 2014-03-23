@@ -18,8 +18,6 @@ describe "Customer" do
       it{ should be_able_to(:add_wish, Book.new) }
       it{ should be_able_to(:remove_wish, Book.new) }
       it{ should be_able_to(:wishers, Book.new) }
-      it{ should be_able_to(:author_filter, Book.new) }
-      it{ should be_able_to(:category_filter, Book.new) }
       it{ should be_able_to(:top_rated, Book.new) }
       it{ should be_able_to(:manage, OrderItem.new) }
       it{ should be_able_to(:read, Address.new) }
@@ -52,8 +50,6 @@ describe "Customer" do
       it{ should be_able_to(:read, Category.new) }
       it{ should be_able_to(:read, Author.new) }
       it{ should be_able_to(:wishers, Book.new) }
-      it{ should be_able_to(:author_filter, Book.new) }
-      it{ should be_able_to(:category_filter, Book.new) }
       it{ should be_able_to(:top_rated, Book.new) }
       it{ should be_able_to(:manage, OrderItem.new) }  
       it{ should be_able_to(:manage, ShipAddress.new) }

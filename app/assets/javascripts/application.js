@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+//= require filterrific-jquery
 $(document).on('page:load', function() {
 	$('#use_ba').attr('checked', false);
   	$('#use_ba').click(function() {

@@ -2,4 +2,4 @@
   %center 
     %h1 Welcome to Amazon!
     %h2 Books in category "#{@category.title}":
-    = render 'books'
+    = render partial: 'books', locals: {authors: @authors, categories: Category.all}

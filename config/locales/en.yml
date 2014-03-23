@@ -59,7 +59,7 @@ en:
   authors: 'Authors:'
   author_name: Author name
   number_of_books: Number of books
-  no_books: 'Sorry, no books right now...'
+  no_books: 'No books found...'
   author: 'Author:'
   category: 'Category:'
   description: 'Description:'
@@ -234,3 +234,7 @@ en:
   already_checked_out: You have already checked out
   use_bill: Use bill address
   to_shop: Continue shopping
+  reset: 'Reset filter'
+  search: Search book
+  any_category: Any category
+  any_author: Any author

@@ -1,8 +1,17 @@
 .container
   %center 
     %h1= t(:welcome)
-    %h2= t(:our_books)
-    = paginate @books
-    = render partial: 'books'
-    %br
-    = paginate @books
+    .panel.panel-info.panel-filter
+      .panel-heading
+        %strong= t(:filter)
+      .panel-body
+        = form_for @filterrific, :html => {:class => 'form-inline'} do |f|
+          = f.text_field :search_query, placeholder:"#{t(:search)}", :class => 'form-control lg filterrific-periodically-observed'
+          = f.select(:with_category_id, options_from_collection_for_select(Category.all, :id, :title), { :include_blank => t(:any_category)}, class: 'form-control')
+          = f.select(:with_author_id, options_from_collection_for_select(Author.all, :id, :full_name), { :include_blank => t(:any_author)}, class: 'form-control')
+          = f.select :sorted_by, Book.options_for_sorted_by, {}, class: 'form-control'
+          = link_to t(:reset), books_path, class: 'btn btn-warning'
+          = render_filterrific_spinner
+    #filterrific_results
+      = render partial: 'books'
+

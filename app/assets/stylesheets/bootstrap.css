@@ -1693,6 +1693,10 @@ th {
   vertical-align: top;
 }
 
+.xxl
+{
+  width: 660px;
+}
 .xl
 {
   width: 490px;
@@ -4683,14 +4687,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-inverse .navbar-brand {
   color: #D0D0D0;
-  text-shadow: 1px 1px 3px #000, -1px -1px 3px #000, 1px 1px #000, -1px -1px #fff; 
 }
 
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
   background-color: transparent;
   color: #ffffff;
-  text-shadow: 0 0 8px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
 }
 
 .navbar-inverse .navbar-text {
@@ -5516,6 +5518,10 @@ a.list-group-item.active:focus .list-group-item-text {
 .panel-book {
   width:375px;
   height: 600px;
+}
+
+.panel-filter {
+  width:740px;
 }
 
 .panel-order {

@@ -1,20 +1,5 @@
-.row
-  .btn-group#category_filter
-    %button.btn.btn-info.dropdown-toggle#categories{'type' => 'button', 'data-toggle' => 'dropdown'}
-      Filter by category
-      %span.caret
-    %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
-      - Category.all.each do |cat|
-        %li{'role' => 'presentation'}
-          = link_to "#{cat.title}", category_filter_books_path(cat), 'role' => 'menuitem', 'tabindex' => '-1'
-  .btn-group#author_filter 
-    %button.btn.btn-info.dropdown-toggle#authors{'type' => 'button', 'data-toggle' => 'dropdown'}
-      Filter by author
-      %span.caret
-    %ul.dropdown-menu{'role' => 'menu', "aria-labelledby" => 'dropdownMenu1'}
-      - Author.all.each do |author|
-        %li{'role' => 'presentation'}
-          = link_to "#{author.full_name}", author_filter_books_path(author), 'role' => 'menuitem', 'tabindex' => '-1'
+%h2= t(:our_books)
+= paginate @books
 %br
 - if @books.empty?
   %h3 
@@ -62,3 +47,4 @@
                 = submit_tag t(:add_to_cart), class:"btn btn-sm btn-success"
             - else
               = submit_tag t(:unavaliable),class:"btn btn-sm btn-warning", disabled: true
+%br= paginate @books

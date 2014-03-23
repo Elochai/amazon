@@ -27,15 +27,6 @@ describe Book do
     it { expect(book).to ensure_length_of(:description).is_at_most(400) }
   end
 
-  context "default scope" do
-    it "orders by descending ID" do
-      Book.destroy_all
-      first_book = FactoryGirl.create(:book)
-      second_book = FactoryGirl.create(:book)
-      expect(Book.all).to eq [second_book, first_book]
-    end
-  end
-
   context ".top_rated scope" do
     it "orders first 5 records with descending avg_rating" do
       rating.approved = true
@@ -44,25 +35,54 @@ describe Book do
       rating.save!
       rating2.save!
       rating_for_second_book.save!
-      expect(Book.top_rated).to eq([second_book, book])
+      expect(Book.top_rated).to eq([book, second_book])
     end
   end
 
-  context ".by_author scope" do
+  context ".with_author_id scope" do
     it "selects recors with certain author_id" do
-      expect(Book.by_author(author.id)).to include(book_with_author)
+      expect(Book.with_author_id(author.id)).to include(book_with_author)
     end
     it "do not selects recors without certain author_id" do
-      expect(Book.by_author(author.id)).to_not include(book_with_category)
+      expect(Book.with_author_id(author.id)).to_not include(book_with_category)
     end
   end
 
-  context ".by_category scope" do
+  context ".with_category_id scope" do
     it "selects recors with certain category_id" do
-      expect(Book.by_category(category.id)).to include(book_with_category)
+      expect(Book.with_category_id(category.id)).to include(book_with_category)
     end
     it "do not selects recors without certain category_id" do
-      expect(Book.by_category(category.id)).to_not include(book_with_author)
+      expect(Book.with_category_id(category.id)).to_not include(book_with_author)
+    end
+  end
+
+  context ".sorted_by scope" do
+    before do
+      book.title = 'A'
+      book.created_at = Time.now
+      book.save
+      second_book.title = "B"
+      second_book.created_at = Time.now + 5.days
+      second_book.save
+    end
+    it "orders recors by ascending title" do
+      expect(Book.sorted_by('title_asc')).to eq([book, second_book])
+    end
+    it "orders recors by descending title" do
+      expect(Book.sorted_by('title_desc')).to eq([second_book, book])
+    end
+    it "orders recors by descending creation date" do
+      expect(Book.sorted_by('created_at_desc')).to eq([second_book, book])
+    end
+    it "orders recors by ascending creation date" do
+      expect(Book.sorted_by('created_at_asc')).to eq([book, second_book])
+    end
+  end
+
+  context ".search_query scope" do
+    it "search recors with given title" do
+      expect(Book.search_query(book.title)).to eq([book])
     end
   end
 

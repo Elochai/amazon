@@ -1,10 +1,14 @@
 class BooksController < ApplicationController
-  before_filter :authenticate_customer!, only: [:add_to_order, :add_wish, :remove_wish]
   load_and_authorize_resource
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all.page(params[:page])
+    @filterrific = Filterrific.new(Book, params[:filterrific])
+    @books = Book.filterrific_find(@filterrific).page(params[:page])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def top_rated
@@ -16,16 +20,6 @@ class BooksController < ApplicationController
   def show
     @current_book = Book.find(@book.id)
     @rating = @book.ratings.new
-  end
-
-  def author_filter
-    @author = Author.find(params[:author_id])
-    @books = Book.by_author(@author)
-  end
- 
-  def category_filter
-    @category = Category.find(params[:category_id])
-    @books = Book.by_category(@category)
   end
 
   def add_wish

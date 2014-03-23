@@ -41,6 +41,7 @@ gem 'omniauth-facebook'
 gem 'whenever', :require => false
 gem 'fog'
 gem 'figaro'
+gem 'filterrific'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

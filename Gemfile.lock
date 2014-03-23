@@ -72,6 +72,8 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
+    filterrific (1.2.0)
+      rails (>= 3.0.0)
     fog (1.20.0)
       builder
       excon (~> 0.31.0)
@@ -258,6 +260,7 @@ DEPENDENCIES
   factory_girl_rails
   faker (~> 1.2.0)
   figaro
+  filterrific
   fog
   haml
   jbuilder (~> 1.2)
