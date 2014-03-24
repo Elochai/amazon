@@ -50,9 +50,9 @@ class ApplicationController < ActionController::Base
 
   def save_url
     case request.fullpath
-    when /\/addresses/
+    when /\/addresses$/
       request.fullpath << "/new"
-    when /\/credit_cards/
+    when /\/credit_cards$/
       request.fullpath << "/new"
     end
     session[:return_to] = request.fullpath unless request.fullpath =~ /\/customer/
