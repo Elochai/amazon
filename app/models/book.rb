@@ -40,10 +40,10 @@ class Book < ActiveRecord::Base
 
   def self.options_for_sorted_by
     [
-      ['Title (a-z)', 'title_asc'],
-      ['Title (z-a)', 'title_desc'],
-      ['Date (newest first)', 'created_at_desc'],
-      ['Date (oldest first)', 'created_at_asc']
+      [I18n.t(:title_asc), 'title_asc'],
+      [I18n.t(:title_desc), 'title_desc'],
+      [I18n.t(:date_desc), 'created_at_desc'],
+      [I18n.t(:date_asc), 'created_at_asc']
     ]
   end
 

@@ -7,18 +7,6 @@
           %h4= t(:new_sa)
         .panel-body
           %h5
-            %label.control-label== #{t(:country)} <br>#{sa.select :country_id, options_from_collection_for_select(Country.all, :id, :name), {}, {:class => 'form-control'}}
-            %br
-            %br
-            %label.control-label== #{t(:city)} #{sa.text_field :city, size: 15, class: 'form-control'}
-            %br
-            %br
-            %label.control-label== #{t(:address)} #{sa.text_area :address, class: 'form-control'}
-            %br
-            %br
-            %label.control-label== #{t(:zipcode)} #{sa.number_field :zipcode, class: 'form-control s'}
-            %br
-            %br
-            %label.control-label== #{t(:phone)} #{sa.telephone_field :phone, class: 'form-control'}
+            = render partial: 'form', locals: {sa: sa}
         .panel-footer
           = sa.submit t(:create_sa), class: 'btn btn-success'

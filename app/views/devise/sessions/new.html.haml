@@ -6,16 +6,14 @@
         %h4= t(:sign_in)
       .panel-body
         %h5
-          %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:pass)} #{f.password_field :password, class: 'form-control'}
-          %br
-          %br
-          - if devise_mapping.rememberable?
-            %label.control-label== #{t(:remember_me)} #{f.check_box :remember_me}
-          %br
-          %br
-          = f.submit t(:sign_in), class:'btn btn-success'
+          .form-group
+            %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:pass)} #{f.password_field :password, class: 'form-control'}
+          .form-group
+            - if devise_mapping.rememberable?
+              %label.control-label== #{t(:remember_me)} #{f.check_box :remember_me}
+          .form-group
+            = f.submit t(:sign_in), class:'btn btn-success'
           %hr
           = render "devise/shared/links" 

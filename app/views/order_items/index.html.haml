@@ -31,7 +31,7 @@
       %h3
         %strong Total price:
         %strong.label.label-primary= number_to_currency(current_order.total_price)
-      = form_tag "/update_with_coupon", class: 'form-inline' do
+      = form_tag update_with_coupon_path, class: 'form-inline' do
         %h4.form-group
           = link_to t(:to_shop), books_path, class:'btn btn-info'
           = link_to t(:clear_cart), clear_cart_path, data: {confirm: t(:are_you_sure)}, class:'btn btn-warning'

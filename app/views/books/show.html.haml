@@ -27,7 +27,7 @@
           - else
             %br= link_to t(:add_wish), add_wish_book_path(@book), method: :post, class:"btn btn-info"
           - if @book.in_stock > 0
-            = form_tag "/add_to_order/#{@book.id}", class: 'form-inline' do
+            = form_tag order_item_create_path("#{@book.id}"), class: 'form-inline' do
               %br
               .form-group
                 = number_field_tag :quantity, 1, min: 1, max: "#{@book.in_stock}", class: 'form-control xs'

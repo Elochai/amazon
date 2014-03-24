@@ -38,7 +38,7 @@
             = book.description
             %br
         .panel-footer
-          = form_tag "/add_to_order/#{book.id}", class: 'form-inline' do
+          = form_tag order_item_create_path("#{book.id}"), class: 'form-inline' do
             %strong.label.label-primary.big= number_to_currency book.price
             - if book.in_stock > 0
               .form-group

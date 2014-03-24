@@ -1,0 +1,42 @@
+!!!
+%html
+  %head
+    %title= yield(:title)
+    = stylesheet_link_tag "application", media: "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    %nav.navbar.navbar-inverse.navbar-static-top
+      .navbar-header
+        = link_to raw("<i class='icon-home icon-white'></i> AMAZON"), root_path, class:'navbar-brand'
+      %ul.nav.navbar-nav.navbar-left
+        %li= link_to t(:books), books_path
+        %li= link_to t(:top_rated), top_rated_books_path 
+        %li= link_to t(:categories), categories_path 
+        %li= link_to t(:authors), authors_path 
+      %ul.nav.navbar-nav.navbar-right
+        - klass = !current_order.nil? && current_order.order_items.any? ? 'active' : ''
+        - items = !current_order.nil? && current_order.order_items.any? ? "#{current_order.order_items.count}" : 'Empty' 
+        -  price = !current_order.nil? && current_order.order_items.any? ? "(#{number_to_currency current_order.total_price})" : '' 
+        %li{class: klass}= link_to raw("<i class='icon-shopping-cart icon-white'></i> #{t(:cart)}: #{items} #{price}"), order_items_path
+        - if customer_signed_in? 
+          - if can? :manage, rails_admin
+            %li.active= link_to raw("<i class='icon-cog icon-white'></i> #{t(:admin_panel)}"), rails_admin_path
+          %li= link_to raw("<i class='icon-list-alt icon-white'></i> #{t(:orders)}"), orders_path
+          %li= link_to raw("<i class='icon-user icon-white'></i> #{t(:profile)} (#{current_customer.email})"), edit_customer_registration_path
+          %li= link_to raw("<i class='icon-off icon-white'></i> #{t(:sign_out)}"), destroy_customer_session_path, :method => :delete
+        - else
+          %li= link_to raw("<i class='icon-plus icon-white'></i> #{t(:sign_up)}"), new_customer_registration_path 
+          %li= link_to raw("<i class='icon-ok icon-white'></i> #{t(:sign_in)}"), new_customer_session_path 
+          %li= link_to raw("<i class='icon-magnet icon-white'></i> #{t(:sign_in_facebook)}"), customer_omniauth_authorize_path(:facebook)
+    - if flash[:notice]
+      .alert.alert-success.alert-dismissable
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", type: "button"} ×
+        %center= notice
+    - if flash[:alert]
+      .alert.alert-danger.alert-dismissable
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", type: "button"} ×
+        %center= alert
+    = yield
+    = debug(params) if Rails.env.development?
+

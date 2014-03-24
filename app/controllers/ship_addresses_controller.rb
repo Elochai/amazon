@@ -14,7 +14,7 @@ class ShipAddressesController < ApplicationController
   # PATCH/PUT /addresses/1
   # PATCH/PUT /addresses/1.json
   def update
-    if params[:use_ba]
+    if params[:use_bill_address]
       attrs = {address: current_order.bill_address.address, city: current_order.bill_address.city, phone: current_order.bill_address.phone, zipcode: current_order.bill_address.zipcode, country_id: current_order.bill_address.country.id}
     else
       attrs = ship_address_params

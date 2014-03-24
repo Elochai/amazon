@@ -6,21 +6,17 @@
         %h4= t(:sign_up)
       .panel-body
         %h5
-          %label.control-label== #{t(:fn)} #{f.text_field :firstname, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:ln)} #{f.text_field :lastname, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:pass)} #{f.password_field :password, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:pass_confirm)} #{f.password_field :password_confirmation, class: 'form-control'}
-          %br
-          %br
-          = f.submit t(:sign_up), class:'btn btn-success'
+          .form-group
+            %label.control-label== #{t(:fn)} #{f.text_field :firstname, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:ln)} #{f.text_field :lastname, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:pass)} #{f.password_field :password, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:pass_confirm)} #{f.password_field :password_confirmation, class: 'form-control'}
+          .form-group
+            = f.submit t(:sign_up), class:'btn btn-success'
           %hr
           = render "devise/shared/links" 

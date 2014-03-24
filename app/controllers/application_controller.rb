@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :set_want_complete
+  before_filter :save_url
   before_filter do
     resource = controller_path.singularize.gsub('/', '_').to_sym
     method = "#{resource}_params"
@@ -44,13 +44,18 @@ class ApplicationController < ActionController::Base
     session.delete(:return_to) || super
   end
 
-  def set_want_complete
-    session[:return_to] = request.fullpath unless request.fullpath =~ /\/customer/
+  def after_sign_out_path_for(resource)
+    session.delete(:return_to) || super
   end
 
-  def redirect_to_previous
-    session[:return_to] ||= request.referer 
-    redirect_to session.delete(:return_to)
+  def save_url
+    case request.fullpath
+    when /\/addresses/
+      request.fullpath << "/new"
+    when /\/credit_cards/
+      request.fullpath << "/new"
+    end
+    session[:return_to] = request.fullpath unless request.fullpath =~ /\/customer/
   end
 
   def configure_permitted_parameters

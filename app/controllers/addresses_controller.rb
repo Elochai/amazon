@@ -26,9 +26,7 @@ class AddressesController < ApplicationController
       has = true
     end
     if params[:use_ba] == 'yes'
-      if @order.update_attributes(bill_address_attributes: bill_address_params)
-        current_order.update_attributes(ship_address_attributes: bill_address_params)
-        current_order.save
+      if @order.update_attributes(bill_address_attributes: bill_address_params, ship_address_attributes: bill_address_params) 
         if has == true
           current_order.set_step! current_order.checkout_step - 1
         end

@@ -6,33 +6,27 @@
         %h4= current_customer.email
       .panel-body
         %h5
-          %label.control-label== #{t(:fn)}: #{f.text_field :firstname, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:ln)} #{f.text_field :lastname, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
-          %br
-          %br
-          - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-            == Currently waiting confirmation for: "#{resource.unconfirmed_email}"
-          %label.control-label== #{t(:pass)} <i>#{t(:curr_pass_info)}</i> #{f.password_field :password, :autocomplete => "off", class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:pass_confirm)} #{f.password_field :password_confirmation, class: 'form-control'}
-          %br
-          %br
-          %label.control-label== #{t(:current_pass)} <i>#{t(:pass_confirm_info)}</i>#{f.password_field :current_password, class: 'form-control'}
-          %br
-          %br
-          = f.submit t(:update), class:'btn btn-success'
+          .form-group
+            %label.control-label== #{t(:fn)}: #{f.text_field :firstname, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:ln)} #{f.text_field :lastname, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
+          .form-group
+            - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+              == Currently waiting confirmation for: "#{resource.unconfirmed_email}"
+            %label.control-label== #{t(:pass)} <i>#{t(:curr_pass_info)}</i> #{f.password_field :password, :autocomplete => "off", class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:pass_confirm)} #{f.password_field :password_confirmation, class: 'form-control'}
+          .form-group
+            %label.control-label== #{t(:current_pass)} <i>#{t(:pass_confirm_info)}</i>#{f.password_field :current_password, class: 'form-control'}
+          .form-group
+            = f.submit t(:update), class:'btn btn-success'
           %hr
           = link_to t(:delete_account), registration_path(resource_name), class:'btn btn-danger', :data => { :confirm => t(:confirm) }, :method => :delete 
-          %br
           = link_to t(:back), :back, class:'btn btn-default'   
   - if current_customer.customer_bill_address.nil?   
-    = link_to t(:add_ba), new_customer_bill_address_path, class: 'btn btn-info' 
+    .outline= link_to t(:add_ba), new_customer_bill_address_path, class: 'btn btn-info' 
   - else   
     .inline
       .panel.panel-info.panel-little
@@ -44,7 +38,7 @@
         .panel-footer
           == #{t(:phone)} #{current_customer.customer_bill_address.phone}
   - if current_customer.customer_ship_address.nil?   
-    = link_to t(:add_sa), new_customer_ship_address_path, class: 'btn btn-info' 
+    .outline= link_to t(:add_sa), new_customer_ship_address_path, class: 'btn btn-info' 
   - else 
     .inline
       .panel.panel-info.panel-little
@@ -55,12 +49,12 @@
           == #{current_customer.customer_ship_address.country.name}<br>#{current_customer.customer_ship_address.zipcode}, #{current_customer.customer_ship_address.city}<br>#{current_customer.customer_ship_address.address}
         .panel-footer
           == #{t(:phone)} #{current_customer.customer_ship_address.phone} 
-    .outline
-      .panel.panel-info.panel-little
-        .panel-heading
-          %h4= t(:your_wishes) 
-        .panel-body
-          - current_customer.wishes.each do |wish|
-            %strong= link_to "#{wish.title}", book_path(wish)
-            = link_to '', remove_wish_book_path(wish), method: :post, class:'icon-remove'
-            %br
+  .outline
+    .panel.panel-info.panel-little
+      .panel-heading
+        %h4= t(:your_wishes) 
+      .panel-body
+        - current_customer.wishes.each do |wish|
+          %strong= link_to "#{wish.title}", book_path(wish)
+          = link_to '', remove_wish_book_path(wish), method: :post, class:'icon-remove'
+          %br

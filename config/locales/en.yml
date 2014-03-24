@@ -238,3 +238,7 @@ en:
   search: Search book
   any_category: Any category
   any_author: Any author
+  title_asc: Name (a-z)
+  title_desc: Name (z-a)
+  date_desc: Date (newest first)
+  date_asc: Date (oldest first)
