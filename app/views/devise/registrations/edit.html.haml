@@ -14,7 +14,7 @@
             %label.control-label== #{t(:email)} #{f.email_field :email, :autofocus => true, class: 'form-control'}
           .form-group
             - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-              == Currently waiting confirmation for: "#{resource.unconfirmed_email}"
+              == #{t(:waiting_confirm)} "#{resource.unconfirmed_email}"
             %label.control-label== #{t(:pass)} <i>#{t(:curr_pass_info)}</i> #{f.password_field :password, :autocomplete => "off", class: 'form-control'}
           .form-group
             %label.control-label== #{t(:pass_confirm)} #{f.password_field :password_confirmation, class: 'form-control'}
@@ -49,12 +49,13 @@
           == #{current_customer.customer_ship_address.country.name}<br>#{current_customer.customer_ship_address.zipcode}, #{current_customer.customer_ship_address.city}<br>#{current_customer.customer_ship_address.address}
         .panel-footer
           == #{t(:phone)} #{current_customer.customer_ship_address.phone} 
-  .outline
-    .panel.panel-info.panel-little
-      .panel-heading
-        %h4= t(:your_wishes) 
-      .panel-body
-        - current_customer.wishes.each do |wish|
-          %strong= link_to "#{wish.title}", book_path(wish)
-          = link_to '', remove_wish_book_path(wish), method: :post, class:'icon-remove'
-          %br
+  - if current_customer.wishes.any?
+    .outline
+      .panel.panel-info.panel-little
+        .panel-heading
+          %h4= t(:your_wishes) 
+        .panel-body
+          - current_customer.wishes.each do |wish|
+            %strong= link_to "#{wish.title}", book_path(wish)
+            = link_to '', remove_wish_book_path(wish), method: :post, class:'icon-remove'
+            %br

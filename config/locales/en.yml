@@ -243,3 +243,5 @@ en:
   date_desc: Date (newest first)
   date_asc: Date (oldest first)
   back_to_store: Go back to store
+  waiting_confirm: 'Currently waiting confirmation for:'
+  access_denied: Access denied
