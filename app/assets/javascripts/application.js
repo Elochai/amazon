@@ -16,28 +16,28 @@
 //= require_tree .
 //= require filterrific-jquery
 $(document).on('page:load', function() {
-	$('#use_ba').attr('checked', true);
+  $('#use_ba').attr('checked', true);
   $('#sa_info').toggle(false)
-  	$('#use_ba').click(function() {
-	 	return $('#sa_info').toggle('#use_ba'.checked);
-	});
-});
-$(window).load(function() {
-	$('#use_ba').attr('checked', true);
-  $('#sa_info').toggle(false)
-  	$('#use_ba').click(function() {
-	 	return $('#sa_info').toggle('#use_ba'.checked);
-	});
-});
-$(document).on('page:load', function() {
-  $('#use_bill_address').attr('checked', false);
-    $('#use_bill_address').click(function() {
-    return $('#sa_fields').toggle('#use_bill_address'.checked);
+  $('#use_ba').click(function() {
+    return $('#sa_info').toggle('#use_ba'.checked);
   });
 });
 $(window).load(function() {
+  $('#use_ba').attr('checked', true);
+  $('#sa_info').toggle(false)
+  $('#use_ba').click(function() {
+    return $('#sa_info').toggle('#use_ba'.checked);
+  });
+});
+$(document).on('page:load', function() {
   $('#use_bill_address').attr('checked', false);
-    $('#use_bill_address').click(function() {
+  $('#use_bill_address').click(function() {
+    return $('#sa_fields').toggle('#use_bill_address'.checked);
+  });
+});
+$(window).load(function() { 
+  $('#use_bill_address').attr('checked', false);
+  $('#use_bill_address').click(function() {
     return $('#sa_fields').toggle('#use_bill_address'.checked);
   });
 });
