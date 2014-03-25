@@ -2,7 +2,7 @@
   %center 
     %h2== #{t(:order_from)} #{@order.id} (#{@order.created_at.to_formatted_s(:long)})
     %h3= t(:books_in_order)
-    %table.table.table-hover.table-order
+    %table.table.table-hover.table-order-show
       %thead
         %tr.success
           %th.text-center= t(:book_title)
@@ -19,7 +19,7 @@
               %td= oi.quantity
               %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
     %h3= t(:order_info)
-    %table.table.table-order
+    %table.table.table-order-show
       %thead
         %tr.success
           %th.left= t(:ba_info)
@@ -39,5 +39,8 @@
         == (#{t(:coupon_number)} "#{@order.coupon.number}")
     .outline           
       %hr    
-      %h2== #{t(:total_price)} <span class="label label-success">#{number_to_currency(@order.price)}</span>
-      %h2== #{t(:status)} <label class="label label-info">#{@order.state.humanize}</label>
+      %h3== #{t(:total_price)} <span class="label label-success">#{number_to_currency(@order.price)}</span>
+      %h3== #{t(:status)} <label class="label label-primary">#{@order.state.humanize}</label>
+      - if @order.completed_at
+        %h3== #{t(:complete_date)} <label class="label label-primary">#{@order.completed_at}</label>
+    = link_to t(:back_to_store), books_path, class:'btn btn-info'

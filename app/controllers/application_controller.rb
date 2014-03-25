@@ -44,16 +44,16 @@ class ApplicationController < ActionController::Base
     session.delete(:return_to) || super
   end
 
-  def after_sign_out_path_for(resource)
-    session.delete(:return_to) || super
-  end
-
   def save_url
     case request.fullpath
     when /\/addresses$/
       request.fullpath << "/new"
     when /\/credit_cards$/
       request.fullpath << "/new"
+    when /add_wish/
+      request.fullpath.slice!(/\/add_wish/)
+    when /remove_wish/
+      request.fullpath.slice!(/\/remove_wish/)
     end
     session[:return_to] = request.fullpath unless request.fullpath =~ /\/customer/
   end

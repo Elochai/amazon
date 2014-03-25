@@ -1,11 +1,12 @@
 .container
   %center 
-    %h2= t(:your_orders)
+    %h1= t(:your_orders)
     - if customer_signed_in? && current_customer.orders.load.empty?
       %h2
         %strong.label.label-warning= t(:no_orders)
     - else  
-      %h3= t(:in_progress)  
+      %h3
+        %u= t(:in_progress)  
       - if !current_order.nil?
         %table.table.table-hover.table-small
           %thead
@@ -28,12 +29,13 @@
           %strong.label.label-primary= number_to_currency current_order.total_price
         = link_to t(:to_cart), order_items_path, class: 'btn btn-info'
       - else
-        %h2
+        %h3
           %strong.label.label-warning= t(:empty_cart)
       %hr
-      %h3= t(:in_queue)  
+      %h3
+        %u= t(:in_queue)  
       - if @orders.where(state: 'in_queue').any?
-        %table.table.table-hover.table-little
+        %table.table.table-hover.table-order
           %thead
             %tr.success
               %th.text-center= t(:order_number)
@@ -46,12 +48,13 @@
                   %td= order.created_at.to_formatted_s(:long)
                   %td= number_to_currency(order.price)
       - else
-        %h2
+        %h3
           %strong.label.label-warning= t(:none)
       %hr
-      %h3= t(:in_delivery)  
+      %h3
+        %u= t(:in_delivery)  
       - if @orders.where(state: 'in_delivery').any?
-        %table.table.table-hover.table-little
+        %table.table.table-hover.table-order
           %thead
             %tr.success
               %th.text-center= t(:order_number)
@@ -64,12 +67,13 @@
                   %td= order.created_at.to_formatted_s(:long)
                   %td= number_to_currency(order.price)
       - else
-        %h2
+        %h3
           %strong.label.label-warning= t(:none)
       %hr
-      %h3= t(:delivered)  
+      %h3
+        %u= t(:delivered)  
       - if @orders.where(state: 'delivered').any?
-        %table.table.table-hover.table-little
+        %table.table.table-hover.table-order
           %thead
             %tr.success
               %th.text-center= t(:order_number)
@@ -84,5 +88,6 @@
                   %td= number_to_currency(order.price)
                   %td= order.completed_at
       - else
-        %h2
+        %h3
           %strong.label.label-warning= t(:none)
+    = link_to t(:back_to_store), books_path, class:'btn btn-info'

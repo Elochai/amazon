@@ -1672,8 +1672,8 @@ th {
   background-color: #ffffff;
 }
 
-.table-order {
-  width: 90%;
+.table-order-show {
+  width: 80%;
   vertical-align: top;
   background-color: #ffffff;
 }
@@ -1683,7 +1683,14 @@ th {
 }
 
 .table-little {
-  width: 40%;
+  width: 45%;
+  margin-bottom: 20px;
+  vertical-align: center;
+  background-color: #ffffff;
+}
+
+.table-order {
+  width: 55%;
   margin-bottom: 20px;
   vertical-align: center;
   background-color: #ffffff;
