@@ -110,11 +110,12 @@ en:
   fn: 'Firstname:'
   ln: 'Lastname:'
   email: 'Email:'
+  new_pass: 'New password:'
   pass: 'Password:'
   current_pass: 'Current password:'
   pass_confirm: 'Password confirmation:'
   update: Update
-  curr_pass_info: (we need your current password to confirm your changes)
+  curr_pass_info: (needed to confirm your changes)
   pass_confirm_info: (leave it blank if you do not want to change it)
   delete_account: Delete my account
   confirm: Are you sure?
@@ -202,7 +203,7 @@ en:
   address_suc_update: Address was successfully updated.
   address_suc_delete: Address was successfully deleted.
   address_fail_create: An error has occured while adding your address.
-  use_ba: As ship address too
+  use_ba: Use bill address
   choose_delivery: Choose delivery
   delivery: 'Delivery:'
   delivery_suc_create: "Delivery was successfully added to order."

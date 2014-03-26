@@ -26,9 +26,9 @@ describe CategoriesController do
       before do
         @ability.cannot :read, Category
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :index
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -56,9 +56,9 @@ describe CategoriesController do
       before do
         @ability.cannot :read, Category
       end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         get :show, id: @category.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

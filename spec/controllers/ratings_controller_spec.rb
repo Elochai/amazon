@@ -41,18 +41,18 @@ describe RatingsController do
         it "do not creates new rating" do
           expect{post :create, book_id: @book.id, rating: FactoryGirl.attributes_for(:rating)}.to_not change(Rating, :count)
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, book_id: @book.id, rating: FactoryGirl.attributes_for(:rating, rating: 0)
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
       context "with invalid attributes" do
         it "do not creates new rating" do
           expect{post :create, book_id: @book.id, rating: FactoryGirl.attributes_for(:rating, rating: 0)}.to_not change(Rating, :count)      
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, book_id: @book.id, rating: FactoryGirl.attributes_for(:rating, rating: 0)
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

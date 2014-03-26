@@ -44,9 +44,9 @@ describe ShipAddressesController do
         @ability.cannot :manage, ShipAddress
         ShipAddress.stub(:find).and_return @ship_address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @ship_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -106,9 +106,9 @@ describe ShipAddressesController do
           @ship_address.reload
           expect(@ship_address.zipcode).to_not eq "zipcode"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @ship_address.id, ship_address: FactoryGirl.attributes_for(:ship_address, country: @country, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

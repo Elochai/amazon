@@ -31,8 +31,16 @@ class Order < ActiveRecord::Base
 
   rails_admin do
     list do
+      filters [:state]
+      field :id
+      field :state, :state
+      field :customer 
+      field :price
+      field :order_items 
+      field :delivery
+      field :coupon
+      field :completed_at
       include_all_fields
-      field :state, :state 
     end
     edit do
       include_all_fields

@@ -30,7 +30,11 @@ def fill_credit_card
   fill_in 'CVV', with: '1234'
   fill_in 'Owner firstname', with: 'Firstname'
   fill_in 'Owner lastname', with: 'Lastname'
-  select '1', from: 'Exp month'
+  if Time.now.month == 12
+    select "1", from: 'Exp month'
+  else
+    select "#{Time.now.month+1}", from: 'Exp month'
+  end
   select "#{Time.now.year}", from: 'Exp year'
   click_on 'Save and continue'
 end

@@ -44,9 +44,9 @@ describe BillAddressesController do
         @ability.cannot :manage, BillAddress
         BillAddress.stub(:find).and_return @bill_address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @bill_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -106,9 +106,9 @@ describe BillAddressesController do
           @bill_address.reload
           expect(@bill_address.zipcode).to_not eq "zipcode"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @bill_address.id, bill_address: FactoryGirl.attributes_for(:bill_address, country: @country, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

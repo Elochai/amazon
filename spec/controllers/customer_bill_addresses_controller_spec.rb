@@ -32,9 +32,9 @@ describe CustomerBillAddressesController do
       before do
         @ability.cannot :manage, CustomerBillAddress
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :new
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -73,9 +73,9 @@ describe CustomerBillAddressesController do
         @ability.cannot :manage, CustomerBillAddress
         CustomerBillAddress.stub(:find).and_return @customer_bill_address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @customer_bill_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -121,9 +121,9 @@ describe CustomerBillAddressesController do
         it "do not creates new customer_bill_address" do
           expect{post :create, customer_bill_address: FactoryGirl.attributes_for(:customer_bill_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(CustomerBillAddress, :count)      
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, customer_bill_address: FactoryGirl.attributes_for(:customer_bill_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -184,9 +184,9 @@ describe CustomerBillAddressesController do
           @customer_bill_address.reload
           expect(@customer_bill_address.zipcode).to_not eq "zipcode"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @customer_bill_address.id, customer_bill_address: FactoryGirl.attributes_for(:customer_bill_address, country: @country, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -230,9 +230,9 @@ describe CustomerBillAddressesController do
         expect{delete :destroy, id: @customer_bill_address.id}.to_not change(CustomerBillAddress, :count)
         delete :destroy, id: @customer_bill_address.id
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         delete :destroy, id: @customer_bill_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

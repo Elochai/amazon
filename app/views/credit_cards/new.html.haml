@@ -14,7 +14,7 @@
             %label.control-label== #{t(:owner_fn)} #{cc.text_field :firstname, size: 8, class: 'form-control'}
             %label.control-label== #{t(:owner_ln)} #{cc.text_field :lastname, size: 8, class: 'form-control'}
             %label.control-label== #{t(:exp_m)} #{cc.select :expiration_month, (1..12), {}, class: 'form-control'}
-            %label.control-label== #{t(:exp_y)} #{cc.select :expiration_year, (Time.now.year..Time.now.year + 30), {}, class: 'form-control'} 
+            %label.control-label== #{t(:exp_y)} #{cc.select :expiration_year, (Time.now.year..Time.now.year + 15), {}, class: 'form-control'} 
         .panel-footer
           %h4
             = t(:books_price)

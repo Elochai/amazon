@@ -43,9 +43,9 @@ describe OrderItemsController do
         @ability.cannot :manage, OrderItem
         OrderItem.stub(:find).and_return @order_item
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @order_item.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -105,9 +105,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to_not eq "quantity"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "quantity")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -150,9 +150,9 @@ describe OrderItemsController do
         expect{delete :destroy, id: @order_item.id}.to_not change(OrderItem, :count)
         delete :destroy, id: @order_item.id
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         delete :destroy, id: @order_item.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -181,9 +181,9 @@ describe OrderItemsController do
         expect{get :clear_cart}.to_not change(OrderItem, :count).by(-2)
         get :clear_cart
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :clear_cart
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -238,9 +238,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to eq(1)
         end
-        it "redirects to customer_session_path" do
+        it "redirects to root_path" do
           post :create, book_id: @book.id
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
       context "with invalid attributes" do
@@ -253,9 +253,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to eq(1)
         end
-        it "redirects to customer_session_path" do
+        it "redirects to root_path" do
           post :create, book_id: @book.id, quantity: -1
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

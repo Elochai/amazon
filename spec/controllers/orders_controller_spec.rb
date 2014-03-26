@@ -27,9 +27,9 @@ describe OrdersController do
       before do
         @ability.cannot :read, Order
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :index
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -66,9 +66,9 @@ describe OrdersController do
       before do
         @ability.cannot :read, Order
       end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         get :show, id: @order_with_customer.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -108,9 +108,9 @@ describe OrdersController do
       it "do not updates current order with coupon" do
           expect{post :update_with_coupon, coupon: @coupon.number}.to_not change(@order, :coupon_id)
         end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         post :update_with_coupon, coupon: @coupon.number
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -139,9 +139,9 @@ describe OrdersController do
         post :remove_coupon
         expect(@order.reload.coupon_id).to eq(1)
       end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         post :remove_coupon
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -165,9 +165,9 @@ describe OrdersController do
         get :delivery
         expect(response).to_not render_template("delivery")
       end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         get :delivery
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -190,9 +190,9 @@ describe OrdersController do
         get :edit_delivery
         expect(response).to_not render_template("edit_delivery")
       end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         get :edit_delivery
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -233,9 +233,9 @@ describe OrdersController do
       it "do not updates current order with coupon" do
           expect{post :add_delivery, delivery_id: @delivery.id}.to_not change(@order, :delivery_id)
         end
-      it "redirects_to customer_session_path" do
+      it "redirects_to root_path" do
         post :add_delivery, delivery_id: @delivery.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -264,9 +264,9 @@ describe OrdersController do
         @order.update(checkout_step: 5)
         @ability.cannot :place, Order
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :place
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -297,9 +297,9 @@ describe OrdersController do
       before do
         @ability.cannot :next_step, Order
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :next_step, step: '4'
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

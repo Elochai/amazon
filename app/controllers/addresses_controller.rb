@@ -27,6 +27,15 @@ class AddressesController < ApplicationController
     end
     if params[:use_ba] == 'yes'
       if @order.update_attributes(bill_address_attributes: bill_address_params, ship_address_attributes: bill_address_params) 
+        if customer_signed_in?
+          if current_customer.customer_bill_address.nil?
+            @address = current_customer.build_customer_bill_address(bill_address_params)
+            @address.save
+          elsif current_customer.customer_ship_address.nil?
+            @address = current_customer.build_customer_ship_address(bill_address_params)
+            @address.save
+          end
+        end
         if has == true
           current_order.set_step! current_order.checkout_step - 1
         end
@@ -37,6 +46,16 @@ class AddressesController < ApplicationController
       end
     else 
       if @order.update_attributes(address_params)
+        if customer_signed_in?
+          if current_customer.customer_bill_address.nil?
+            @address = current_customer.build_customer_bill_address(bill_address_params)
+            @address.save
+          end
+          if current_customer.customer_ship_address.nil?
+            @address = current_customer.build_customer_ship_address(ship_address_params)
+            @address.save
+          end
+        end
         if has == true
           current_order.set_step! current_order.checkout_step - 1
         end
@@ -57,6 +76,10 @@ class AddressesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def bill_address_params
       params.require(:order).require(:bill_address_attributes).permit(:country_id, :address, :zipcode, :city, :phone)
+    end
+
+    def ship_address_params
+      params.require(:order).require(:ship_address_attributes).permit(:country_id, :address, :zipcode, :city, :phone)
     end
 
     def address_params

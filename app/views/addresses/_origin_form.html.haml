@@ -1,47 +1,48 @@
 = form_for @order, :url => addresses_path, method: :post do |form|
   = render partial: "errors/errors", locals: {object: form.object}
-  .inline
-    .panel.panel-info.panel-little#ba
-      .panel-heading.panel-addr-head
-        %h4= t(:new_ba)
-        = check_box_tag :use_ba, 'yes', true
-        = t(:use_ba)
-      .panel-body
-        %h5
-        - if customer_signed_in? 
-          - if current_customer.customer_bill_address
-            - if current_order.bill_address
-              = form.fields_for :bill_address do |addr|
-                = render partial: "form", locals: {addr: addr}  
-            - else
-              = form.fields_for :bill_address do |addr|
-                = render partial: "form_ba_for_customer", locals: {addr: addr}
-          - else
-            = form.fields_for :bill_address do |addr|
-              = render partial: "form", locals: {addr: addr}  
-        - else
-          = form.fields_for :bill_address do |addr|
-            = render partial: "form", locals: {addr: addr}
-  .inline#sa_info
-    .panel.panel-info.panel-little#sa
-      .panel-heading.panel-addr-head
-        %h4= t(:new_sa)
-      .panel-body
-        %h5
-        - if customer_signed_in? 
-          - if current_customer.customer_ship_address
-            - if current_order.ship_address
-              = form.fields_for :ship_address do |addr|
-                = render partial: "form", locals: {addr: addr}  
+  .row
+    .col-md-6.col-md-push-5
+      .panel.panel-info.panel-little#ba
+        .panel-heading.panel-addr-head
+          %h4= t(:new_sa)
+          = check_box_tag :use_ba, 'yes', false
+          = t(:use_ba)
+        .panel-body#sa_info
+          %h5
+          - if customer_signed_in? 
+            - if current_customer.customer_ship_address
+              - if current_order.ship_address
+                = form.fields_for :ship_address do |addr|
+                  = render partial: "form", locals: {addr: addr}  
+              - else
+                = form.fields_for :ship_address do |addr|
+                  = render partial: "form_ba_for_customer", locals: {addr: addr}
             - else
               = form.fields_for :ship_address do |addr|
-                = render partial: "form_ba_for_customer", locals: {addr: addr}
+                = render partial: "form", locals: {addr: addr}
           - else
             = form.fields_for :ship_address do |addr|
               = render partial: "form", locals: {addr: addr}
-        - else
-          = form.fields_for :ship_address do |addr|
-            = render partial: "form", locals: {addr: addr}
+    .col-md-6.col-md-pull-5
+      .panel.panel-info.panel-little#sa
+        .panel-heading.panel-addr-head
+          %h4= t(:new_ba)
+        .panel-body
+          %h5
+          - if customer_signed_in? 
+            - if current_customer.customer_bill_address
+              - if current_order.bill_address
+                = form.fields_for :bill_address do |addr|
+                  = render partial: "form", locals: {addr: addr}  
+              - else
+                = form.fields_for :bill_address do |addr|
+                  = render partial: "form_ba_for_customer", locals: {addr: addr}
+            - else
+              = form.fields_for :bill_address do |addr|
+                = render partial: "form", locals: {addr: addr}  
+          - else
+            = form.fields_for :bill_address do |addr|
+              = render partial: "form", locals: {addr: addr}
   %h4
     = t(:books_price)
     %strong.label.label-info= number_to_currency current_order.books_price

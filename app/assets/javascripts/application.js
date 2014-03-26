@@ -16,15 +16,15 @@
 //= require_tree .
 //= require filterrific-jquery
 $(document).on('page:load', function() {
-  $('#use_ba').attr('checked', true);
-  $('#sa_info').toggle(false)
+  $('#use_ba').attr('checked', false);
+  $('#sa_info').toggle(true)
   $('#use_ba').click(function() {
     return $('#sa_info').toggle('#use_ba'.checked);
   });
 });
 $(window).load(function() {
-  $('#use_ba').attr('checked', true);
-  $('#sa_info').toggle(false)
+  $('#use_ba').attr('checked', false);
+  $('#sa_info').toggle(true)
   $('#use_ba').click(function() {
     return $('#sa_info').toggle('#use_ba'.checked);
   });
