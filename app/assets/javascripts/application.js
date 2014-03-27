@@ -15,29 +15,43 @@
 //= require turbolinks
 //= require_tree .
 //= require filterrific-jquery
-$(document).on('page:load', function() {
-  $('#use_ba').attr('checked', false);
-  $('#sa_info').toggle(true)
-  $('#use_ba').click(function() {
-    return $('#sa_info').toggle('#use_ba'.checked);
-  });
-});
 $(window).load(function() {
   $('#use_ba').attr('checked', false);
   $('#sa_info').toggle(true)
   $('#use_ba').click(function() {
-    return $('#sa_info').toggle('#use_ba'.checked);
+    $('#sa_info').toggle('#use_ba'.checked);
+  });
+  $('#use_bill_address').attr('checked', false);
+  $('#use_bill_address').click(function() {
+    $('#sa_fields').toggle('#use_bill_address'.checked);
+  });
+  $(".prices").toggle(false)
+  var price = $("#total_price").data('price');
+  $("#radios input:radio").click(function(){
+    $(".prices").toggle(false)
+    $("#"+$(this).attr('value')).toggle(true)
+    var total_price = parseFloat(price) + parseFloat($("#"+$(this).attr('value')+" strong").data('price'));
+    $("#total_price").text("$"+total_price.toFixed(2));
   });
 });
+
 $(document).on('page:load', function() {
+  $('#use_ba').attr('checked', false);
+  $('#sa_info').toggle(true)
+  $('#use_ba').click(function() {
+    $('#sa_info').toggle('#use_ba'.checked);
+  });
   $('#use_bill_address').attr('checked', false);
   $('#use_bill_address').click(function() {
-    return $('#sa_fields').toggle('#use_bill_address'.checked);
+    $('#sa_fields').toggle('#use_bill_address'.checked);
+  });
+  $(".prices").toggle(false)
+  var price = $("#total_price").data('price');
+  $("#radios input:radio").click(function(){
+    $(".prices").toggle(false)
+    $("#"+$(this).attr('value')).toggle(true)
+    var total_price = parseFloat(price) + parseFloat($("#"+$(this).attr('value')+" strong").data('price'));
+    $("#total_price").text("$"+total_price.toFixed(2));
   });
 });
-$(window).load(function() { 
-  $('#use_bill_address').attr('checked', false);
-  $('#use_bill_address').click(function() {
-    return $('#sa_fields').toggle('#use_bill_address'.checked);
-  });
-});
+
