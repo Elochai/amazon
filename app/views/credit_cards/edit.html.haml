@@ -14,4 +14,13 @@
             %label.control-label== #{t(:exp_m)} #{cc.select :expiration_month, (1..12), {}, class: 'form-control'}
             %label.control-label== #{t(:exp_y)} #{cc.select :expiration_year, (Time.now.year..Time.now.year + 15), {}, class: 'form-control'}
         .panel-footer
-          = cc.submit t(:next), class: 'btn btn-primary'
+          %h4
+            = t(:books_price)
+            %strong.label.label-info= number_to_currency current_order.books_price
+          %h4
+            = t(:delivery_price)
+            %strong.label.label-info= number_to_currency current_order.delivery.price
+          %h4
+            = t(:total_price)
+            %strong.label.label-info= number_to_currency current_order.total_price
+      = cc.submit t(:next), class: 'btn btn-primary'

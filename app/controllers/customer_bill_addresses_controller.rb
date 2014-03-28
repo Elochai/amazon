@@ -13,11 +13,6 @@ class CustomerBillAddressesController < ApplicationController
  
   # GET /addresses/1/edit
   def edit
-    if @customer_bill_address.customer_id == current_customer.id
-      @customer_bill_address
-    else
-      redirect_to root_path
-    end
   end
  
   # POST /addresses

@@ -1,7 +1,12 @@
-class Ability
+class Ability 
   include CanCan::Ability
 
-  def initialize(customer)
+  def initialize(customer, order)
+    if !order.nil?
+      current_order = order.id
+    else
+      current_order = order
+    end
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
@@ -28,7 +33,6 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
-
     if customer
       if customer.admin == true
         can :manage, :all
@@ -38,20 +42,28 @@ class Ability
       else
         can [:add_wish, :remove_wish, :wishers, :top_rated], Book
         can [:new, :update_with_coupon, :remove_coupon, :confirm, :place, :delivery, :add_delivery, :edit_delivery, :checkout, :next_step], Order
-        can :manage, OrderItem
-        can :manage, [CreditCard, Customer, Address]
-        can :read, [Book, Rating, Category, Author, Order]
+        can [:index, :clear_cart, :create], OrderItem
+        can [:edit, :update, :destroy], OrderItem, :order_id => current_order
+        can :manage, Customer
+        can [:new, :create], CreditCard
+        can [:update, :edit], CreditCard, :order_id => current_order
+        can :manage, [Address], type: 'CustomerBillAddress', :customer_id => customer.id 
+        can :manage, [Address], type: 'CustomerShipAddress', :customer_id => customer.id 
+        can :manage, [Address], type: 'BillAddress', :order_id => current_order
+        can :manage, [Address], type: 'ShipAddress', :order_id => current_order
+        can :read, [Book, Rating, Category, Author] 
+        can :read, Order, :customer_id => customer.id
         can [:new, :create], Rating
       end
     else
-      can :read, Book
-      can :read, Category
-      can :read, Author
-      can [:top_rated], Book
-      can [:wishers], Book
-      can :manage, OrderItem
-      can :manage, Address
-      can :manage, CreditCard
+      can :read, [Book, Category, Author]
+      can [:top_rated, :wishers], Book
+      can [:index, :clear_cart, :create], OrderItem
+      can [:edit, :update, :destroy], OrderItem, :order_id => current_order
+      can :manage, [Address], type: 'BillAddress', :order_id => current_order
+      can :manage, [Address], type: 'ShipAddress', :order_id => current_order
+      can [:new, :create], CreditCard
+      can [:update, :edit], CreditCard, :order_id => current_order
       can [:checkout, :new, :update_with_coupon, :remove_coupon, :confirm, :delivery, :add_delivery, :edit_delivery, :next_step], Order
     end
   end

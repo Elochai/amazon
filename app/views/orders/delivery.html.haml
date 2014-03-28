@@ -28,5 +28,8 @@
               %strong.label.label-info{"data-price" => delivery.price}= number_to_currency delivery.price
           %h4
             = t(:total_price)
-            %strong.label.label-info#total_price{"data-price" => current_order.total_price}= number_to_currency current_order.total_price
+            - if current_order.delivery.nil?
+              %strong.label.label-info#total_price{"data-price" => current_order.total_price}= number_to_currency current_order.total_price
+            - else
+              %strong.label.label-info#total_price_id_edit{"data-price" => current_order.total_price - current_order.delivery.price}= number_to_currency current_order.total_price
           = submit_tag t(:next), class: 'btn btn-primary'

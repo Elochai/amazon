@@ -42,26 +42,17 @@ describe CreditCardsController do
         @ability.can :manage, CreditCard
         CreditCard.stub(:find).and_return @credit_card
       end
-      context "if credit card is within current order" do
-        it "receives find and return credit_card" do
-          expect(CreditCard).to receive(:find).with(@credit_card.id.to_s).and_return @credit_card
-          get :edit, id: @credit_card.id
-        end
-        it "assigns credit_card" do
-          get :edit, id: @credit_card.id
-          expect(assigns(:credit_card)).to eq @credit_card
-        end
-        it "renders template edit" do
-          get :edit, id: @credit_card.id
-          expect(response).to render_template("edit")
-        end
+      it "receives find and return credit_card" do
+        expect(CreditCard).to receive(:find).with(@credit_card.id.to_s).and_return @credit_card
+        get :edit, id: @credit_card.id
       end
-      context "if credit card is not within current order" do
-        it "renders redirects to root_path" do
-          @credit_card.update(order_id: nil)
-          get :edit, id: @credit_card.id
-          expect(response).to redirect_to root_path
-        end
+      it "assigns credit_card" do
+        get :edit, id: @credit_card.id
+        expect(assigns(:credit_card)).to eq @credit_card
+      end
+      it "renders template edit" do
+        get :edit, id: @credit_card.id
+        expect(response).to render_template("edit")
       end
     end
     context "without manage ability" do
