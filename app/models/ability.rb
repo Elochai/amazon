@@ -1,11 +1,11 @@
 class Ability 
   include CanCan::Ability
 
-  def initialize(customer, order)
-    if !order.nil?
-      current_order = order.id
+  def initialize(customer, *order)
+    if !order.first.nil?
+      current_order = order.first.id
     else
-      current_order = order
+      current_order = order.first
     end
     # Define abilities for the passed in user here. For example:
     #
