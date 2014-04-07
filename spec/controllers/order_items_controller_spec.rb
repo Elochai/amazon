@@ -16,26 +16,17 @@ describe OrderItemsController do
         @ability.can :manage, OrderItem
         OrderItem.stub(:find).and_return @order_item
       end
-      context "if order item within current order" do
-        it "receives find and return order_item" do
-          expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
-          get :edit, id: @order_item.id
-        end
-        it "assigns order_item" do
-          get :edit, id: @order_item.id
-          expect(assigns(:order_item)).to eq @order_item
-        end
-        it "renders template edit" do
-          get :edit, id: @order_item.id
-          expect(response).to render_template("edit")
-        end
+      it "receives find and return order_item" do
+        expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
+        get :edit, id: @order_item.id
       end
-      context "if order item not within current order" do
-        it "redirects to root_path" do
-          @order_item.update(order_id: nil)
-          get :edit, id: @order_item.id
-          expect(response).to redirect_to root_path
-        end
+      it "assigns order_item" do
+        get :edit, id: @order_item.id
+        expect(assigns(:order_item)).to eq @order_item
+      end
+      it "renders template edit" do
+        get :edit, id: @order_item.id
+        expect(response).to render_template("edit")
       end
     end
     context "without manage ability" do
@@ -43,9 +34,9 @@ describe OrderItemsController do
         @ability.cannot :manage, OrderItem
         OrderItem.stub(:find).and_return @order_item
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @order_item.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -105,9 +96,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to_not eq "quantity"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @order_item.id, order_item: FactoryGirl.attributes_for(:order_item, quantity: "quantity")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -119,26 +110,16 @@ describe OrderItemsController do
         @ability.can :manage, OrderItem
         OrderItem.stub(:find).and_return @order_item
       end
-      context "if order item within current order" do
-        it "receives find and return order_item" do
-          expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
-          delete :destroy, id: @order_item.id
-        end
-        it "deletes order_item" do
-          expect{delete :destroy, id: @order_item.id}.to change(OrderItem, :count).by(-1)
-          delete :destroy, id: @order_item.id
-        end
-        it "redirects to order_items_path" do
-          delete :destroy, id: @order_item.id
-          expect(response).to redirect_to order_items_path
-        end
+      it "receives find and return order_item" do
+        expect(OrderItem).to receive(:find).with(@order_item.id.to_s).and_return @order_item
+        delete :destroy, id: @order_item.id
       end
-      context "if order item not within current order" do
-        it "redirects to root_path" do
-          @order_item.update(order_id: nil)
-          delete :destroy, id: @order_item.id
-          expect(response).to redirect_to root_path
-        end
+      it "deletes order_item" do
+        expect{delete :destroy, id: @order_item.id}.to change(OrderItem, :count).by(-1)
+      end
+      it "redirects to order_items_path" do
+        delete :destroy, id: @order_item.id
+        expect(response).to redirect_to order_items_path
       end
     end
     context "without manage ability" do
@@ -148,11 +129,10 @@ describe OrderItemsController do
       end
       it "do not deletes order_item" do
         expect{delete :destroy, id: @order_item.id}.to_not change(OrderItem, :count)
-        delete :destroy, id: @order_item.id
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         delete :destroy, id: @order_item.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -181,9 +161,9 @@ describe OrderItemsController do
         expect{get :clear_cart}.to_not change(OrderItem, :count).by(-2)
         get :clear_cart
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :clear_cart
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -238,9 +218,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to eq(1)
         end
-        it "redirects to customer_session_path" do
+        it "redirects to root_path" do
           post :create, book_id: @book.id
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
       context "with invalid attributes" do
@@ -253,9 +233,9 @@ describe OrderItemsController do
           @order_item.reload
           expect(@order_item.quantity).to eq(1)
         end
-        it "redirects to customer_session_path" do
+        it "redirects to root_path" do
           post :create, book_id: @book.id, quantity: -1
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

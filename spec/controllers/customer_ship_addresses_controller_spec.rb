@@ -32,9 +32,9 @@ describe CustomerShipAddressesController do
       before do
         @ability.cannot :manage, CustomerShipAddress
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :new
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -46,26 +46,17 @@ describe CustomerShipAddressesController do
         @ability.can :manage, CustomerShipAddress
         CustomerShipAddress.stub(:find).and_return @customer_ship_address
       end
-      context 'if customer ship address within current customer' do
-        it "receives find and return customer_ship_address" do
-          expect(CustomerShipAddress).to receive(:find).with(@customer_ship_address.id.to_s).and_return @customer_ship_address
-          get :edit, id: @customer_ship_address.id
-        end
-        it "assigns customer_ship_address" do
-          get :edit, id: @customer_ship_address.id
-          expect(assigns(:customer_ship_address)).to eq @customer_ship_address
-        end
-        it "renders template edit" do
-          get :edit, id: @customer_ship_address.id
-          expect(response).to render_template("edit")
-        end
+      it "receives find and return customer_ship_address" do
+        expect(CustomerShipAddress).to receive(:find).with(@customer_ship_address.id.to_s).and_return @customer_ship_address
+        get :edit, id: @customer_ship_address.id
       end
-      context "if customer ship address not within current customer" do
-        it "redirects to root_path" do
-          @customer_ship_address.update(customer_id: nil)
-          get :edit, id: @customer_ship_address.id
-          expect(response).to redirect_to root_path
-        end
+      it "assigns customer_ship_address" do
+        get :edit, id: @customer_ship_address.id
+        expect(assigns(:customer_ship_address)).to eq @customer_ship_address
+      end
+      it "renders template edit" do
+        get :edit, id: @customer_ship_address.id
+        expect(response).to render_template("edit")
       end
     end
     context "without manage ability" do
@@ -73,9 +64,9 @@ describe CustomerShipAddressesController do
         @ability.cannot :manage, CustomerShipAddress
         CustomerShipAddress.stub(:find).and_return @customer_ship_address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @customer_ship_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -121,9 +112,9 @@ describe CustomerShipAddressesController do
         it "do not creates new customer_ship_address" do
           expect{post :create, customer_ship_address: FactoryGirl.attributes_for(:customer_ship_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(CustomerShipAddress, :count)      
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, customer_ship_address: FactoryGirl.attributes_for(:customer_ship_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -184,9 +175,9 @@ describe CustomerShipAddressesController do
           @customer_ship_address.reload
           expect(@customer_ship_address.zipcode).to_not eq "zipcode"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @customer_ship_address.id, customer_ship_address: FactoryGirl.attributes_for(:customer_ship_address, country: @country, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -199,26 +190,17 @@ describe CustomerShipAddressesController do
         @ability.can :manage, CustomerShipAddress
         CustomerShipAddress.stub(:find).and_return @customer_ship_address
       end
-      context 'if customer ship address within current customer' do
-        it "receives find and return customer_ship_address" do
-          expect(CustomerShipAddress).to receive(:find).with(@customer_ship_address.id.to_s).and_return @customer_ship_address
-          delete :destroy, id: @customer_ship_address.id
-        end
-        it "deletes customer_ship_address" do
-          expect{delete :destroy, id: @customer_ship_address.id}.to change(CustomerShipAddress, :count).by(-1)
-          delete :destroy, id: @customer_ship_address.id
-        end
-        it "redirects to edit_customer_registration_path" do
-          delete :destroy, id: @customer_ship_address.id
-          expect(response).to redirect_to edit_customer_registration_path
-        end
+      it "receives find and return customer_ship_address" do
+        expect(CustomerShipAddress).to receive(:find).with(@customer_ship_address.id.to_s).and_return @customer_ship_address
+        delete :destroy, id: @customer_ship_address.id
       end
-      context "if customer ship address not within current customer" do
-        it "redirects to root_path" do
-          @customer_ship_address.update(customer_id: nil)
-          delete :destroy, id: @customer_ship_address.id
-          expect(response).to redirect_to root_path
-        end
+      it "deletes customer_ship_address" do
+        expect{delete :destroy, id: @customer_ship_address.id}.to change(CustomerShipAddress, :count).by(-1)
+        delete :destroy, id: @customer_ship_address.id
+      end
+      it "redirects to edit_customer_registration_path" do
+        delete :destroy, id: @customer_ship_address.id
+        expect(response).to redirect_to edit_customer_registration_path
       end
     end
     context "without manage ability" do
@@ -230,9 +212,9 @@ describe CustomerShipAddressesController do
         expect{delete :destroy, id: @customer_ship_address.id}.to_not change(CustomerShipAddress, :count)
         delete :destroy, id: @customer_ship_address.id
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         delete :destroy, id: @customer_ship_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

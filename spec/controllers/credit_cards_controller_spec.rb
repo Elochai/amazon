@@ -28,9 +28,9 @@ describe CreditCardsController do
       before do
         @ability.cannot :manage, CreditCard
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :new
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -42,26 +42,17 @@ describe CreditCardsController do
         @ability.can :manage, CreditCard
         CreditCard.stub(:find).and_return @credit_card
       end
-      context "if credit card is within current order" do
-        it "receives find and return credit_card" do
-          expect(CreditCard).to receive(:find).with(@credit_card.id.to_s).and_return @credit_card
-          get :edit, id: @credit_card.id
-        end
-        it "assigns credit_card" do
-          get :edit, id: @credit_card.id
-          expect(assigns(:credit_card)).to eq @credit_card
-        end
-        it "renders template edit" do
-          get :edit, id: @credit_card.id
-          expect(response).to render_template("edit")
-        end
+      it "receives find and return credit_card" do
+        expect(CreditCard).to receive(:find).with(@credit_card.id.to_s).and_return @credit_card
+        get :edit, id: @credit_card.id
       end
-      context "if credit card is not within current order" do
-        it "renders redirects to root_path" do
-          @credit_card.update(order_id: nil)
-          get :edit, id: @credit_card.id
-          expect(response).to redirect_to root_path
-        end
+      it "assigns credit_card" do
+        get :edit, id: @credit_card.id
+        expect(assigns(:credit_card)).to eq @credit_card
+      end
+      it "renders template edit" do
+        get :edit, id: @credit_card.id
+        expect(response).to render_template("edit")
       end
     end
     context "without manage ability" do
@@ -69,9 +60,9 @@ describe CreditCardsController do
         @ability.cannot :manage, CreditCard
         CreditCard.stub(:find).and_return @credit_card
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @credit_card.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -119,9 +110,9 @@ describe CreditCardsController do
         it "do not creates new credit_card" do
           expect{post :create, credit_card: FactoryGirl.attributes_for(:credit_card, cvv: "cvv")}.to_not change(CreditCard, :count)      
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, credit_card: FactoryGirl.attributes_for(:credit_card, cvv: "cvv")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -182,9 +173,9 @@ describe CreditCardsController do
           @credit_card.reload
           expect(@credit_card.cvv).to_not eq "cvv"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @credit_card.id, credit_card: FactoryGirl.attributes_for(:credit_card, cvv: "cvv")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

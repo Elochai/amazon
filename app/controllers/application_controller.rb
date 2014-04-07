@@ -11,11 +11,15 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to customer_session_path, alert: t(:sign_up_first)
+    if customer_signed_in?
+      redirect_to '/', alert: t(:access_denied)
+    else
+      redirect_to '/customers/sign_in', alert: t(:sign_up_first)
+    end
   end
   
   def current_ability
-    @current_ability ||= Ability.new(current_customer)
+    @current_ability ||= Ability.new(current_customer, current_order)
   end
 
   def current_order
@@ -61,6 +65,9 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:account_update) { |u| 
       u.permit(:firstname, :lastname, :password, :password_confirmation, :current_password) 
+    }
+    devise_parameter_sanitizer.for(:sign_up) { |u| 
+      u.permit(:firstname, :lastname, :password, :password_confirmation, :email) 
     }
   end
 end

@@ -34,9 +34,9 @@ describe AddressesController do
         @order.update(checkout_step: 2)
         @ability.cannot :manage, Address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :new
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -44,6 +44,7 @@ describe AddressesController do
   describe "POST #create" do
     context "with manage ability" do
       before do
+        sign_out @customer
         @order.update(checkout_step: 2)
         @ability.can :manage, Address
       end
@@ -84,9 +85,9 @@ describe AddressesController do
         it "do not creates new addresses" do
           expect{post :create, order: {bill_address_attributes: FactoryGirl.attributes_for(:address, country_id: @country.id, order: @order), ship_address_attributes: FactoryGirl.attributes_for(:address, country_id: @country.id, zipcode: 1, order: @order)}}.to_not change(Address, :count)      
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, order: {bill_address_attributes: FactoryGirl.attributes_for(:address, country_id: @country.id, order: @order), ship_address_attributes: FactoryGirl.attributes_for(:address, country_id: @country.id, zipcode: 1, order: @order)}
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

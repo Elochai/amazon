@@ -12,11 +12,6 @@ class CustomerShipAddressesController < ApplicationController
  
   # GET /addresses/1/edit
   def edit
-    if @customer_ship_address.customer_id == current_customer.id
-      @customer_ship_address
-    else
-      redirect_to root_path
-    end
   end
  
   # POST /addresses

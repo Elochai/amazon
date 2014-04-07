@@ -28,9 +28,9 @@ describe BooksController do
       before do
         @ability.cannot :read, Book
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :index
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -53,9 +53,9 @@ describe BooksController do
       before do
         @ability.cannot :top_rated, Book
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :top_rated
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -87,9 +87,9 @@ describe BooksController do
       before do
         @ability.cannot :read, Book
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :show, id: @book.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -125,9 +125,9 @@ describe BooksController do
         post :add_wish, id: @book.id
         expect(@book.wishers).to_not eq [@customer]
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         post :add_wish, id: @book.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -161,9 +161,9 @@ describe BooksController do
         post :remove_wish, id: @book.id
         expect(@book.wishers).to_not eq []
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         post :remove_wish, id: @book.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -199,9 +199,9 @@ describe BooksController do
         post :wishers, id: @book.id
         expect(assigns(:wishers)).to_not eq wisher
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         post :wishers, id: @book.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

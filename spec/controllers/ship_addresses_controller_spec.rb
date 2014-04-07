@@ -17,26 +17,17 @@ describe ShipAddressesController do
         @ability.can :manage, ShipAddress
         ShipAddress.stub(:find).and_return @ship_address
       end
-      context 'if ship address within current order' do
-        it "receives find and return ship_address" do
-          expect(ShipAddress).to receive(:find).with(@ship_address.id.to_s).and_return @ship_address
-          get :edit, id: @ship_address.id
-        end
-        it "assigns ship_address" do
-          get :edit, id: @ship_address.id
-          expect(assigns(:ship_address)).to eq @ship_address
-        end
-        it "renders template edit" do
-          get :edit, id: @ship_address.id
-          expect(response).to render_template("edit")
-        end
+      it "receives find and return ship_address" do
+        expect(ShipAddress).to receive(:find).with(@ship_address.id.to_s).and_return @ship_address
+        get :edit, id: @ship_address.id
       end
-      context "if ship address not within current order" do
-        it "redirects to root_path" do
-          @ship_address.update(order_id: nil)
-          get :edit, id: @ship_address.id
-          expect(response).to redirect_to root_path
-        end
+      it "assigns ship_address" do
+        get :edit, id: @ship_address.id
+        expect(assigns(:ship_address)).to eq @ship_address
+      end
+      it "renders template edit" do
+        get :edit, id: @ship_address.id
+        expect(response).to render_template("edit")
       end
     end
     context "without manage ability" do
@@ -44,9 +35,9 @@ describe ShipAddressesController do
         @ability.cannot :manage, ShipAddress
         ShipAddress.stub(:find).and_return @ship_address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @ship_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -106,9 +97,9 @@ describe ShipAddressesController do
           @ship_address.reload
           expect(@ship_address.zipcode).to_not eq "zipcode"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @ship_address.id, ship_address: FactoryGirl.attributes_for(:ship_address, country: @country, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end

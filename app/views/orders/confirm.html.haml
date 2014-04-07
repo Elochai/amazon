@@ -3,7 +3,7 @@
     %h4.well.xl
       = render partial: 'navigation', locals: {current_step: 4}
     %h3= t(:books_in_order)
-    %table.table.table-hover.table-order
+    %table.table.table-hover.table-order-show
       %thead
         %tr
           %th.text-center= t(:book_title)
@@ -20,7 +20,7 @@
               %td= oi.quantity
               %td== #{number_to_currency(oi.book.price)} (#{t(:total)} #{number_to_currency(oi.price)})
     %h3= t(:order_info)
-    %table.table.table-order
+    %table.table.table-order-show
       %thead
         %tr
           %th.left== #{t(:ba_info)} #{link_to '', edit_bill_address_path(current_order.bill_address.id), class:'icon-pencil'}

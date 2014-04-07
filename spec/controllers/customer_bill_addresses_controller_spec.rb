@@ -32,9 +32,9 @@ describe CustomerBillAddressesController do
       before do
         @ability.cannot :manage, CustomerBillAddress
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :new
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -46,26 +46,17 @@ describe CustomerBillAddressesController do
         @ability.can :manage, CustomerBillAddress
         CustomerBillAddress.stub(:find).and_return @customer_bill_address
       end
-      context 'if customer bill address within current customer' do
-        it "receives find and return customer_bill_address" do
-          expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
-          get :edit, id: @customer_bill_address.id
-        end
-        it "assigns customer_bill_address" do
-          get :edit, id: @customer_bill_address.id
-          expect(assigns(:customer_bill_address)).to eq @customer_bill_address
-        end
-        it "renders template edit" do
-          get :edit, id: @customer_bill_address.id
-          expect(response).to render_template("edit")
-        end
+      it "receives find and return customer_bill_address" do
+        expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
+        get :edit, id: @customer_bill_address.id
       end
-      context "if customer bill address not within current customer" do
-        it "redirects to root_path" do
-          @customer_bill_address.update(customer_id: nil)
-          get :edit, id: @customer_bill_address.id
-          expect(response).to redirect_to root_path
-        end
+      it "assigns customer_bill_address" do
+        get :edit, id: @customer_bill_address.id
+        expect(assigns(:customer_bill_address)).to eq @customer_bill_address
+      end
+      it "renders template edit" do
+        get :edit, id: @customer_bill_address.id
+        expect(response).to render_template("edit")
       end
     end
     context "without manage ability" do
@@ -73,9 +64,9 @@ describe CustomerBillAddressesController do
         @ability.cannot :manage, CustomerBillAddress
         CustomerBillAddress.stub(:find).and_return @customer_bill_address
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         get :edit, id: @customer_bill_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -121,9 +112,9 @@ describe CustomerBillAddressesController do
         it "do not creates new customer_bill_address" do
           expect{post :create, customer_bill_address: FactoryGirl.attributes_for(:customer_bill_address, country_id: @country.id, zipcode: "zipcode")}.to_not change(CustomerBillAddress, :count)      
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           post :create, customer_bill_address: FactoryGirl.attributes_for(:customer_bill_address, country_id: @country.id, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -184,9 +175,9 @@ describe CustomerBillAddressesController do
           @customer_bill_address.reload
           expect(@customer_bill_address.zipcode).to_not eq "zipcode"
         end
-        it "redirects to customer_session_path" do  
+        it "redirects to root_path" do  
           put :update, id: @customer_bill_address.id, customer_bill_address: FactoryGirl.attributes_for(:customer_bill_address, country: @country, zipcode: "zipcode")
-          expect(response).to redirect_to customer_session_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -199,26 +190,17 @@ describe CustomerBillAddressesController do
         @ability.can :manage, CustomerBillAddress
         CustomerBillAddress.stub(:find).and_return @customer_bill_address
       end
-      context "if customer bill address within current customer" do
-        it "receives find and return customer_bill_address" do
-          expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
-          delete :destroy, id: @customer_bill_address.id
-        end
-        it "deletes customer_bill_address" do
-          expect{delete :destroy, id: @customer_bill_address.id}.to change(CustomerBillAddress, :count).by(-1)
-          delete :destroy, id: @customer_bill_address.id
-        end
-        it "redirects to edit_customer_registration_path" do
-          delete :destroy, id: @customer_bill_address.id
-          expect(response).to redirect_to edit_customer_registration_path
-        end
+      it "receives find and return customer_bill_address" do
+        expect(CustomerBillAddress).to receive(:find).with(@customer_bill_address.id.to_s).and_return @customer_bill_address
+        delete :destroy, id: @customer_bill_address.id
       end
-      context "if customer bill address not within current customer" do
-        it "redirects to root_path" do
-          @customer_bill_address.update(customer_id: nil)
-          delete :destroy, id: @customer_bill_address.id
-          expect(response).to redirect_to root_path
-        end
+      it "deletes customer_bill_address" do
+        expect{delete :destroy, id: @customer_bill_address.id}.to change(CustomerBillAddress, :count).by(-1)
+        delete :destroy, id: @customer_bill_address.id
+      end
+      it "redirects to edit_customer_registration_path" do
+        delete :destroy, id: @customer_bill_address.id
+        expect(response).to redirect_to edit_customer_registration_path
       end
     end
     context "without manage ability" do
@@ -230,9 +212,9 @@ describe CustomerBillAddressesController do
         expect{delete :destroy, id: @customer_bill_address.id}.to_not change(CustomerBillAddress, :count)
         delete :destroy, id: @customer_bill_address.id
       end
-      it "redirects to customer_session_path" do
+      it "redirects to root_path" do
         delete :destroy, id: @customer_bill_address.id
-        expect(response).to redirect_to customer_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

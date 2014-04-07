@@ -12,13 +12,7 @@ class OrderItemsController < ApplicationController
  
   # GET /order_items/1/edit
   def edit
-    if current_order.checkout_step == 1
-      if @order_item.order_id == current_order.id
-        @order_item
-      else
-        redirect_to root_path
-      end
-    else
+    if current_order.checkout_step != 1
       redirect_to order_confirm_path, alert: t(:already_checked_out)
     end
   end
@@ -41,14 +35,10 @@ class OrderItemsController < ApplicationController
   # DELETE /order_items/1.json
   def destroy
     if current_order.checkout_step == 1
-      if @order_item.order_id == current_order.id
-        @order_item.destroy
-        respond_to do |format|
-          format.html { redirect_to order_items_path }
-          format.json { head :no_content }
-        end
-      else
-        redirect_to root_path
+      @order_item.destroy
+      respond_to do |format|
+        format.html { redirect_to order_items_path }
+        format.json { head :no_content }
       end
     else
       redirect_to order_confirm_path, alert: t(:already_checked_out)
